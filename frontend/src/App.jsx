@@ -6,17 +6,16 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
+    "Communities",
+    "Polls",
+    "Profile"
   ];
+
+  const routes = [
+    '/communities',
+    '/polls',
+    '/profile',
+  ]
 
   return (
     <Navbar
@@ -40,21 +39,25 @@ function App() {
           <AcmeLogo />
           <p className="font-bold text-inherit">ZK-Gas</p>
         </NavbarBrand>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Polls
-          </Link>
-        </NavbarItem>
+        
         <NavbarItem isActive>
-          <Link href="#" aria-current="page">
+          <Link href="/communities" aria-current="page">
             Communities
           </Link>
         </NavbarItem>
+        
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/polls">
+            Polls
+          </Link>
+        </NavbarItem>
+        
+        <NavbarItem>
+          <Link color="foreground" href="/profile">
             Profile
           </Link>
         </NavbarItem>
+        
       </NavbarContent>
 
       <NavbarContent justify="end">
@@ -77,7 +80,7 @@ function App() {
               color={
                 index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
               }
-              href="#"
+              href={routes[index]}
               size="lg"
             >
               {item}
