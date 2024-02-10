@@ -1,5 +1,6 @@
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
 import { AcmeLogo } from "./assets/AcmeLogo"
+import Metamask from "./assets/MetamaskLogo.svg"
 import { useState } from "react";
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,28 +31,28 @@ function App() {
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
           <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+          <p className="font-bold text-inherit">ZK-Gas</p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
           <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+          <p className="font-bold text-inherit">ZK-Gas</p>
         </NavbarBrand>
         <NavbarItem>
           <Link color="foreground" href="#">
-            Features
+            Polls
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
           <Link href="#" aria-current="page">
-            Customers
+            Communities
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href="#">
-            Integrations
+            Profile
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -59,7 +60,11 @@ function App() {
       <NavbarContent justify="end">
         <NavbarItem>
           <Button as={Link} color="primary" href="#" variant="flat">
-            Connect to Metamask
+            <Image
+              src={Metamask}
+              alt="Metamask Logo"
+              width={25}
+            /> Connect to Metamask
           </Button>
         </NavbarItem>
       </NavbarContent>
