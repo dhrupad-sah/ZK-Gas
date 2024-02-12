@@ -1,11 +1,20 @@
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
+import { useConnect } from '@metamask/sdk-react-ui';
 import { AcmeLogo } from "../assets/AcmeLogo.jsx"
 import Metamask from "../assets/MetamaskLogo.svg"
 import { useState } from "react";
 
 export default function NavbarComponent() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { connect } = useConnect();
 
+    const handleConnectWallet = async () => {
+        try {
+            await connect();
+        } catch (error) {
+            console.error('Error connecting to MetaMask:', error);
+        }
+    };
     const menuItems = [
         "Communities",
         "Polls",
@@ -30,14 +39,14 @@ export default function NavbarComponent() {
             <NavbarContent className="sm:hidden pr-3" justify="center">
                 <NavbarBrand>
                     <AcmeLogo />
-                    <p className="font-bold text-inherit">ZK-Gas</p>
+                    <p className="font-bold text-inherit">Zk-Gas</p>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarBrand>
                     <AcmeLogo />
-                    <p className="font-bold text-inherit">ZK-Gas</p>
+                    <p className="font-bold text-inherit">Zk-Gas</p>
                 </NavbarBrand>
 
                 <NavbarItem isActive>
@@ -62,12 +71,12 @@ export default function NavbarComponent() {
 
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                    <Button onClick={handleConnectWallet} as={Link} color="primary" variant="flat">
                         <Image
                             src={Metamask}
                             alt="Metamask Logo"
                             width={25}
-                        /> Connect to Metamask
+                        /> Connect wallet
                     </Button>
                 </NavbarItem>
             </NavbarContent>
