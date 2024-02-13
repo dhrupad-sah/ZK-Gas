@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
 const bodyParser = require('body-parser');
 
@@ -63,10 +64,15 @@ app.post('/config', (req, res) => {
                 console.error('Error writing to TOML file:', err);
                 res.status(500).send('Error writing to TOML file');
             } 
-            else {
-                console.log('TOML file written successfully');
-                res.status(200).send('TOML file written successfully');
-            }
+            exec('bash ./scripts/auto_deploy.sh', (error, stdout, stderr) => {
+                if (error) {
+                    console.error('Error running shell commands:', error);
+                    res.status(500).send('Error running shell commands');
+                    return;
+                }
+                console.log('Shell commands executed successfully:', stdout);
+                res.status(200).send('TOML file written and shell commands executed successfully');
+            });
         });
         
     } catch (error) {
