@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
-import {ZKCommunity} from "../Community/Community.sol";
+pragma solidity ^0.8.18;
+import {ZKCommunity} from "./Community/Community.sol";
 
 contract Factory {
 
