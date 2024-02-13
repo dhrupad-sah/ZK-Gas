@@ -115,7 +115,7 @@ export default function NavbarComponent() {
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-10" justify="center" style={{ marginLeft: "-30%" }}>
+            <NavbarContent className="hidden sm:flex gap-10" justify="center" style={{ marginLeft: "-30%", marginRight: "-10%" }}>
                 <NavbarBrand >
                     <Link color="foreground" href="/">
                         <AcmeLogo />
