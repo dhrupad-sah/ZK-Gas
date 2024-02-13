@@ -1,36 +1,41 @@
-# Noir with Foundry
+# Noir with Vite and Hardhat
 
-This example uses Foundry to deploy and test a verifier.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e4bd1ebc-6be1-4ed2-8be8-18f70382ae22/deploy-status)](https://app.netlify.com/sites/noir-vite-hardhat/deploys)
+
+This example uses [Vite](https://vite.dev/) as the frontend framework, and
+[Hardhat](https://hardhat.org/) to deploy and test.
 
 ## Getting Started
 
 Want to get started in a pinch? Start your project in a free Github Codespace!
 
-[![Start your project in a free Github Codespace!](https://github.com/codespaces/badge.svg)](https://codespaces.new/noir-lang/noir-starter)
+[![Start your project in a free Github Codespace!](https://github.com/codespaces/badge.svg)](https://codespaces.new/noir-lang/noir-starter/tree/main)
 
 In the meantime, follow these simple steps to work on your own machine:
 
-Install [noirup](https://noir-lang.org/docs/getting_started/installation/#installing-noirup) with
+1. Install [yarn](https://yarnpkg.com/) (tested on yarn v1.22.19)
 
-1. Install [noirup](https://noir-lang.org/docs/getting_started/installation/#installing-noirup):
+2. Install [Node.js >20.10 (latest LTS)](https://nodejs.org/en) (tested on v18.17.0)
+
+3. Install [noirup](https://noir-lang.org/docs/getting_started/installation/#installing-noirup) with
 
    ```bash
    curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
    ```
 
-2. Install Nargo:
+4. Install Nargo with
 
    ```bash
    noirup
    ```
 
-3. Install foundryup and follow the instructions on screen. You should then have all the foundry tools like `forge`, `cast`, `anvil` and `chisel`.
+5. Install dependencies with
 
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-```
+   ```bash
+   yarn
+   ```
 
-## Generate verifier contract and proof
+## Generate verifier contract
 
 ### Contract
 
@@ -43,103 +48,72 @@ nargo codegen-verifier
 
 A file named `plonk_vk.sol` should appear in the `circuits/contracts/with_foundry` folder.
 
-#### Proof
+### Test locally
 
-You also need a proof, as this template currently doesn't employ `ffi` to call `nargo prove` by
-itself. For this, ensure your prover parameters are correct in `Prover.toml` and run:
+1. Copy `vite-hardhat/.env.example` to a new file `vite-hardhat/.env`.
 
-```bash
-nargo prove
-```
+2. Start a local development EVM at <http://localhost:8545> with
 
-A file named `with_foundry.proof` should appear in the `./circuits/proofs` folder.
+   ```bash
+   npx hardhat node
+   ```
 
-### Test with Foundry
+   or if foundry is preferred, with
 
-We're ready to test with Foundry. There's a basic test inside the `test` folder that deploys the
-verifier contract, the `Starter` contract and two bytes32 arrays correspondent to good and bad
-solutions to your circuit.
+   ```bash
+   anvil
+   ```
 
-By running the following command, forge will compile the contract with 5000 rounds of optimization
-and the London EVM version. **You need to use these optimizer settings to supress the "stack too
-deep" error on the solc compiler**. Then it will run the test, expecting it to pass with correct
-inputs, and fail with wrong inputs:
+3. Run the [example test file](./test/index.test.ts) with
 
-```bash
-forge test --optimize --optimizer-runs 5000 --evm-version london
-```
+   ```bash
+   yarn test
+   ```
 
-#### Testing On-chain
+The test demonstrates basic usage of Noir in a TypeScript Node.js environment.
 
-You can test that the Noir Solidity verifier contract works on a given chain by running the
-`Verify.s.sol` script against the appropriate RPC endpoint.
+### Deploy locally
 
-```bash
-forge script script/Verify.s.sol --rpc-url $RPC_ENDPOINT  --broadcast
-```
+1. Copy `vite-hardhat/.env.example` to a new file `vite-hardhat/.env`.
 
-If that doesn't work, you can add the network to Metamask and deploy and test via
-[Remix](https://remix.ethereum.org/).
+2. Start a local development EVM at <http://localhost:8545> with
 
-Note that some EVM network infrastructure may behave differently and this script may fail for
-reasons unrelated to the compatibility of the verifier contract.
+   ```bash
+   npx hardhat node
+   ```
 
-### Deploy with Foundry
+   or if foundry is preferred, with
 
-This template also has a script to help you deploy on your own network. But for that you need to run
-your own node or, alternatively, deploy on a testnet.
+   ```bash
+   anvil
+   ```
 
-#### (Option 1) Run a local node
+3. Build the project and deploy contracts to the local development chain with
 
-If you want to deploy locally, run a node by opening a terminal and running
+   ```bash
+   NETWORK=localhost yarn build
+   ```
 
-```bash
-anvil
-```
+   > **Note:** If the deployment fails, try removing `yarn.lock` and reinstalling dependencies with
+   > `yarn`.
 
-This should start a local node listening on `http://localhost:8545`. It will also give you many
-private keys.
+4. Once your contracts are deployed and the build is finished, you can preview the built website with
 
-Edit your `.env` file to look like:
+   ```bash
+   yarn preview
+   ```
 
-```
-ANVIL_RPC=http://localhost:8545
-LOCALHOST_PRIVATE_KEY=<the private key you just got from anvil>
-```
+### Deploy on networks
 
-#### (Option 2) Prepare for testnet
+You can choose any other network in `hardhat.config.ts` and deploy there using this `NETWORK`
+environment variable.
 
-Pick a testnet like Sepolia or Goerli. Generate a private key and use a faucet (like
-[this one for Sepolia](https://sepoliafaucet.com/)) to get some coins in there.
+For example, `NETWORK=mumbai yarn build` or `NETWORK=sepolia yarn build`.
 
-Edit your `.env` file to look like:
+Make sure you:
 
-```env
-SEPOLIA_RPC=https://rpc2.sepolia.org
-LOCALHOST_PRIVATE_KEY=<the private key of the account with your coins>
-```
+- Update the deployer private keys in `vite-hardhat/.env`
+- Have funds in the deployer account
+- Add keys for alchemy (to act as a node) in `vite-hardhat/.env`
 
-#### Run the deploy script
-
-You need to source your `.env` file before deploying. Do that with:
-
-```bash
-source .env
-```
-
-Then run the deployment with:
-
-```bash
-forge script script/Starter.s.sol --rpc-url $ANVIL_RPC --broadcast --verify
-```
-
-Replace `$ANVIL_RPC` with the testnet RPC, if you're deploying on a testnet.
-
-## Developing on this template
-
-This template doesn't include settings you may need to deal with syntax highlighting and
-IDE-specific settings (i.e. VScode). Please follow the instructions on the
-[Foundy book](https://book.getfoundry.sh/config/vscode) to set that up.
-
-It's **highly recommended** you get familiar with [Foundry](https://book.getfoundry.sh) before
-developing on this template.
+Feel free to contribute with other networks in `hardhat.config.ts`
