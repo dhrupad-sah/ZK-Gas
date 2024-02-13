@@ -2,9 +2,19 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
-const ethers = require('ethers');
-
+const ethers = require("ethers");
+const { config } = require("dotenv");
+const FactoryABI = require("./ABI/Factory.json");
+const ZKCommunityABI = require("./ABI/ZKCommunity.json");
 const bodyParser = require("body-parser");
+config();
+
+const provider = new ethers.providers.JsonRpcProvider(
+  `https://eth-sepolia.g.alchemy.com/v2/${process.env.SEPOLIA_ALCHEMY_KEY}`
+);
+const signer = provider.getSigner();
+const FactoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+console.log(FactoryContract);
 
 const app = express();
 const PORT = 3000;
