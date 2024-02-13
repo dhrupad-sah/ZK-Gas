@@ -149,7 +149,7 @@ export default function NavbarComponent() {
 
             <NavbarContent justify="end">
                 <NavbarItem style={{ marginRight: "-30%" }}>
-                    <Button onClick={handleConnect} as={Link} color="primary" variant="flat" className="text-base">
+                    <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
                         <Image
                             src={Metamask}
                             alt="Metamask Logo"
