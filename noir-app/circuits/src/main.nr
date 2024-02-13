@@ -26,3 +26,32 @@ fn main(
     assert(gender == genderHash);
     assert(secret == secretHash);
 }
+
+#[test]
+fn test_valid() {
+    let domainPub = "xx@iiits";
+
+    let regionPub = "xxxxxxAP";
+
+    let genderPub = "xxxxxxxM";
+
+    let secretPub = "12345678";
+
+    let domain_bytes = domainPub.as_bytes();
+    let region_bytes = regionPub.as_bytes();
+    let gender_bytes = genderPub.as_bytes();
+    let secret_bytes = secretPub.as_bytes();
+
+    let domainHash = dep::std::hash::sha256(domain_bytes);
+    let regionHash = dep::std::hash::sha256(region_bytes);
+    let genderHash = dep::std::hash::sha256(gender_bytes);
+    let secretHash = dep::std::hash::sha256(secret_bytes);
+
+    // let call = main(domainHash, domainPub, regionHash, regionPub, genderHash, genderPub, secretHash, secretPub);
+
+    dep::std::println(domainHash);
+    dep::std::println(regionHash);
+    dep::std::println(genderHash);
+    dep::std::println(secretHash);
+}
+
