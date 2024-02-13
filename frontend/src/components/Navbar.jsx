@@ -1,20 +1,88 @@
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
-import { useConnect } from '@metamask/sdk-react-ui';
 import { AcmeLogo } from "../assets/AcmeLogo.jsx"
+import { formatBalance, formatChainAsNum } from '../utils';
+import detectEthereumProvider from '@metamask/detect-provider'
 import Metamask from "../assets/MetamaskLogo.svg"
-import { useState } from "react";
+import { MdOutlinePoll } from "react-icons/md";
+import { BsPeople } from "react-icons/bs";
+import { RxAvatar } from "react-icons/rx";
+import { useState, useEffect } from "react";
 
 export default function NavbarComponent() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { connect } = useConnect();
+    const [hasProvider, setHasProvider] = useState(null)
+    const initialState = { accounts: [], balance: "", chainId: "" }
+    const [wallet, setWallet] = useState(initialState)
 
-    const handleConnectWallet = async () => {
-        try {
-            await connect();
-        } catch (error) {
-            console.error('Error connecting to MetaMask:', error);
+    const [isConnecting, setIsConnecting] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+
+    useEffect(() => {
+        const refreshAccounts = (accounts) => {
+            if (accounts?.length > 0) {
+                updateWallet(accounts)
+            } else {
+                // if length 0, user is disconnected
+                setWallet(initialState)
+            }
         }
-    };
+
+        const refreshChain = (chainId) => {
+            setWallet((wallet) => ({ ...wallet, chainId }))
+        }
+
+        const getProvider = async () => {
+            const provider = await detectEthereumProvider({ silent: true })
+            setHasProvider(provider)
+
+            if (provider) {
+                const accounts = await window.ethereum.request(
+                    { method: 'eth_accounts' }
+                )
+                refreshAccounts(accounts)
+                window.ethereum.on('accountsChanged', refreshAccounts)
+                window.ethereum.on("chainChanged", refreshChain)
+            }
+        }
+
+        getProvider()
+
+        return () => {
+            window.ethereum?.removeListener('accountsChanged', refreshAccounts)
+            window.ethereum?.removeListener("chainChanged", refreshChain)
+        }
+    }, [])
+
+    const updateWallet = async (accounts) => {
+        const balance = formatBalance(await window.ethereum.request({
+            method: "eth_getBalance",
+            params: [accounts[0], "latest"],
+        }))
+        const chainId = await window.ethereum.request({
+            method: "eth_chainId",
+        })
+        setWallet({ accounts, balance, chainId })
+    }
+
+    const handleConnect = async () => {
+        setIsConnecting(true)
+        await window.ethereum.request({
+            method: "eth_requestAccounts",
+        })
+            .then((accounts) => {
+                setError(false)
+                updateWallet(accounts)
+            })
+            .catch((err) => {
+                setError(true)
+                setErrorMessage(err.message)
+            })
+        setIsConnecting(false)
+    }
+
+    const disableConnect = wallet && isConnecting
+
     const menuItems = [
         "Communities",
         "Polls",
@@ -31,52 +99,62 @@ export default function NavbarComponent() {
         <Navbar
             isBordered
             isMenuOpen={isMenuOpen}
-            onMenuOpenChange={setIsMenuOpen}>
+            onMenuOpenChange={setIsMenuOpen}
+            style={{ height: '80px' }}
+        >
             <NavbarContent className="sm:hidden" justify="start">
                 <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
             </NavbarContent>
 
             <NavbarContent className="sm:hidden pr-3" justify="center">
                 <NavbarBrand>
-                    <AcmeLogo />
-                    <p className="font-bold text-inherit">Zk-Gas</p>
+                    <Link color="foreground" href="/">
+                        <AcmeLogo />
+                        <p className="font-bold text-inherit">Zk-Gas</p>
+                    </Link>
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarBrand>
-                    <AcmeLogo />
-                    <p className="font-bold text-inherit">Zk-Gas</p>
+            <NavbarContent className="hidden sm:flex gap-10" justify="center">
+                <NavbarBrand style={{ marginLeft: "-20rem" }}>
+                    <Link color="foreground" href="/">
+                        <AcmeLogo />
+                        <p className="font-bold text-inherit text-lg">Zk-Gas</p>
+                    </Link>
                 </NavbarBrand>
 
-                <NavbarItem isActive>
-                    <Link href="/communities" aria-current="page">
-                        Communities
-                    </Link>
-                </NavbarItem>
+                <div className="flex gap-4">
+                    <NavbarItem>
+                        <Link color="foreground" href="/communities" className="text-base">
+                            <BsPeople />&nbsp;&nbsp;
+                            <span> Communities</span>
+                        </Link>
+                    </NavbarItem>
 
-                <NavbarItem>
-                    <Link color="foreground" href="/polls">
-                        Polls
-                    </Link>
-                </NavbarItem>
+                    <NavbarItem>
+                        <Link color="foreground" href="/polls" className="text-base">
+                            <MdOutlinePoll/>&nbsp;&nbsp;
+                            <span>Polls</span>
+                        </Link>
+                    </NavbarItem>
 
-                <NavbarItem>
-                    <Link color="foreground" href="/profile">
-                        Profile
-                    </Link>
-                </NavbarItem>
-
+                    <NavbarItem>
+                        <Link color="foreground" href="/profile" className="text-base">
+                            <RxAvatar />&nbsp;&nbsp;
+                            <span>Profile</span>
+                        </Link>
+                    </NavbarItem>
+                </div>
             </NavbarContent>
 
             <NavbarContent justify="end">
-                <NavbarItem>
-                    <Button onClick={handleConnectWallet} as={Link} color="primary" variant="flat">
+                <NavbarItem style={{ marginRight: "-20rem" }}>
+                    <Button onClick={handleConnect} as={Link} color="primary" variant="flat" className="text-base">
                         <Image
                             src={Metamask}
                             alt="Metamask Logo"
                             width={25}
-                        /> Connect wallet
+                        /> {wallet.accounts[0]?.length > 0 ? wallet.accounts[0].substring(0, 15) + "..." : "Connect wallet"}
                     </Button>
                 </NavbarItem>
             </NavbarContent>
@@ -87,7 +165,7 @@ export default function NavbarComponent() {
                         <Link
                             className="w-full"
                             color={
-                                index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
+                                index === 2 ? "warning" : index === menuItems?.length - 1 ? "danger" : "foreground"
                             }
                             href={routes[index]}
                             size="lg"
