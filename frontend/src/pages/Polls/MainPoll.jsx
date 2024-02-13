@@ -44,7 +44,7 @@ export default function MainPoll() {
 
     useEffect(() => {
         if (allPolls.length === 0) {
-            setAllPolls((prevPolls) => [...prevPolls, newPoll1, newPoll2]);
+            setAllPolls([newPoll1, newPoll2]);
         }
     }, []);
 
