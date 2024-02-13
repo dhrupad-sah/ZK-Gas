@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import PollCard from "./PollCard"
 
 export default function MainPoll(){
 
-    const [allPolls, setAllPoll] = useState([])
+    const [allPolls, setAllPolls] = useState([])
 
     const newPoll1 = {
         pollID: '#123',
@@ -43,7 +43,9 @@ export default function MainPoll(){
         }
     }
 
-    setAllPoll((prevPolls) => [...prevPolls, newPoll1, newPoll2]);
+    useEffect(() => {
+        setAllPolls((prevPolls) => [...prevPolls, newPoll1, newPoll2]);
+      }, []);
 
     return (
         <div>

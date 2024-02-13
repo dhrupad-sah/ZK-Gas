@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { LeafPoll, Result } from 'react-leaf-polls'
+import { LeafPoll} from 'react-leaf-polls'
 import 'react-leaf-polls/dist/index.css'
 
 const customTheme = {
