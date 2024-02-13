@@ -16,7 +16,11 @@
     "framer-motion": "^11.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "react-icons": "^5.0.1"
+=======
+    "react-leaf-polls": "^1.1.6"
+>>>>>>> a79024849898347474e7d095d5fee946f9cb0bdd
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
