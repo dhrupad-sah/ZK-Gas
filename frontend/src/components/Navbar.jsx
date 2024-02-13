@@ -101,6 +101,7 @@ export default function NavbarComponent() {
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
             style={{ height: '80px' }}
+            className="mb-5"
         >
             <NavbarContent className="sm:hidden" justify="start">
                 <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
