@@ -92,6 +92,10 @@ app.post("/config", (req, res) => {
         res
           .status(200)
           .send("TOML file written and shell commands executed successfully");
+
+          const proof = fs.readFileSync('../noir-app/circuits/proofs/noirstarter.proof');
+          const proofHex = '0x' + proof.toString();
+          console.log(proofHex);
       });
     });
   } catch (error) {
