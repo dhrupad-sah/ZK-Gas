@@ -115,8 +115,8 @@ export default function NavbarComponent() {
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-10" justify="center">
-                <NavbarBrand style={{ marginLeft: "-20rem" }}>
+            <NavbarContent className="hidden sm:flex gap-10" justify="center" style={{ marginLeft: "-30%" }}>
+                <NavbarBrand >
                     <Link color="foreground" href="/">
                         <AcmeLogo />
                         <p className="font-bold text-inherit text-lg">Zk-Gas</p>
@@ -148,7 +148,7 @@ export default function NavbarComponent() {
             </NavbarContent>
 
             <NavbarContent justify="end">
-                <NavbarItem style={{ marginRight: "-20rem" }}>
+                <NavbarItem style={{ marginRight: "-30%" }}>
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" className="text-base">
                         <Image
                             src={Metamask}
