@@ -41,7 +41,7 @@ export default function PollCard({ pollContent }) {
     }
 
     return (
-        <div className="cardContainer" style={{margin : "10px", padding : "5px", border : "1px solid black"}}>
+        <div className="cardContainer">
             <LeafPoll
                 type='multiple'
                 question={pollContent.pollTitle}
