@@ -44,7 +44,7 @@ export default function PollCard({ pollContent }) {
         <div className="cardContainer" style={{margin : "10px", padding : "5px", border : "1px solid black"}}>
             <LeafPoll
                 type='multiple'
-                question={poll.pollTitle}
+                question={pollContent.pollTitle}
                 results={resData}
                 theme={customTheme}
                 onVote={vote}
