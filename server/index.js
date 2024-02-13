@@ -11,6 +11,11 @@ const PORT = 3000;
 app.use(bodyParser.json()); // Use bodyParser middleware to parse JSON bodies
 app.use(express.json());
 
+function stringToBytes32(str) {
+  const bytes32 = ethers.utils.formatBytes32String(str);
+  return bytes32;
+}
+
 app.post("/config", (req, res) => {
   // let buffer = Buffer.from(JSON.stringify(data.domain));
 
@@ -26,6 +31,14 @@ app.post("/config", (req, res) => {
     const domainPub = "xx@iiits";
     const regionPub = "xxxxxxAP";
     const genderPub = "xxxxxxxM";
+
+    const domainPubBytes32 = stringToBytes32(domainPub);
+    const regionPubBytes32 = stringToBytes32(regionPub);
+    const genderPubBytes32 = stringToBytes32(genderPub);
+
+    const publicInputs = [domainPubBytes32, regionPubBytes32, genderPubBytes32];
+
+    console.log(publicInputs);
 
     const data = {
       domain: req.body.domain,
@@ -53,7 +66,7 @@ app.post("/config", (req, res) => {
       }
     }
 
-    console.log(tomlString);
+    // console.log(tomlString);
 
     // const jsonDomain = JSON.stringify(tomlDomain);
     // const jsonRegion = JSON.stringify(tomlRegion);
