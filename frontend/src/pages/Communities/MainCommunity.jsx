@@ -1,5 +1,5 @@
 import CommunityCard from "../../components/CommunityCard"
-import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea,  SelectItem, Select } from "@nextui-org/react";
+import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../../context/auth";
@@ -11,97 +11,97 @@ export default function MainCommunity() {
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
         {
             communityName: "Blockchain Society",
             communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: uuidv4()
+            communityId: "id123"
         },
     ]
 
@@ -112,7 +112,7 @@ export default function MainCommunity() {
     const [description, setDescription] = useState("");
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const handleCreateCommunity = async() => {
+    const handleCreateCommunity = async () => {
         const community = await auth.FactoryContract.createCommunity(
             "xx@iiits",
             "xxxxxxAP",
@@ -120,6 +120,19 @@ export default function MainCommunity() {
         );
         console.log(community);
     }
+
+    const NAME_LIMIT = 20;
+    const DESCRIPTION_LIMIT = 100;
+
+    const handleNameChange = (event) => {
+        const updatedName = event.target.value.slice(0, NAME_LIMIT);
+        setName(updatedName);
+    };
+
+    const handleDescriptionChange = (event) => {
+        const updatedDescription = event.target.value.slice(0, DESCRIPTION_LIMIT);
+        setDescription(updatedDescription);
+    };
 
     console.log(email, gender, region, name, description);
 
@@ -149,16 +162,28 @@ export default function MainCommunity() {
                             <ModalBody>
                                 <Input
                                     autoFocus
-                                    label="Name"
-                                    placeholder="Enter name"
+                                    label="Community Name"
+                                    placeholder="Enter name (max 20 characters)"
                                     variant="bordered"
-                                    onChange={e => setName(e.target.value)}
+                                    value={name}
+                                    onChange={handleNameChange}
                                 />
+                                {name.length >=  NAME_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Name must be less than 20 characters.
+                                    </div>
+                                )}
                                 <Textarea
-                                    label="Description"
-                                    placeholder="Enter description"
-                                    onChange={e => setDescription(e.target.value)}
+                                    label="Community Description"
+                                    placeholder="Enter description (max 100 characters)"
+                                    onChange={handleDescriptionChange}
+                                    value={description}
                                 />
+                                {description.length >= DESCRIPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Description must be less than 100 characters.
+                                    </div>
+                                )}
                                 <Input
                                     autoFocus
                                     label="Email"
