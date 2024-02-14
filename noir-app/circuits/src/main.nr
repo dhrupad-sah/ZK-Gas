@@ -1,46 +1,29 @@
 fn main(
-    domain: [u8; 32],
-    region: [u8; 32],
-    gender: [u8; 32],
-    domainPub: pub str<8>,
-    // age: Field,
-    // minAgePub: pub Field,
-    // maxAgePub: pub Field,
-    regionPub: pub str<8>,
-    genderPub: pub str<8>
+    domain: Field,
+    region: Field,
+    gender: Field,
+    domainPub: pub Field,
+    regionPub: pub Field,
+    genderPub: pub Field
 ) {
-    let domain_bytes = domainPub.as_bytes();
-    let region_bytes = regionPub.as_bytes();
-    let gender_bytes = genderPub.as_bytes();
-
-    let domainHash = dep::std::hash::sha256(domain_bytes);
-    let regionHash = dep::std::hash::sha256(region_bytes);
-    let genderHash = dep::std::hash::sha256(gender_bytes);
-
-    assert(domain == domainHash);
-    assert(region == regionHash);
-    assert(gender == genderHash);
+    assert(domain == domainPub);
+    assert(region == regionPub);
+    assert(gender == genderPub);
 }
 
 #[test]
 fn test_valid() {
-    let domainPub = "xx@iiits";
+    let domainPub = 0x7878406969697473;
 
-    let regionPub = "xxxxxxAP";
+    let regionPub = 0x7878787878784150;
 
-    let genderPub = "xxxxxxxM";
+    let genderPub = 0x787878787878784d;
 
-    let domain_bytes = domainPub.as_bytes();
-    let region_bytes = regionPub.as_bytes();
-    let gender_bytes = genderPub.as_bytes();
+    let domain = 0x7878406969697473;
 
-    let domainHash = dep::std::hash::sha256(domain_bytes);
-    let regionHash = dep::std::hash::sha256(region_bytes);
-    let genderHash = dep::std::hash::sha256(gender_bytes);
+    let region = 0x7878787878784150;
 
-    // let call = main(domainHash, domainPub, regionHash, regionPub, genderHash, genderPub, secretHash, secretPub);
+    let gender = 0x787878787878784d;
 
-    dep::std::println(domainHash);
-    dep::std::println(regionHash);
-    dep::std::println(genderHash);
+    let call = main(domain, region, gender, domainPub, regionPub, genderPub);
 }
