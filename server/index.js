@@ -2,25 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
-const ethers = require("ethers");
-const { config } = require("dotenv");
-const FactoryABI = require("./ABI/Factory.json");
-const ZKCommunityABI = require("./ABI/ZKCommunity.json");
-const bodyParser = require("body-parser");
-config();
+const ethers = require('ethers');
 
-const provider = new ethers.providers.JsonRpcProvider(
-  `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
-);
-// const signer = provider.getSigner();
-const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
-const signer = wallet.provider.getSigner(wallet.address);
-console.log(signer);
-const FactoryContract = new ethers.Contract(
-  FactoryABI.address,
-  FactoryABI.abi,
-  signer
-);
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = 3000;
@@ -31,31 +15,6 @@ function stringToBytes32(str) {
   const bytes32 = ethers.utils.formatBytes32String(str);
   return bytes32;
 }
-
-app.post("/create-community", async (req, res) => {
-  const body = req.body;
-  const domain = body.domain;
-  console.log(domain);
-  const region = body.region;
-  console.log(region);
-  const gender = body.gender;
-  console.log(gender);
-  const community = await FactoryContract.functions.createCommunity(
-    "xx@iiits",
-    "xxxxxxAP",
-    "xxxxxxxM"
-  );
-  await community.wait();
-});
-
-app.get("/get-community", async (req, res) => {
-  const _id = req.query.id;
-  console.log(_id);
-  const community = await FactoryContract.functions.getCommunity(_id);
-  // console.log(await FactoryContract.getCommunity(0));
-  console.log(community);
-  // res.send(community);
-});
 
 app.post("/config", (req, res) => {
   // let buffer = Buffer.from(JSON.stringify(data.domain));
@@ -134,11 +93,9 @@ app.post("/config", (req, res) => {
           .status(200)
           .send("TOML file written and shell commands executed successfully");
 
-        const proof = fs.readFileSync(
-          "../noir-app/circuits/proofs/noirstarter.proof"
-        );
-        const proofHex = "0x" + proof.toString();
-        console.log(proofHex);
+          const proof = fs.readFileSync('../noir-app/circuits/proofs/noirstarter.proof');
+          const proofHex = '0x' + proof.toString();
+          console.log(proofHex);
       });
     });
   } catch (error) {
