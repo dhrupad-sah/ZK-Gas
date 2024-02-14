@@ -1,7 +1,11 @@
 import CommunityCard from "../../components/CommunityCard"
 import { Button } from "@nextui-org/react";
+import { useAuth } from "../../context/auth";
 
 export default function MainCommunity() {
+    const { auth, setAuth } = useAuth();
+    console.log(auth);
+    console.log(auth.FactoryContract);
     const communities = [
         {
             communityName: "Anime Society",

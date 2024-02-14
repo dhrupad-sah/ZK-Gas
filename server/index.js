@@ -40,14 +40,18 @@ app.post("/create-community", async (req, res) => {
   console.log(region);
   const gender = body.gender;
   console.log(gender);
-  const community = await FactoryContract.functions.createCommunity(
+  const community = await FactoryContract.createCommunity(
     "xx@iiits",
     "xxxxxxAP",
     "xxxxxxxM"
   );
   await community.wait(1);
+  console.log(community);
 });
 
+
+
+// console.log(FactoryContract.functions);
 app.get("/get-community", async (req, res) => {
   const _id = req.query.id;
   console.log(_id);
