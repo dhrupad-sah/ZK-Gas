@@ -2,9 +2,26 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
-const ethers = require('ethers');
-
+const ethers = require("ethers");
+const { config } = require("dotenv");
+const FactoryABI = require("./ABI/Factory.json");
+const ZKCommunityABI = require("./ABI/ZKCommunity.json");
+const VerifierABI = require("./ABI/UltraVerifier.json");
 const bodyParser = require("body-parser");
+config();
+
+const provider = new ethers.providers.JsonRpcProvider(
+  `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
+);
+// const signer = provider.getSigner();
+const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
+const signer = wallet.provider.getSigner(wallet.address);
+// console.log(signer);
+const FactoryContract = new ethers.Contract(
+  FactoryABI.address,
+  FactoryABI.abi,
+  signer
+);
 
 const app = express();
 const PORT = 3000;
@@ -16,7 +33,7 @@ function stringToBytes32(str) {
   return bytes32;
 }
 
-app.post("/config", (req, res) => {
+app.post("/config", async (req, res) => {
   // let buffer = Buffer.from(JSON.stringify(data.domain));
 
   try {
@@ -28,9 +45,25 @@ app.post("/config", (req, res) => {
       "Prover.toml"
     );
 
-    const domainPub = "xx@iiits";
-    const regionPub = "xxxxxxAP";
-    const genderPub = "xxxxxxxM";
+    const communityAddress = await FactoryContract.functions.getCommunity(req.body.communityId);
+
+    console.log(communityAddress[0]);
+
+    const communityContract = new ethers.Contract(
+      communityAddress[0],
+      ZKCommunityABI.abi,
+      signer
+    );
+
+    // console.log(communityContract);
+
+    const communityRules = await communityContract.functions.getRules();
+
+    console.log(typeof(communityRules[0].domainPub));
+
+    const domainPub = communityRules[0].domainPub;
+    const regionPub = communityRules[0].regionPub;
+    const genderPub = communityRules[0].genderPub;
 
     const domainPubBytes32 = stringToBytes32(domainPub);
     const regionPubBytes32 = stringToBytes32(regionPub);
@@ -52,6 +85,8 @@ app.post("/config", (req, res) => {
       genderPub: genderPub,
     };
 
+    // console.log(data);
+
     let tomlString = "";
 
     for (const key in data) {
@@ -66,36 +101,36 @@ app.post("/config", (req, res) => {
       }
     }
 
-    // console.log(tomlString);
-
-    // const jsonDomain = JSON.stringify(tomlDomain);
-    // const jsonRegion = JSON.stringify(tomlRegion);
-    // const jsonGender = JSON.stringify(tomlGender);
-
-    // const bufferDomain = Buffer.from(jsonDomain, 'utf-8');
-    // const bufferRegion = Buffer.from(jsonRegion, 'utf-8');
-    // const bufferGender = Buffer.from(jsonGender, 'utf-8');
-
     // Write the TOML string to the specified file path
-    fs.writeFile(filePath, tomlString, (err) => {
+    fs.writeFile(filePath, tomlString, async (err) => {
       if (err) {
         console.error("Error writing to TOML file:", err);
         res.status(500).send("Error writing to TOML file");
       }
-      exec("bash ./scripts/auto_deploy.sh", (error, stdout, stderr) => {
+      exec("bash ./scripts/auto_deploy.sh", async (error, stdout, stderr) => {
         if (error) {
           console.error("Error running shell commands:", error);
           res.status(500).send("Error running shell commands");
           return;
         }
         console.log("Shell commands executed successfully:", stdout);
-        res
-          .status(200)
-          .send("TOML file written and shell commands executed successfully");
+        
+        const proof = fs.readFileSync(
+          "../noir-app/circuits/proofs/noirstarter.proof"
+        );        
 
-          const proof = fs.readFileSync('../noir-app/circuits/proofs/noirstarter.proof');
-          const proofHex = '0x' + proof.toString();
-          console.log(proofHex);
+        const proofHex = "0x" + proof.toString();
+        console.log(proofHex);
+
+        const VerifyContract = new ethers.Contract(
+          VerifierABI.address,
+          VerifierABI.abi,
+          signer
+        );
+
+        const bool = VerifyContract.functions.verify(proofHex, publicInputs);
+
+        console.log(VerifyContract);
       });
     });
   } catch (error) {
