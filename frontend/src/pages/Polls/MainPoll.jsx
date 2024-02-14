@@ -7,8 +7,8 @@ export default function MainPoll() {
     const [allPolls, setAllPolls] = useState([]);
 
     const newPoll1 = {
-        pollID: '#123',
-        pollTitle: 'Which movie will you watch',
+        pollID: '123',
+        pollTitle: 'Which movie will you watch?',
         belongsToCommunity: false,
         communityID: '',
         option1: {
@@ -26,12 +26,12 @@ export default function MainPoll() {
     };
 
     const newPoll2 = {
-        pollID: '#456',
-        pollTitle: 'Which Chocolate you like',
+        pollID: '456',
+        pollTitle: 'Which Chocolate you like?',
         belongsToCommunity: true,
         communityID: '#C101',
         option1: {
-            optionName: "Sneakers",
+            optionName: "Snickers",
             optionconsensus: 32,
         },
         option2: {
@@ -45,20 +45,20 @@ export default function MainPoll() {
     };
 
     const newPoll3 = {
-        pollID: '#85',
-        pollTitle: 'Which course do you like most',
-        belongsToCommunity: true,
+        pollID: '789',
+        pollTitle: 'Which Branch do you like?',
+        belongsToCommunity: false,
         communityID: '',
         option1: {
-            optionName: "Harry Potter",
+            optionName: "CSE",
             optionconsensus: 24,
         },
         option2: {
-            optionName: 'Gone Girl',
+            optionName: 'ECE',
             optionconsensus: 24,
         },
         option3: {
-            optionName: 'Fantastic Beasts',
+            optionName: 'IT',
             optionconsensus: 52,
         },
     };
@@ -70,20 +70,20 @@ export default function MainPoll() {
     }, []);
 
     return (
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col items-center justify-center">
             <Tabs aria-label="Options" color="primary">
                 <Tab key="Public" title="Public">
-                    <Card>
-                        <CardBody>
-                            {allPolls.map((poll, index) => (
-                                !poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
+                    <Card >
+                        <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            {allPolls.map((poll) => (
+                                !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                             ))}
                         </CardBody>
                     </Card>
                 </Tab>
                 <Tab key="Community" title="Community">
-                    <Card>
-                        <CardBody>
+                    <Card >
+                        <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             {allPolls.map((poll, index) => (
                                 poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
                             ))}
@@ -92,5 +92,6 @@ export default function MainPoll() {
                 </Tab>
             </Tabs>
         </div>
+
     );
 }
