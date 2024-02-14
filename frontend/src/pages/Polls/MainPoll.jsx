@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import PollCard from "./PollCard";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-
+import { MdOutlinePublic } from "react-icons/md";
+import { RiChatPrivateLine, RiGitRepositoryPrivateLine } from "react-icons/ri";
 
 export default function MainPoll() {
     const [allPolls, setAllPolls] = useState([]);
@@ -71,8 +72,9 @@ export default function MainPoll() {
 
     return (
         <div className="flex w-full flex-col items-center justify-center">
-            <Tabs aria-label="Options" color="primary">
-                <Tab key="Public" title="Public">
+            <Tabs aria-label="Options" color="primary" size="lg" variant="underlined">
+                <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1"/>&nbsp;<span>Public</span></span>
+                } className="p-2">
                     <Card >
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             {allPolls.map((poll) => (
@@ -81,7 +83,8 @@ export default function MainPoll() {
                         </CardBody>
                     </Card>
                 </Tab>
-                <Tab key="Community" title="Community">
+                <Tab key="Community" title={<span className="flex align-center"><RiGitRepositoryPrivateLine className="mt-1"/>&nbsp;<span>Private</span></span>
+                } className="p-2">
                     <Card >
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             {allPolls.map((poll, index) => (
