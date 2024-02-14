@@ -3,8 +3,12 @@ import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, Mod
 import { GrLinkNext } from "react-icons/gr";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Link, SelectItem, Select } from "@nextui-org/react";
+import { useAuth } from "../../context/auth";
 
 export default function MainCommunity() {
+    const { auth, setAuth } = useAuth();
+    console.log(auth);
     const communities = [
         {
             communityName: "Anime Society",
@@ -110,6 +114,14 @@ export default function MainCommunity() {
     const [description, setDescription] = useState("");
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const handleCreateCommunity = async() => {
+        const community = await auth.FactoryContract.createCommunity(
+            "xx@iiits",
+            "xxxxxxAP",
+            "xxxxxxxM"
+        );
+        console.log(community);
+    }
 
     console.log(email, gender, region, name, description);
 
