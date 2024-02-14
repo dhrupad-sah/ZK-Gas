@@ -3,7 +3,6 @@ import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, Mod
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../../context/auth";
-import { useState } from "react";
 
 export default function MainCommunity() {
     const { auth, setAuth } = useAuth();
@@ -150,7 +149,7 @@ export default function MainCommunity() {
             for (var j = 0; j < noOfX; j++) {
                 console.log(j);
                 console.log(domain);
-                domain = "x"+domain;
+                domain = "x" + domain;
             }
             console.log(domain)
         }
@@ -208,7 +207,7 @@ export default function MainCommunity() {
                                     value={name}
                                     onChange={handleNameChange}
                                 />
-                                {name.length >=  NAME_LIMIT && (
+                                {name.length >= NAME_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
                                         Name must be less than 20 characters.
                                     </div>
@@ -270,7 +269,7 @@ export default function MainCommunity() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onPress={onClose}>
+                                <Button onClick={handleCreateCommunity} color="primary" onPress={onClose}>
                                     Submit
                                 </Button>
                             </ModalFooter>
@@ -278,7 +277,6 @@ export default function MainCommunity() {
                     )}
                 </ModalContent>
             </Modal>
-        </>
-
+        </div>
     );
 }
