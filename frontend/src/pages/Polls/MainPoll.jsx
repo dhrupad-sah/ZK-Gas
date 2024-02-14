@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PollCard from "./PollCard";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
+
 export default function MainPoll() {
     const [allPolls, setAllPolls] = useState([]);
 
@@ -43,36 +44,53 @@ export default function MainPoll() {
         },
     };
 
+    const newPoll3 = {
+        pollID: '#85',
+        pollTitle: 'Which course do you like most',
+        belongsToCommunity: true,
+        communityID: '',
+        option1: {
+            optionName: "Harry Potter",
+            optionconsensus: 24,
+        },
+        option2: {
+            optionName: 'Gone Girl',
+            optionconsensus: 24,
+        },
+        option3: {
+            optionName: 'Fantastic Beasts',
+            optionconsensus: 52,
+        },
+    };
+
     useEffect(() => {
         if (allPolls.length === 0) {
-            setAllPolls([newPoll1, newPoll2]);
+            setAllPolls([newPoll1, newPoll2, newPoll3]);
         }
     }, []);
 
     return (
-        <>
-            <div className="flex w-full flex-col">
-                <Tabs aria-label="Options" color="primary">
-                    <Tab key="Public" title="Public">
-                        <Card>
-                            <CardBody>
-                                {allPolls.map((poll, index) => (
-                                    !poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
-                                ))}
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                    <Tab key="Community" title="Community">
-                        <Card>
-                            <CardBody>
+        <div className="flex w-full flex-col">
+            <Tabs aria-label="Options" color="primary">
+                <Tab key="Public" title="Public">
+                    <Card>
+                        <CardBody>
                             {allPolls.map((poll, index) => (
-                                    poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
-                                ))}
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                </Tabs>
-            </div>
-        </>
+                                !poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
+                            ))}
+                        </CardBody>
+                    </Card>
+                </Tab>
+                <Tab key="Community" title="Community">
+                    <Card>
+                        <CardBody>
+                            {allPolls.map((poll, index) => (
+                                poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
+                            ))}
+                        </CardBody>
+                    </Card>
+                </Tab>
+            </Tabs>
+        </div>
     );
 }

@@ -14,7 +14,7 @@ contract Factory {
 
     address[] allCommunities;
 
-    mapping(uint256 => address) idToCommunity;
+    mapping(uint256 => address) public idToCommunity;
 
     function createCommunity(string memory _domainPub, string memory _regionPub, string memory _genderPub) public {
         uint256 _id = _communityId;
