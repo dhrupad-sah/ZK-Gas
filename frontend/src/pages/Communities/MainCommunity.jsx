@@ -1,13 +1,10 @@
 import CommunityCard from "../../components/CommunityCard"
-import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Link, SelectItem, Select } from "@nextui-org/react";
+import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea,  SelectItem, Select } from "@nextui-org/react";
+import { GrLinkNext } from "react-icons/gr";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function MainCommunity() {
-    const [email, setEmail] = useState("");
-    const [region, setRegion] = useState("");
-    const [gender, setGender] = useState("");
-
     const communities = [
         {
             communityName: "Anime Society",
@@ -22,7 +19,7 @@ export default function MainCommunity() {
         {
             communityName: "Anime Society",
             communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: uuidv4()   
+            communityId: uuidv4()
         },
         {
             communityName: "Anime Society",
@@ -106,9 +103,15 @@ export default function MainCommunity() {
         },
     ]
 
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [region, setRegion] = useState("");
+    const [gender, setGender] = useState("");
+    const [description, setDescription] = useState("");
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    console.log(email, gender, region);
+    console.log(email, gender, region, name, description);
 
     return (
         <>
@@ -132,14 +135,26 @@ export default function MainCommunity() {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Add Rules for Community</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Add Community Details</ModalHeader>
                             <ModalBody>
+                                <Input
+                                    autoFocus
+                                    label="Name"
+                                    placeholder="Enter name"
+                                    variant="bordered"
+                                    onChange={e => setName(e.target.value)}
+                                />
+                                <Textarea
+                                    label="Description"
+                                    placeholder="Enter description"
+                                    onChange={e => setDescription(e.target.value)}
+                                />
                                 <Input
                                     autoFocus
                                     label="Email"
                                     placeholder="Enter your email"
                                     variant="bordered"
-                                    onChange={ e => setEmail(e.target.value)}
+                                    onChange={e => setEmail(e.target.value)}
                                 />
                                 <Select
                                     label="Select region"
@@ -177,9 +192,6 @@ export default function MainCommunity() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="flat" onPress={onClose}>
-                                    Close
-                                </Button>
                                 <Button color="primary" onPress={onClose}>
                                     Submit
                                 </Button>

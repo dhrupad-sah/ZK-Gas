@@ -29,7 +29,7 @@ export default function CommunityCard({ community }) {
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
-                    <Button color="secondary" variant="flat" size="md">
+                    <Button color="secondary" variant="flat" size="md" as={Link} href={`/communities/${community.communityId}`}>
                         View
                     </Button>
                     <Button color="success" variant="flat" size="md">
