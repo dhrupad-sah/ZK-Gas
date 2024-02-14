@@ -19,7 +19,9 @@
     "react-icons": "^5.0.1",
     "react-leaf-polls": "^1.1.6",
     "react-router-dom": "^6.22.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "survey-analytics": "^1.9.129",
+    "survey-core": "^1.9.129"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
