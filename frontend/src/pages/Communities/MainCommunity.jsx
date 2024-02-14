@@ -1,9 +1,7 @@
 import CommunityCard from "../../components/CommunityCard"
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea,  SelectItem, Select } from "@nextui-org/react";
-import { GrLinkNext } from "react-icons/gr";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Link, SelectItem, Select } from "@nextui-org/react";
 import { useAuth } from "../../context/auth";
 
 export default function MainCommunity() {
