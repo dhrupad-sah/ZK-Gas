@@ -124,7 +124,7 @@ export default function NavbarComponent() {
                     </Link>
                 </NavbarBrand>
 
-                <div className="flex gap-4">
+                <div className="flex gap-7">
                     <NavbarItem>
                         <Link color="foreground" href="/communities" className="text-base">
                             <BsPeople />&nbsp;&nbsp;
