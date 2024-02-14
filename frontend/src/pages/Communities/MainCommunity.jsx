@@ -87,7 +87,7 @@ export default function MainCommunity() {
 
     return (
         <div className="container mx-auto">
-            <Button color="danger" fullWidth variant="flat" size="lg" className="mb-5">
+            <Button color="danger" fullWidth variant="flat" size="lg" className="mb-3">
                 Create your own community today!
             </Button>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
