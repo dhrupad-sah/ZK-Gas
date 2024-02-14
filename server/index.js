@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 config();
 
 const provider = new ethers.providers.JsonRpcProvider(
-  `https://eth-sepolia.g.alchemy.com/v2/${process.env.SEPOLIA_ALCHEMY_KEY}`
+  `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
 );
 // const signer = provider.getSigner();
 const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
@@ -33,7 +33,6 @@ function stringToBytes32(str) {
 }
 
 app.post("/create-community", async (req, res) => {
-  // console.log(req.body);
   const body = req.body;
   const domain = body.domain;
   console.log(domain);
@@ -41,15 +40,14 @@ app.post("/create-community", async (req, res) => {
   console.log(region);
   const gender = body.gender;
   console.log(gender);
-  await FactoryContract.functions.createCommunity(
+  const community = await FactoryContract.functions.createCommunity(
     "xx@iiits",
     "xxxxxxAP",
     "xxxxxxxM"
   );
-  // res.send(domain);
+  await community.wait();
 });
 
-console.log(FactoryContract.functions);
 app.get("/get-community", async (req, res) => {
   const _id = req.query.id;
   console.log(_id);
