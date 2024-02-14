@@ -1,10 +1,10 @@
 import CommunityCard from "../../components/CommunityCard"
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Link, SelectItem, Select } from "@nextui-org/react";
+import { useAuth } from "../../context/auth";
 
 export default function MainCommunity() {
     const { auth, setAuth } = useAuth();
     console.log(auth);
-    console.log(auth.FactoryContract);
     const communities = [
         {
             communityName: "Anime Society",
@@ -89,6 +89,14 @@ export default function MainCommunity() {
     ]
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const handleCreateCommunity = async() => {
+        const community = await auth.FactoryContract.createCommunity(
+            "xx@iiits",
+            "xxxxxxAP",
+            "xxxxxxxM"
+        );
+        console.log(community);
+    }
 
     return (
         <div className="container mx-auto">
