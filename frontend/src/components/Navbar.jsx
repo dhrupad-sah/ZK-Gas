@@ -7,8 +7,12 @@ import { MdOutlinePoll } from "react-icons/md";
 import { BsPeople } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 import { useState, useEffect } from "react";
+import FactoryABI from "../../ABI/Factory.json";
+import { ethers } from "ethers";
+import { useAuth } from "../context/auth.js";
 
 export default function NavbarComponent() {
+    const { auth, setAuth } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hasProvider, setHasProvider] = useState(null)
     const initialState = { accounts: [], balance: "", chainId: "" }
@@ -16,7 +20,8 @@ export default function NavbarComponent() {
 
     const [isConnecting, setIsConnecting] = useState(false)
     const [error, setError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState("");
+    const [contract, setContract] = useState(null);
 
     useEffect(() => {
         const refreshAccounts = (accounts) => {
@@ -40,12 +45,20 @@ export default function NavbarComponent() {
                 const accounts = await window.ethereum.request(
                     { method: 'eth_accounts' }
                 )
+                const _provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = _provider.getSigner();
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
+                const contract = new ethers.Contract(
+                    FactoryABI.address,
+                    FactoryABI.abi,
+                    signer
+                );
+                setAuth({ FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider,
+                accountAddress: accounts[0]});
             }
         }
-
         getProvider()
 
         return () => {
@@ -95,6 +108,20 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
+    // const handleCreateCommunity = async () => {
+    //     const community = await contract.createCommunity("xx@iiits", "xxxxxxAP", "xxxxxxxM");
+    //     // await community.wait(1);
+    //     // console.log(community);
+    //     // console.log("Community created");
+    //     // alert("Community Created Successfully")
+    // }
+
+
+    // const getCommunity = async () => {
+    //     const communityAddress = await contract.getCommunity(1);
+    //     console.log(communityAddress);
+    // }
+
     return (
         <Navbar
             isBordered
@@ -124,7 +151,7 @@ export default function NavbarComponent() {
                     </Link>
                 </NavbarBrand>
 
-                <div className="flex gap-4">
+                <div className="flex gap-7">
                     <NavbarItem>
                         <Link color="foreground" href="/communities" className="text-base">
                             <BsPeople />&nbsp;&nbsp;
@@ -134,7 +161,7 @@ export default function NavbarComponent() {
 
                     <NavbarItem>
                         <Link color="foreground" href="/polls" className="text-base">
-                            <MdOutlinePoll/>&nbsp;&nbsp;
+                            <MdOutlinePoll />&nbsp;&nbsp;
                             <span>Polls</span>
                         </Link>
                     </NavbarItem>
@@ -157,6 +184,12 @@ export default function NavbarComponent() {
                             width={25}
                         /> {wallet.accounts[0]?.length > 0 ? wallet.accounts[0].substring(0, 15) + "..." : "Connect wallet"}
                     </Button>
+                    {/* <Button onClick={handleCreateCommunity} as={Link} color="primary" variant="flat" >
+                        Create Community
+                    </Button>
+                    <Button onClick={getCommunity} as={Link} color="primary" variant="flat" >
+                        Get Community
+                    </Button> */}
                 </NavbarItem>
             </NavbarContent>
 
