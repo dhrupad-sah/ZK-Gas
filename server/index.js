@@ -45,7 +45,7 @@ app.post("/create-community", async (req, res) => {
     "xxxxxxAP",
     "xxxxxxxM"
   );
-  await community.wait();
+  await community.wait(1);
 });
 
 app.get("/get-community", async (req, res) => {
