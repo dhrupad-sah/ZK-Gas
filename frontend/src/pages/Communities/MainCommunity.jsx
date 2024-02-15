@@ -113,9 +113,6 @@ export default function MainCommunity() {
     ]
 
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [region, setRegion] = useState("");
-    const [gender, setGender] = useState("");
     const [description, setDescription] = useState("");
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -128,8 +125,6 @@ export default function MainCommunity() {
     }
 
     const handleCreateCommunity = async () => {
-        console.log(communityRules);
-        // get domain value from email example if email is test@iiits.in get @iiits and make sure it is of length 8, if it is less than 8 then append x before the domain to get its length as 8.
         const email = communityRules.email;
         const indexAt = email.indexOf('@');
         console.log(indexAt);
@@ -143,24 +138,13 @@ export default function MainCommunity() {
         console.log(email);
         let domain = email.slice(indexAt + 1, indexDot);
         console.log(domain);
-        if (domain.length < 8) {
-            let noOfX = 8 - domain.length;
-            console.log(noOfX);
-            for (var j = 0; j < noOfX; j++) {
-                console.log(j);
-                console.log(domain);
-                domain = "x" + domain;
-            }
-            console.log(domain)
-        }
-        // domain,
-        //     communityRules.region,
-        //     communityRules.gender
         console.log(auth.FactoryContract);
         const community = await auth.FactoryContract.createCommunity(
-            "xx@iiits",
-            "xxxxxxAP",
-            "xxxxxxxM"
+            domain,
+            communityRules.region,
+            communityRules.gender,
+            name,
+            description
         );
         console.log(community);
     }
@@ -177,8 +161,6 @@ export default function MainCommunity() {
         const updatedDescription = event.target.value.slice(0, DESCRIPTION_LIMIT);
         setDescription(updatedDescription);
     };
-
-    console.log(email, gender, region, name, description);
 
     return (
         <div className="container mx-auto" >
@@ -239,19 +221,19 @@ export default function MainCommunity() {
                                     name="region"
                                     onChange={handleRulesInput}
                                 >
-                                    <SelectItem value="asia-pacific" key="xxxxxxAP">
+                                    <SelectItem value="asia-pacific" key="AP">
                                         Asia Pacific
                                     </SelectItem>
-                                    <SelectItem value="north-america" key="xxxxxxNA">
+                                    <SelectItem value="north-america" key="NA">
                                         North America
                                     </SelectItem>
-                                    <SelectItem value="europe" key="xxxxxxEU">
+                                    <SelectItem value="europe" key="EU">
                                         Europe
                                     </SelectItem>
-                                    <SelectItem value="middle-east" key="xxxxxxME">
+                                    <SelectItem value="middle-east" key="ME">
                                         Middle East
                                     </SelectItem>
-                                    <SelectItem value="all" key="xxxxxxAL">
+                                    <SelectItem value="all" key="AL">
                                         All
                                     </SelectItem>
                                 </Select>
@@ -260,13 +242,13 @@ export default function MainCommunity() {
                                     name="gender"
                                     onChange={handleRulesInput}
                                 >
-                                    <SelectItem value="male" key="xxxxxxxM">
+                                    <SelectItem value="male" key="M">
                                         Male
                                     </SelectItem>
-                                    <SelectItem value="female" key="xxxxxxxF">
+                                    <SelectItem value="female" key="F">
                                         Female
                                     </SelectItem>
-                                    <SelectItem value="both" key="xxxxxxMF">
+                                    <SelectItem value="both" key="MF">
                                         Both
                                     </SelectItem>
                                 </Select>
