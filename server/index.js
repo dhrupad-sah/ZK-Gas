@@ -43,6 +43,7 @@ const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
 const signer = wallet.provider.getSigner(wallet.address);
 
 const pollRouter = require('./routes/Poll.js')
+const userRouter = require('./routes/User.js')
 
 const FactoryContract = new ethers.Contract(
   FactoryABI.address,
@@ -249,6 +250,7 @@ app.get('/', (req, res, next) => {
 })
 
 app.use('/api/poll', pollRouter)
+app.use('/api/user', userRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
