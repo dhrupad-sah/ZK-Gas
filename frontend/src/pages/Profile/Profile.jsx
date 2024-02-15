@@ -1,9 +1,24 @@
 import { useMetaMask } from "../../hooks/useMetamask";
 import Comments from "./Comments";
 import Avatar from "../../assets/user_example_avatar.png"
-import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react"
+import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
 import "../../hooks/useMetamask";
-import LinkImage from "../../assets/link_image.png"
+import { FaRegCopy } from "react-icons/fa";
+import {
+    EmailShareButton,
+    FacebookShareButton,
+    LinkedinShareButton,
+    XIcon,
+    EmailIcon,
+    TelegramIcon,
+    WhatsappIcon,
+    LinkedinIcon,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+    FacebookIcon
+} from "react-share";
+// import LinkImage from "../../assets/link_image.png"
 
 export default function Profile() {
     const { wallet } = useMetaMask();
@@ -24,22 +39,67 @@ export default function Profile() {
                                 {(onClose) => (
                                     <>
                                         <ModalHeader className="flex flex-col gap-1">Share your profile</ModalHeader>
-                                        <ModalBody>
-                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <ModalBody className="flex-col">
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
-                                                    label="Share your link"
-                                                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                                    label="Link"
+                                                    value={`https://zk-gas.com/profile/${wallet.accounts[0]}`}
                                                     readOnly
-                                                    style={{ flex: 1, marginRight: '10px' }}/>
-                                                <Button
-                                                    color="primary"
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-                                                        );
-                                                    }}>
-                                                    <Image src = {<LinkImage/>}/>
-                                                </Button>
+                                                />
+                                                <Tooltip content="Copy to clipboard">
+                                                    <Button
+                                                        color="primary"
+                                                        isIconOnly
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                'https://zk-gas.com/profile/${wallet.accounts[0]}'
+                                                            );
+                                                        }}>
+                                                        <FaRegCopy />
+                                                    </Button>
+                                                </Tooltip>
+                                            </div>
+                                            <div className="text-base mt-2">
+                                                <p>Share here</p>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <FacebookShareButton
+                                                    url={"https://www.facebook.com"}
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <FacebookIcon size={32} round />
+                                                </FacebookShareButton>
+                                                <TwitterShareButton
+                                                    url={"https://twitter.com/home"}
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <XIcon size={32} round />
+                                                </TwitterShareButton>
+                                                <TelegramShareButton
+                                                    url={"https://web.telegram.org/"}
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <TelegramIcon size={32} round />
+                                                </TelegramShareButton>
+                                                <WhatsappShareButton
+                                                    url={"https://web.whatsapp.com/"}
+                                                    separator=":: "
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <WhatsappIcon size={32} round />
+                                                </WhatsappShareButton>
+                                                <LinkedinShareButton
+                                                    url={"https://www.linkedin.com/"}
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <LinkedinIcon size={32} round />
+                                                </LinkedinShareButton>
+                                                <EmailShareButton
+                                                    url={"mailto:"}
+                                                    className="Demo__some-network__share-button"
+                                                >
+                                                    <EmailIcon size={32} round />
+                                                </EmailShareButton>
                                             </div>
                                         </ModalBody>
                                         <ModalFooter>

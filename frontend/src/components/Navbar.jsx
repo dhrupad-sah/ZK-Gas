@@ -119,10 +119,10 @@ export default function NavbarComponent() {
     // }
 
 
-    const getCommunity = async () => {
-        const communityAddress = await auth.FactoryContract.getCommunity(0);
-        console.log(communityAddress);
-    }
+    // const getCommunity = async () => {
+    //     const communityAddress = await auth.FactoryContract.getCommunity(0);
+    //     console.log(communityAddress);
+    // }
 
     return (
         <Navbar
