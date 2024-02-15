@@ -70,32 +70,27 @@ app.post("/config", async (req, res) => {
       signer
     );
 
-    // console.log(communityContract);
+    console.log(communityContract);
 
-    // const communityRules = await communityContract.functions.getRules();
+    const communityRules = await communityContract.functions.getRules();
 
     // console.log(communityRules);
 
-    // const domainPub = communityRules[0].domainPub;
-    // const regionPub = communityRules[0].regionPub;
-    // const genderPub = communityRules[0].genderPub;
+    const domainPub = communityRules[0].domainPub;
+    const regionPub = communityRules[0].regionPub;
+    const genderPub = communityRules[0].genderPub;
 
     const data = {
       domain: req.body.domain,
-      region: req.body.region,
       gender: req.body.gender,
+      region: req.body.region,
     };
 
-    // const pubData = {
-    //   domainPub: domainPub,
-    //   regionPub: regionPub,
-    //   genderPub: genderPub,
-    // };
-
     const pubData = {
-      domainPub: "0x7878406969697473",
-      regionPub: "0x7878787878784150",
-      genderPub: "0x787878787878784d",
+      domainPub: domainPub,
+      genderPub: genderPub,
+      regionPub: regionPub,
+
     };
 
     // console.log(data);
@@ -139,8 +134,7 @@ app.post("/config", async (req, res) => {
         const VerifyContract = new ethers.Contract(
           VerifierABI.address,
           VerifierABI.abi,
-          signer,
-          {gasLimit: 100000000000000000}
+          signer
         );
 
         const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
@@ -150,12 +144,11 @@ app.post("/config", async (req, res) => {
         const genderPub = verifierData.genderPub;
         const regionPub = verifierData.regionPub;
 
-        const pubArray = [domainPub, genderPub, regionPub];
+        const pubArray = [domainPub, regionPub, genderPub];
 
         console.log(typeof(proof));
 
-        const tx = await communityContract.functions.joinCommunity(proof, pubArray);
-        tx.wait();
+        const tx = await communityContract.functions.joinCommunity(proofHex, pubArray);
 
         console.log(tx);
       });
