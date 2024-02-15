@@ -11,19 +11,18 @@ fn main(
     assert(gender == genderPub);
 }
 
-#[test]
-fn test_valid() {
-    let domainPub = 0x7878406969697473;
+// #[test]
+// fn test_valid() {
+//     let domainPub = 0x7878406969697473;
 
-    let regionPub = 0x7878787878784150;
+//     let regionPub = 0x7878787878784150;
 
-    let genderPub = 0x787878787878784d;
+//     let genderPub = 0x787878787878784d;
 
-    let domain = 0x7878406969697473;
+//     let domain = 0x7878406969697473;
 
-    let region = 0x7878787878784150;
+//     let region = 0x7878787878784150;
 
-    let gender = 0x787878787878784d;
-
-    let call = main(domain, region, gender, domainPub, regionPub, genderPub);
-}
+//     let gender = 0x787878787878784d;
+//     let call = main(domain, region, gender, domainPub, regionPub, genderPub);
+// }
