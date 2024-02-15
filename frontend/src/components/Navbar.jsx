@@ -119,10 +119,10 @@ export default function NavbarComponent() {
     // }
 
 
-    const getCommunity = async () => {
-        const communityAddress = await auth.FactoryContract.getCommunity(0);
-        console.log(communityAddress);
-    }
+    // const getCommunity = async () => {
+    //     const communityAddress = await auth.FactoryContract.getCommunity(0);
+    //     console.log(communityAddress);
+    // }
 
     return (
         <Navbar
@@ -189,9 +189,9 @@ export default function NavbarComponent() {
                     {/* <Button onClick={handleCreateCommunity} as={Link} color="primary" variant="flat" >
                         Create Community
                     </Button> */}
-                    <Button onClick={getCommunity} as={Link} color="primary" variant="flat" >
+                    {/* <Button onClick={getCommunity} as={Link} color="primary" variant="flat" >
                         Get Community
-                    </Button>
+                    </Button> */}
                 </NavbarItem>
             </NavbarContent>
 
