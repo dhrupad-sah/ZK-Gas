@@ -24,7 +24,7 @@ export default function Home() {
             <Link
                 isExternal
                 showAnchorIcon
-                href="https://github.com/nextui-org/nextui"
+                href="https://github.com/dhrupad-sah/ZK-Gas"
                 className="flex justify-center mt-20 text-xl"
             >
                 GitHub       
