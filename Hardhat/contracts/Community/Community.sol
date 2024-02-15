@@ -26,6 +26,11 @@ contract ZKCommunity {
         communityId = _communityId;
     }
 
+    function getBtytes(string memory x) internal pure returns(bytes memory){
+        bytes memory domain = bytes(x);
+        return domain;
+    }       
+
     function isMember() external view returns(bool) {
         return isInCommunity[msg.sender];
     }
@@ -34,8 +39,14 @@ contract ZKCommunity {
         isInCommunity[msg.sender] =  false;
     }
 
-    function getRules() external view returns (CommmunityRules memory) {
-        return communityRules;
+    function getRules() external view returns (bytes memory, bytes memory, bytes memory) {
+        string memory domainPub = communityRules.domainPub;
+        bytes memory domainPubBytes = getBtytes(domainPub);
+        string memory regionPub = communityRules.regionPub;
+        bytes memory regionPubBytes = getBtytes(regionPub);
+        string memory genderPub = communityRules.genderPub;
+        bytes memory genderPubBytes = getBtytes(genderPub);
+        return (domainPubBytes, regionPubBytes, genderPubBytes);
     }
 
     function joinCommunity(bytes calldata _proof, bytes32[] calldata _publicInputs) external view returns(bool) {
