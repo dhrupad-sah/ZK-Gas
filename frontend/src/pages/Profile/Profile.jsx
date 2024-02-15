@@ -1,11 +1,13 @@
 import { useMetaMask } from "../../hooks/useMetamask";
 import Comments from "./Comments";
 import Avatar from "../../assets/user_example_avatar.png"
-import { Image, Divider, Button, Modal, Input } from "@nextui-org/react"
+import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react"
 import "../../hooks/useMetamask";
+import LinkImage from "../../assets/link_image.png"
 
 export default function Profile() {
     const { wallet } = useMetaMask();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
@@ -16,7 +18,39 @@ export default function Profile() {
                 <div className="fine" style={{ flex: "1", display: "flex", flexDirection: "column" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
                         <p className="flex items-center font-bold text-left">{wallet.accounts[0]}</p>
-                        <Button color="primary" style={{ textAlign: "right", marginBottom: "10px" }}>Share Profile</Button>
+                        <Button key="blur" onPress={onOpen} color="primary" style={{ textAlign: "right", marginBottom: "10px" }}>Share Profile</Button>
+                        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                            <ModalContent>
+                                {(onClose) => (
+                                    <>
+                                        <ModalHeader className="flex flex-col gap-1">Share your profile</ModalHeader>
+                                        <ModalBody>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <Input
+                                                    label="Share your link"
+                                                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                                    readOnly
+                                                    style={{ flex: 1, marginRight: '10px' }}/>
+                                                <Button
+                                                    color="primary"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+                                                        );
+                                                    }}>
+                                                    <Image src = {<LinkImage/>}/>
+                                                </Button>
+                                            </div>
+                                        </ModalBody>
+                                        <ModalFooter>
+                                            <Button color="danger" variant="light" onPress={onClose}>
+                                                Close
+                                            </Button>
+                                        </ModalFooter>
+                                    </>
+                                )}
+                            </ModalContent>
+                        </Modal>
                     </div>
                     <Divider style={{ borderTop: "2px solid #9e9d9d", width: "100%" }} />
                 </div>
