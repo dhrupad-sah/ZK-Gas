@@ -15,7 +15,6 @@ const provider = new ethers.providers.JsonRpcProvider(
 // const signer = provider.getSigner();
 const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
 const signer = wallet.provider.getSigner(wallet.address);
-console.log(signer);
 const FactoryContract = new ethers.Contract(
   FactoryABI.address,
   FactoryABI.abi,

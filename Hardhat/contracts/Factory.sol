@@ -25,7 +25,7 @@ contract Factory {
             new ZKCommunity(_domainPub, _regionPub, _genderPub, verifier, _id)
         );
         idToCommunity[_id] = newCommunity;
-        // allCommunities.push(newCommunity);
+        allCommunities.push(newCommunity);
         communityId++;
     }
 
