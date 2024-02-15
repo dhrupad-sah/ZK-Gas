@@ -18,11 +18,13 @@ contract Factory {
     function createCommunity(
         string memory _domainPub,
         string memory _regionPub,
-        string memory _genderPub
+        string memory _genderPub,
+        string memory _communityName,
+        string memory _communityDescription
     ) public {
         uint256 _id = communityId;
         address newCommunity = address(
-            new ZKCommunity(_domainPub, _regionPub, _genderPub, verifier, _id)
+            new ZKCommunity(_domainPub, _regionPub, _genderPub, verifier, _id, _communityName, _communityDescription)
         );
         idToCommunity[_id] = newCommunity;
         allCommunities.push(newCommunity);
