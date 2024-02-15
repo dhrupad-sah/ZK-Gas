@@ -28,7 +28,7 @@ export default function Comments() {
     }, []);
 
     return (
-        <div style={{ maxWidth: '500px', margin: 'auto' }}>
+        <div style={{ maxWidth: '600px', margin: 'auto' }}>
             {allComments.map((comment, index) => (
                 <Card key={index} style={{ marginBottom: '10px' }}>
                     <CardBody>

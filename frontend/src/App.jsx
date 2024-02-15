@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import MainCommunity from "./pages/Communities/MainCommunity";
 import CommunityPage from "./pages/Communities/CommunityPage"; // Import the CommunityPage component
 import Profile from "./pages/Profile/Profile";
+import WallForm from "./pages/Profile/WallForm";
 
 const Container = styled.div`
   padding: 0;
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="communities/:communityId" element={<CommunityPage />} /> {/* Dynamic route */}
 
               <Route path="profile" element={<Profile/>} />
+              <Route path="profile/:userId" element={<WallForm />} /> {/* Dynamic route */}
             </Route>
           </Routes>
         </main>
