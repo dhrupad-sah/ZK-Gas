@@ -8,6 +8,7 @@ const FactoryABI = require("./ABI/Factory.json");
 const ZKCommunityABI = require("./ABI/ZKCommunity.json");
 const VerifierABI = require("./ABI/UltraVerifier.json");
 const bodyParser = require("body-parser");
+const toml = require('@iarna/toml');
 config();
 
 const provider = new ethers.providers.JsonRpcProvider(
@@ -28,9 +29,23 @@ const PORT = 3000;
 app.use(bodyParser.json()); // Use bodyParser middleware to parse JSON bodies
 app.use(express.json());
 
+    const domainPub = "xx@iiits";
+    const regionPub = "xxxxxxAP";
+    const genderPub = "xxxxxxxM";
+
 function stringToBytes32(str) {
   const bytes32 = ethers.utils.formatBytes32String(str);
   return bytes32;
+}
+
+function stringToBytes32Array(str) {
+  const bytes32Array = [];
+  for (let i = 0; i < str.length; i++) {
+      const char = str.charAt(i);
+      const bytes32 = ethers.utils.formatBytes32String(char);
+      bytes32Array.push(bytes32);
+  }
+  return bytes32Array;
 }
 
 app.post("/config", async (req, res) => {
@@ -47,7 +62,7 @@ app.post("/config", async (req, res) => {
 
     const communityAddress = await FactoryContract.functions.getCommunity(req.body.communityId);
 
-    console.log(communityAddress[0]);
+    // console.log(communityAddress);
 
     const communityContract = new ethers.Contract(
       communityAddress[0],
@@ -57,21 +72,13 @@ app.post("/config", async (req, res) => {
 
     // console.log(communityContract);
 
-    const communityRules = await communityContract.functions.getRules();
+    // const communityRules = await communityContract.functions.getRules();
 
-    console.log(typeof(communityRules[0].domainPub));
+    // console.log(communityRules);
 
-    const domainPub = communityRules[0].domainPub;
-    const regionPub = communityRules[0].regionPub;
-    const genderPub = communityRules[0].genderPub;
-
-    const domainPubBytes32 = stringToBytes32(domainPub);
-    const regionPubBytes32 = stringToBytes32(regionPub);
-    const genderPubBytes32 = stringToBytes32(genderPub);
-
-    const publicInputs = [domainPubBytes32, regionPubBytes32, genderPubBytes32];
-
-    console.log(publicInputs);
+    // const domainPub = communityRules[0].domainPub;
+    // const regionPub = communityRules[0].regionPub;
+    // const genderPub = communityRules[0].genderPub;
 
     const data = {
       domain: req.body.domain,
@@ -79,10 +86,16 @@ app.post("/config", async (req, res) => {
       gender: req.body.gender,
     };
 
+    // const pubData = {
+    //   domainPub: domainPub,
+    //   regionPub: regionPub,
+    //   genderPub: genderPub,
+    // };
+
     const pubData = {
-      domainPub: domainPub,
-      regionPub: regionPub,
-      genderPub: genderPub,
+      domainPub: "0x7878406969697473",
+      regionPub: "0x7878787878784150",
+      genderPub: "0x787878787878784d",
     };
 
     // console.log(data);
@@ -91,8 +104,7 @@ app.post("/config", async (req, res) => {
 
     for (const key in data) {
       if (Object.hasOwnProperty.call(data, key)) {
-        const arrayString = data[key].join(", ");
-        tomlString += `${key} = [${arrayString}]\n`;
+        tomlString += `${key} = "${data[key]}"\n`;
       }
     }
     for (const key in pubData) {
@@ -119,8 +131,10 @@ app.post("/config", async (req, res) => {
           "../noir-app/circuits/proofs/noirstarter.proof"
         );        
 
+        res.send("Files written!")
+
         const proofHex = "0x" + proof.toString();
-        console.log(proofHex);
+        // console.log(proofHex);
 
         const VerifyContract = new ethers.Contract(
           VerifierABI.address,
@@ -128,9 +142,20 @@ app.post("/config", async (req, res) => {
           signer
         );
 
-        const bool = VerifyContract.functions.verify(proofHex, publicInputs);
+        const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
+        const verifierData = toml.parse(verifierToml);
 
-        console.log(VerifyContract);
+        const domainPub = verifierData.domainPub;
+        const genderPub = verifierData.genderPub;
+        const regionPub = verifierData.regionPub;
+
+        const pubArray = [domainPub, genderPub, regionPub];
+
+        // console.log(pubArray);
+
+        const bool = VerifyContract.functions.verify(proof, pubArray);
+
+        console.log(bool);
       });
     });
   } catch (error) {

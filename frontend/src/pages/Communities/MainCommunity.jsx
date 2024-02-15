@@ -154,12 +154,12 @@ export default function MainCommunity() {
             console.log(domain)
         }
 
-        // const community = await auth.FactoryContract.createCommunity(
-        //     "xx@iiits",
-        //     "xxxxxxAP",
-        //     "xxxxxxxM"
-        // );
-        // console.log(community);
+        const community = await auth.FactoryContract.createCommunity(
+            "xx@iiits",
+            "xxxxxxAP",
+            "xxxxxxxM"
+        );
+        console.log(community);
     }
 
     const NAME_LIMIT = 20;
