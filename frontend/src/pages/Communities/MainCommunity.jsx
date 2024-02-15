@@ -156,6 +156,7 @@ export default function MainCommunity() {
         // domain,
         //     communityRules.region,
         //     communityRules.gender
+        console.log(auth.FactoryContract);
         const community = await auth.FactoryContract.createCommunity(
             "xx@iiits",
             "xxxxxxAP",
