@@ -140,7 +140,7 @@ app.post("/config", async (req, res) => {
           VerifierABI.address,
           VerifierABI.abi,
           signer,
-          {gas: 1000000000}
+          {gasLimit: 100000000000000000}
         );
 
         const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
@@ -152,11 +152,12 @@ app.post("/config", async (req, res) => {
 
         const pubArray = [domainPub, genderPub, regionPub];
 
-        // console.log(pubArray);
+        console.log(typeof(proof));
 
-        const bool = VerifyContract.functions.verify(proof, pubArray);
+        const tx = await communityContract.functions.joinCommunity(proof, pubArray);
+        tx.wait();
 
-        console.log(bool);
+        console.log(tx);
       });
     });
   } catch (error) {
