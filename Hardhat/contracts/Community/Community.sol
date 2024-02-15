@@ -66,10 +66,13 @@ contract ZKCommunity {
         return (domainPubBytes, regionPubBytes, genderPubBytes);
     }
 
-    function joinCommunity(bytes calldata _proof, bytes32[] calldata _publicInputs) external returns(bool) {
+    function setIsInCommunity() external {
+        isInCommunity[msg.sender] = true;
+    }
+
+    function joinCommunity(bytes calldata _proof, bytes32[] calldata _publicInputs) external view returns(bool) {
         bool flag = verifier.verify(_proof, _publicInputs);
         if(flag){
-            isInCommunity[msg.sender] = true;
             return true;
         }
         return false;
