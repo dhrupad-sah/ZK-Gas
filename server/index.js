@@ -10,6 +10,9 @@ const VerifierABI = require("./ABI/UltraVerifier.json");
 // const ZKPollABI = require("./ABI/ZKPoll.json")
 const bodyParser = require("body-parser");
 const toml = require('@iarna/toml');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
 const app = express();
 const PORT = 3000;
 config();
@@ -17,12 +20,29 @@ config();
 app.use(bodyParser.json()); 
 app.use(express.json());
 
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
+
+app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
+
 const provider = new ethers.providers.JsonRpcProvider(
   `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
 );
 
 const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider);
 const signer = wallet.provider.getSigner(wallet.address);
+
+const pollRouter = require('./routes/Poll.js')
 
 const FactoryContract = new ethers.Contract(
   FactoryABI.address,
@@ -223,6 +243,12 @@ app.post("/joinPoll", async (req, res) => {
     res.status(400).send("Error parsing JSON");
   }
 });
+
+app.get('/', (req, res, next) => {
+  res.send("Hello from server");
+})
+
+app.use('/api/poll', pollRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
