@@ -139,7 +139,8 @@ app.post("/config", async (req, res) => {
         const VerifyContract = new ethers.Contract(
           VerifierABI.address,
           VerifierABI.abi,
-          signer
+          signer,
+          {gas: 1000000000}
         );
 
         const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
