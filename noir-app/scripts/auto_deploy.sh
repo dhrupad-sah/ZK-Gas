@@ -12,5 +12,4 @@ echo "Running 'nargo prove'..."
 nargo prove
 
 # Run "cargo codegen-verifier"
-echo "Running 'nargo codegen-verifier'..."
-nargo codegen-verifier
+
