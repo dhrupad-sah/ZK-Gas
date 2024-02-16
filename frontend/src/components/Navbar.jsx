@@ -21,14 +21,12 @@ export default function NavbarComponent() {
     const [isConnecting, setIsConnecting] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
-    const [contract, setContract] = useState(null);
 
     useEffect(() => {
         const refreshAccounts = (accounts) => {
             if (accounts?.length > 0) {
                 updateWallet(accounts)
             } else {
-                // if length 0, user is disconnected
                 setWallet(initialState)
             }
         }
@@ -40,24 +38,19 @@ export default function NavbarComponent() {
         const getProvider = async () => {
             const provider = await detectEthereumProvider({ silent: true })
             setHasProvider(provider)
+            const _provider = new ethers.providers.Web3Provider(window.ethereum);
 
-            if (provider) {
+            if (_provider) {
                 const accounts = await window.ethereum.request(
-                    { method: 'eth_accounts' }
+                    { method: 'eth_requestAccounts' }
                 )
-                const _provider = new ethers.providers.Web3Provider(window.ethereum);
                 const signer = _provider.getSigner();
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
-                const contract = new ethers.Contract(
-                    FactoryABI.address,
-                    FactoryABI.abi,
-                    signer
-                );
+                console.log("Navbar");
                 setAuth({
-                    FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider,
-                    accountAddress: accounts[0]
+                    accountAddress: accounts[0], FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider, signer: signer
                 });
             }
         }

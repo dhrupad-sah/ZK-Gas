@@ -1,121 +1,49 @@
 import CommunityCard from "../../components/CommunityCard"
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../../context/auth";
+import ZKCommunity from "../../../ABI/ZKCommunity.json";
+import { ethers } from "ethers";
+import { useMetaMask } from "../../hooks/useMetamask";
 
 export default function MainCommunity() {
+    const { wallet } = useMetaMask();
     const { auth, setAuth } = useAuth();
-    console.log(auth);
-
     const [communityRules, setCommunityRules] = useState({
         email: "",
         region: "",
         gender: ""
     });
 
-    const communities = [
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Anime Society",
-            communityDescription: "A place for anime enthusiasts to hang out and connect with each other!",
-            communityId: "id123"
-        },
-        {
-            communityName: "Blockchain Society",
-            communityDescription: "GM! Welcome to the haven for web3 and crypto!",
-            communityId: "id123"
-        },
-    ]
+    const [ , setCommunityAddress] = useState([]);
+    const [communities, setCommunities] = useState([]);
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    useEffect(() => {
+        console.log(wallet);
+        console.log("Working1?");
+        const fetchCommunities = async () => {
+            console.log("Working2?");
+            const communities = await auth.factoryContract.getAllCommunities();
+            console.log(communities);
+            setCommunityAddress(communities);
+            communities.map(async (community, index) => {
+                const communityInfo = await auth.factoryContract.getCommunityDetails(community);
+                console.log(communityInfo[0]);
+                setCommunities((prev) => [...prev, {
+                    communityName: communityInfo[0],
+                    communityDescription: communityInfo[1],
+                    communityId: index
+                }]);
+            });
+        }
+        fetchCommunities();
+    }, [])
 
     const handleRulesInput = (e) => {
         setCommunityRules({
@@ -137,9 +65,7 @@ export default function MainCommunity() {
         }
         console.log(email);
         let domain = email.slice(indexAt + 1, indexDot);
-        console.log(domain);
-        console.log(auth.FactoryContract);
-        const community = await auth.FactoryContract.createCommunity(
+        const community = await factoryContract.createCommunity(
             domain,
             communityRules.region,
             communityRules.gender,
