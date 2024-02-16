@@ -47,7 +47,6 @@ export default function MainCommunity() {
                     </div>
                 ))}
             </div>
-            <ToastContainer />
         </div>
     );
 }
