@@ -2,7 +2,7 @@ import NavbarComponent from "./components/Navbar"
 import MainPoll from "./pages/Polls/MainPoll"
 import styled from 'styled-components';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { MetaMaskContextProvider } from "./hooks/useMetamask";
+import { MetaMaskContextProvider, useMetaMask } from "./hooks/useMetamask";
 import Home from "./pages/Home";
 import MainCommunity from "./pages/Communities/MainCommunity";
 import CommunityPage from "./pages/Communities/CommunityPage"; // Import the CommunityPage component
