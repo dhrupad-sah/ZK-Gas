@@ -14,7 +14,9 @@ import { useDispatch } from "react-redux";
 import axios from '../api/axiosConfig.js'
 import { login } from "../store/UserSlice/UserSlice.jsx";
 import { useLocation } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";    
+import { FaPlus } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
@@ -145,6 +147,7 @@ export default function NavbarComponent() {
     }
 
     const handleCreateCommunity = async () => {
+        const id = toast.loading("Please wait creating your community");
         const domain = communityRules.domain;
         const _provider = new ethers.providers.Web3Provider(window.ethereum);
         if (_provider) {
@@ -158,7 +161,13 @@ export default function NavbarComponent() {
                 name,
                 description
             );
-            console.log(community);
+            await community.wait();
+            toast.update(id, {
+                render: "Community created successfully!",
+                type: "success",
+                isLoading: false,
+                autoClose: 4000
+            })
         }
     }
 
@@ -459,13 +468,16 @@ export default function NavbarComponent() {
                             </ModalBody>
                             <ModalFooter>
                                 <Button onClick={handleCreateCommunity} color="primary" onPress={onClose}>
-                                    Create
+                                    Create Community
                                 </Button>
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
+            <ToastContainer
+                position="top-center"
+            />
         </Navbar>
     )
 }
