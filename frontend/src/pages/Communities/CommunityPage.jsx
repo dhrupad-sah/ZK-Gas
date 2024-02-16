@@ -6,6 +6,7 @@ export default function CommunityPage({ community }) {
     return (
         <>
             <h1>Community Page: {route}</h1>
+            <h1>Hey</h1>
         </>
     )
 }
