@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMetaMask } from "../../hooks/useMetamask";
 import Comments from "./Comments";
+import PersonalWallHeader from './PersonalWallHeader.jsx';
 import Avatar from "../../assets/user_example_avatar.png"
 import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
 import "../../hooks/useMetamask";
@@ -9,7 +10,6 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../api/axiosConfig.js'
-
 
 import {
     EmailShareButton,
@@ -29,7 +29,7 @@ import {
 export default function Profile() {
     const { wallet, hasProvider, isConnecting } = useMetaMask();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [address, setAddress] = useState('');
+    const [uniqueId, setUniqueId] = useState('');
     const [message, setMessage] = useState('');
 
     const [formData, setFormData] = useState({
@@ -80,15 +80,20 @@ export default function Profile() {
 
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
+                                    <PersonalWallHeader/>
+
             <div className="profiler" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div className="userImage" style={{ borderRadius: "50%", overflow: "hidden", marginRight: "10px" }}>
-                    <Image src={Avatar} alt="User Profile" width={150} height={150} style={{ maxWidth: '100%' }} />
+                    <Image src={Avatar} alt="User Profile" width={100} height={100} style={{ maxWidth: '100%' }} />
                 </div>
+                
                 <div className="fine" style={{ flex: "1", display: "flex", flexDirection: "column" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
                         <p className="flex items-center font-bold text-left">{wallet.accounts[0]}</p>
                         <Button key="blur" onPress={onOpen} color="primary" style={{ textAlign: "right", marginBottom: "10px" }}>Share Profile</Button>
+                        
                         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+
                             <ModalContent>
                                 {(onClose) => (
                                     <>
@@ -96,7 +101,7 @@ export default function Profile() {
                                         <ModalBody className="flex-col">
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
-                                                    label="Unique ID"
+                                                    label="Link"
                                                     value={id}
                                                     readOnly
                                                 />
@@ -169,37 +174,39 @@ export default function Profile() {
                     <Divider style={{ borderTop: "2px solid #9e9d9d", width: "100%" }} />
                 </div>
             </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                {/* Comments container */}
+                <Comments />
 
-            {/* Form component */}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="address">Address:</label>
-                    <input
-                        type="text"
-                        name='userID'
-                        value={formData.userID}
-                        onChange={handleFormChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="message">Message:</label>
-                    <textarea
-                        id="message"
-                        name='commentString'
-                        value={formData.commentString}
-                        onChange={handleFormChange}
-                        required
-                    ></textarea>
-                </div>
-                <button type="submit">Post</button>
-            </form>
-
-            {/* Existing profile content */}
-            <Comments />
-            <ToastContainer
-                position="top-center"
-            />
+                {/* Form container */}
+                <form onSubmit={handleSubmit} style={{ marginTop:"30px", backgroundColor: '#c8e0fc', color: '#000', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
+                <h1 style={{ marginBottom: '20px', textAlign: 'center', fontSize: '1rem', color: '#000', fontWeight: 'bold', letterSpacing: '0.05em' }}>Share Your Thoughts</h1>
+                    <div className="form-group">
+                        <label htmlFor="uniqueId" style={{ fontWeight: 'bold' }}>Unique ID:</label>
+                        <input
+                            type="text"
+                            id="uniqueId"
+                            value={formData.userID}
+                            name="userID"
+                            onChange={handleFormChange}
+                            required
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' , color:'black'}}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="message" style={{ fontWeight: 'bold' }}>Message:</label>
+                        <textarea
+                            id="message"
+                            name="commentString"
+                            value={formData.commentString}
+                            onChange={handleFormChange}
+                            required
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' ,color:'black'}}
+                        ></textarea>
+                    </div>
+                    <button type="submit" style={{ backgroundColor: '#fff', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Post</button>
+                </form>
+            </div>
         </div>
     );
 }

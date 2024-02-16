@@ -57,6 +57,8 @@ artifacts
 circuits/target
 dist
 
-Prover.toml
-Verifier.toml
+circuits/Prover.toml
+circuits/Verifier.toml
+
+
 

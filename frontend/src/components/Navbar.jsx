@@ -248,6 +248,27 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
+    const handleCreatePoll = async () => {
+        const id = toast.loading("Please wait creating your poll");
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        if (_provider) {
+            const signer = _provider.getSigner();
+            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            const poll = await factoryContract.createPoll(
+                
+                communityRules.domain,
+                communityRules.region,
+            )
+            await poll.wait();
+        }
+        toast.update(id, {
+            render: "Poll created successfully!",
+            type: "success",
+            isLoading: false,
+            autoClose: 4000
+        })
+    }
+
     return (
         <Navbar
             isBordered
@@ -435,8 +456,8 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={handlePollSubmit}>
-                                    Create
+                                <Button color="primary" onClick={handleCreatePoll} >
+                                    Create Poll
                                 </Button>
                             </ModalFooter>
                         </>

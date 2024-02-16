@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { useMetaMask } from "../../hooks/useMetamask";
-import axios from '../../api/axiosConfig.js'
+import axios from '../../api/axiosConfig.js';
 
-export default function Comments() {
-
+const UserComments = () => {
     const [allComments, setAllComments] = useState([]);
+    const id = useSelector((state) => state.user.userId);
 
-    const id = useSelector((state) => state.user.userId)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -25,14 +24,19 @@ export default function Comments() {
     }, []);
 
     return (
-        <div style={{ maxWidth: '600px', margin: 'auto' }}>
-            {allComments.map((comment, index) => (
-                <Card key={index} style={{ marginBottom: '10px' }}>
-                    <CardBody>
-                        <p style={{ color: 'black' }}>{comment}</p>
-                    </CardBody>
-                </Card>
-            ))}
+        <div className="max-w-3xl ml-10 mt-20 lg:mt-10 lg:w-1/2 lg:ml-24 overflow-y-auto">
+            <div className="bg-blue-200 border-2 border-blue-300 rounded-lg p-6 shadow-md">
+                <h1 className="text-2xl font-bold text-gray-800 mb-8">What others think about you...</h1>
+                {allComments.map((comment, index) => (
+                    <Card key={index} className="mb-4">
+                        <CardBody>
+                            <p className="text-black">{comment}</p>
+                        </CardBody>
+                    </Card>
+                ))}
+            </div>
         </div>
-    )
+    );
 }
+
+export default UserComments;
