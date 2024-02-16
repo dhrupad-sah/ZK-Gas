@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "@nextui-org/react";
 import './poll.css';
 
 export default function PollCard({ pollContent }) {
@@ -61,6 +62,14 @@ export default function PollCard({ pollContent }) {
                         <span className="percentage-value"></span>
                     </div>
                 ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
+                <Button color="secondary" variant="flat" size="md" className="mb-5">
+                    View
+                </Button>
+                <Button color="success" variant="flat" size="md" className="mb-5">
+                    Verify
+                </Button>
             </div>
         </div>
     );

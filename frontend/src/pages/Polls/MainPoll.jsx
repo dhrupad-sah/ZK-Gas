@@ -27,9 +27,9 @@ export default function MainPoll() {
             <Tabs aria-label="Options" color="primary" size="lg" variant="underlined">
                 <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>
                 } className="p-2">
-                    <Card >
+                    <Card > 
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <ScrollShadow hideScrollBar className="w-[400px] h-[750px] flex-col items-center justify-center">
+                            <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
                                 {allPolls.map((poll) => (
                                     !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                                 ))}

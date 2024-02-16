@@ -18,8 +18,10 @@ const postPoll = async (req, res, next) => {
 
         const result = await poll.save()
         console.log("Poll Got Posted : ", result);
+        console.log("The id would be: ", result._id)
 
         res.status(200).json({
+            data : result._id,
             custom: "Poll Posted!!"
         })
 

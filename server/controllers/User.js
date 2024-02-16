@@ -115,6 +115,30 @@ const addCommentForUser = async (req, res, next) => {
     }
 }
 
+const addPollForUser = async (req, res, next) => {
+    try {
+        const { userID, pollID } = req.body;
+
+        User.updateOne({ _id: new mongoose.Types.ObjectId(userID) }, {
+            $push: {
+                verifiedPolls: pollID
+            }
+        }).then(resultOfPushing => {
+            console.log("Comment Pushed : ")
+            res.status(200).json({
+                custom: "Comment pushed Successfully!!"
+            })
+        }).catch(err => {
+            console.log("Error in pushing the comment for the user")
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in Pushing Comments for User!!"
+        });
+    }
+}
+
 const addCommunityOfUser = async (req, res, next) => {
     try {
         const { userID, communityID } = req.body;
@@ -162,4 +186,4 @@ const createUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser, getAllCommunityOfUser };
+module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser, getAllCommunityOfUser, addPollForUser };
