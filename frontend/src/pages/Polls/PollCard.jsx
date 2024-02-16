@@ -3,7 +3,7 @@ import './poll.css';
 
 export default function PollCard({ pollContent }) {
     const [poll, setPoll] = useState({
-        itemId: pollContent?.pollID,
+        itemId: pollContent?._id,
         question: pollContent.pollTitle,
         answers: [
             pollContent.option1?.optionName,
@@ -12,9 +12,9 @@ export default function PollCard({ pollContent }) {
         ],
         pollCount: 100,
         answerWeight: [
-            pollContent.option1?.optionconsensus,
-            pollContent.option2?.optionconsensus,
-            pollContent.option3?.optionconsensus,
+            pollContent.option1?.optionConsensus,
+            pollContent.option2?.optionConsensus,
+            pollContent.option3?.optionConsensus,
         ],
         selectedAnswer: -1
     });

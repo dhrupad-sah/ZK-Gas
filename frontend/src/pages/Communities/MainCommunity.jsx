@@ -7,6 +7,7 @@ import ZKCommunity from "../../../ABI/ZKCommunity.json";
 import { ethers } from "ethers";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { useMetaMask } from "../../hooks/useMetamask";
+import FactoryABI from "../../../ABI/Factory.json";
 
 export default function MainCommunity() {
     const { auth, setAuth } = useAuth();
@@ -15,8 +16,13 @@ export default function MainCommunity() {
         region: "",
         gender: ""
     });
+<<<<<<< HEAD
     const { wallet, hasProvider, isConnecting } = useMetaMask();
     const [ , setCommunityAddress] = useState([]);
+=======
+
+    const [, setCommunityAddress] = useState([]);
+>>>>>>> d65d7771e3815f1ef5931ae97047a6e604c8f616
     const [communities, setCommunities] = useState([]);
 
     const [name, setName] = useState("");
@@ -25,9 +31,31 @@ export default function MainCommunity() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
+<<<<<<< HEAD
         const getProvider = async () => {
             const provider = await detectEthereumProvider();
             console.log(provider);
+=======
+        const fetchCommunities = async () => {
+            const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            if(_provider){
+                const signer = _provider.getSigner();
+                const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+                console.log(factoryContract);
+                const communities = await factoryContract.getAllCommunities();
+                console.log(communities);
+                setCommunityAddress(communities);
+                communities?.map(async (community, index) => {
+                    const communityInfo = await factoryContract.getCommunityDetails(community);
+                    console.log(communityInfo[0]);
+                    setCommunities((prev) => [...prev, {
+                        communityName: communityInfo[0],
+                        communityDescription: communityInfo[1],
+                        communityId: index
+                    }]);
+                });
+            }
+>>>>>>> d65d7771e3815f1ef5931ae97047a6e604c8f616
         }
 
         getProvider();

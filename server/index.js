@@ -109,37 +109,37 @@ app.post("/joinCommunity", async (req, res) => {
         res.status(500).send("Error writing to TOML file");
       }
 
-      exec("bash ./scripts/auto_deploy.sh", async (error, stdout, stderr) => {
+        exec("bash ./scripts/auto_deploy.sh", async (error, stdout, stderr) => {
 
-        if (error) {
-          console.error("Error running shell commands:", error);
-          res.status(500).send("Error running shell commands");
-          return;
-        }
+          if (error) {
+            console.error("Error running shell commands:", error);
+            res.status(500).send("false");
+            return;
+          }
+  
+          console.log("Shell commands executed successfully:", stdout);
+          
+          const proof = fs.readFileSync(
+            "../noir-app/circuits/proofs/noirstarter.proof"
+          )   
+  
+          const proofHex = "0x" + proof.toString();
+  
+          const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
+          const verifierData = toml.parse(verifierToml);
+  
+          const domainPub = verifierData.domainPub;
+          const genderPub = verifierData.genderPub;
+          const regionPub = verifierData.regionPub;
+  
+          const pubArray = [domainPub, regionPub, genderPub];
+  
+          const bool = await communityContract.functions.joinCommunity(proofHex, pubArray);
+          
+          res.send(bool);  
+          // console.log(bool);
+        });
 
-        console.log("Shell commands executed successfully:", stdout);
-        
-        const proof = fs.readFileSync(
-          "../noir-app/circuits/proofs/noirstarter.proof"
-        )   
-
-        const proofHex = "0x" + proof.toString();
-
-        const verifierToml = fs.readFileSync('../noir-app/circuits/Verifier.toml', 'utf8');
-        const verifierData = toml.parse(verifierToml);
-
-        const domainPub = verifierData.domainPub;
-        const genderPub = verifierData.genderPub;
-        const regionPub = verifierData.regionPub;
-
-        const pubArray = [domainPub, regionPub, genderPub];
-
-        const bool = await communityContract.functions.joinCommunity(proofHex, pubArray);
-
-        res.send(bool);
-
-        console.log(bool);
-      });
     });
 
   } catch (error) {
