@@ -86,7 +86,6 @@ export default function NavbarComponent() {
                 const accounts = await window.ethereum.request(
                     { method: 'eth_requestAccounts' }
                 )
-                const signer = _provider.getSigner();
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
