@@ -15,6 +15,8 @@ const Container = styled.div`
 `
 
 export default function App() {
+  const { wallet } = useMetaMask(); //wallet.accounts[0]
+
   return (
     <MetaMaskContextProvider>
       <Container>
