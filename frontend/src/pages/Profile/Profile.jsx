@@ -5,12 +5,7 @@ import Avatar from "../../assets/user_example_avatar.png"
 import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from '../../api/axiosConfig.js'
-
-
+import { useSelector } from 'react-redux';
 import {
     EmailShareButton,
     FacebookShareButton,
@@ -29,54 +24,25 @@ import {
 export default function Profile() {
     const { wallet, hasProvider, isConnecting } = useMetaMask();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [address, setAddress] = useState('');
+    const [uniqueId, setUniqueId] = useState('');
     const [message, setMessage] = useState('');
 
-    const [formData, setFormData] = useState({
-        userID: "",
-        commentString: ""
-    })
+    const handleUniqueIdChange = (e) => {
+        setUniqueId(e.target.value);
+    };
 
-    const handleFormChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value
-        });
+    const handleMessageChange = (e) => {
+        setMessage(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const result = axios.post('/user/addCommentForUser', formData)
-            setFormData({
-                userID: "",
-                commentString: ""
-            })
-            toast.success('Comment Posted!!', {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (err) {
-            toast.error('Invalid Unique ID', {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
+        console.log('Unique ID:', uniqueId);
+        console.log('Message:', message);
+        // You can add logic to submit the form data to a backend server or perform any other actions here
     };
 
-    const id = useSelector((state) => state.user.userId)
+    const mongoID = useSelector((state) => state.user.userId)
 
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
@@ -96,8 +62,8 @@ export default function Profile() {
                                         <ModalBody className="flex-col">
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
-                                                    label="Unique ID"
-                                                    value={id}
+                                                    label="Link"
+                                                    value={mongoID}
                                                     readOnly
                                                 />
                                                 <Tooltip content="Copy to clipboard">
@@ -106,7 +72,7 @@ export default function Profile() {
                                                         isIconOnly
                                                         onClick={() => {
                                                             navigator.clipboard.writeText(
-                                                                id
+                                                                mongoID
                                                             );
                                                         }}>
                                                         <FaRegCopy />
@@ -170,36 +136,37 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* Form component */}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="address">Address:</label>
-                    <input
-                        type="text"
-                        name='userID'
-                        value={formData.userID}
-                        onChange={handleFormChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="message">Message:</label>
-                    <textarea
-                        id="message"
-                        name='commentString'
-                        value={formData.commentString}
-                        onChange={handleFormChange}
-                        required
-                    ></textarea>
-                </div>
-                <button type="submit">Post</button>
-            </form>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                {/* Comments container */}
+                <Comments />
 
-            {/* Existing profile content */}
-            <Comments />
-            <ToastContainer
-                position="top-center"
-            />
+                {/* Form container */}
+                <form onSubmit={handleSubmit} style={{ backgroundColor: '#8f9fe8', color: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
+                    <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Share Your Thoughts</h2>
+                    <div className="form-group">
+                        <label htmlFor="uniqueId" style={{ fontWeight: 'bold' }}>Unique ID:</label>
+                        <input
+                            type="text"
+                            id="uniqueId"
+                            value={uniqueId}
+                            onChange={handleUniqueIdChange}
+                            required
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' , color:'black'}}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="message" style={{ fontWeight: 'bold' }}>Message:</label>
+                        <textarea
+                            id="message"
+                            value={message}
+                            onChange={handleMessageChange}
+                            required
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' ,color:'black'}}
+                        ></textarea>
+                    </div>
+                    <button type="submit" style={{ backgroundColor: '#fff', color: '#8f9fe8', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Post</button>
+                </form>
+            </div>
         </div>
     );
 }

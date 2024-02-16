@@ -25,11 +25,11 @@ export default function Comments() {
     }, []);
 
     return (
-        <div style={{ maxWidth: '600px', margin: 'auto' }}>
+        <div className="max-w-3xl ml-10 mt-20 lg:mt-10 lg:w-1/2 lg:ml-24">
             {allComments.map((comment, index) => (
-                <Card key={index} style={{ marginBottom: '10px' }}>
+                <Card key={index} className="mb-4">
                     <CardBody>
-                        <p style={{ color: 'black' }}>{comment}</p>
+                        <p className="text-black">{comment}</p>
                     </CardBody>
                 </Card>
             ))}
