@@ -28,6 +28,7 @@ export default function MainCommunity() {
     useEffect(() => {
         const fetchCommunities = async () => {
             const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            setCommunities([]);
             if (_provider) {
                 const signer = _provider.getSigner();
                 const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
@@ -41,7 +42,10 @@ export default function MainCommunity() {
                     setCommunities((prev) => [...prev, {
                         communityName: communityInfo[0],
                         communityDescription: communityInfo[1],
-                        communityId: index
+                        communityId: index,
+                        domainPub: communityInfo[2],
+                        regionPub: communityInfo[3],
+                        genderPub: communityInfo[4]
                     }]);
                 });
             }
