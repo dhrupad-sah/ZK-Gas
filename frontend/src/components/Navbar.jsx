@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
 
     const location = useLocation();
@@ -43,13 +43,65 @@ export default function NavbarComponent() {
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
 
+    function handlePollSubmit() {
+        console.log("hello helo");
+        if (!question || !option1 || !option2 || !option3) {
+            toast.error("Field's can't be empty!!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            const newPoll = {
+                pollTitle: question,
+                belongsToCommunity: false,
+                communityID: "",
+                option1: {
+                    optionName: option1,
+                    optionConsensus: 0,
+                },
+                option2: {
+                    optionName: option2,
+                    optionConsensus: 0,
+                },
+                option3: {
+                    optionName: option3,
+                    optionConsensus: 0,
+                },
+                totalOptionConsensus: 0
+            }
+            try {
+                const result = axios.post('/poll/postPoll', newPoll)
+                toast.success("Poll Posted Successfully!!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                })
+                onClose();
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+    }
+
     const [communityRules, setCommunityRules] = useState({
         domain: "",
         region: "",
         gender: ""
     });
 
-    const QUESTION_LIMIT = 30;
+    const QUESTION_LIMIT = 50;
     const handleQuestionChange = (event) => {
         const updateQuestion = event.target.value.slice(0, QUESTION_LIMIT);
         setQuestion(updateQuestion);
@@ -303,7 +355,7 @@ export default function NavbarComponent() {
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 30 characters.
+                                        Question must be less than {QUESTION_LIMIT} characters.
                                     </div>
                                 )}
                                 <Input
@@ -383,7 +435,7 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onPress={onClose}>
+                                <Button color="primary" onClick={handlePollSubmit}>
                                     Create
                                 </Button>
                             </ModalFooter>
