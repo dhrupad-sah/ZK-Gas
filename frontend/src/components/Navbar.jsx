@@ -103,20 +103,6 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
-    // const handleCreateCommunity = async () => {
-    //     const community = await contract.createCommunity("xx@iiits", "xxxxxxAP", "xxxxxxxM");
-    //     // await community.wait(1);
-    //     // console.log(community);
-    //     // console.log("Community created");
-    //     // alert("Community Created Successfully")
-    // }
-
-
-    // const getCommunity = async () => {
-    //     const communityAddress = await auth.FactoryContract.getCommunity(0);
-    //     console.log(communityAddress);
-    // }
-
     return (
         <Navbar
             isBordered
@@ -179,12 +165,6 @@ export default function NavbarComponent() {
                             width={25}
                         /> {wallet.accounts[0]?.length > 0 ? wallet.accounts[0].substring(0, 15) + "..." : "Connect wallet"}
                     </Button>
-                    {/* <Button onClick={handleCreateCommunity} as={Link} color="primary" variant="flat" >
-                        Create Community
-                    </Button> */}
-                    {/* <Button onClick={getCommunity} as={Link} color="primary" variant="flat" >
-                        Get Community
-                    </Button> */}
                 </NavbarItem>
             </NavbarContent>
 
