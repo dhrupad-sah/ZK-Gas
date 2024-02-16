@@ -1,4 +1,4 @@
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, Input, NavbarMenu, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, NavbarMenuItem, useDisclosure, Textarea } from "@nextui-org/react"
 import { AcmeLogo } from "../assets/AcmeLogo.jsx"
 import { formatBalance, formatChainAsNum } from '../utils';
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 
 export default function NavbarComponent() {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const location = useLocation();
     const route = location.pathname;
     const { auth, setAuth } = useAuth();
@@ -25,6 +26,33 @@ export default function NavbarComponent() {
     const [isConnecting, setIsConnecting] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [question, setQuestion] = useState("");
+    const [option1, setOption1] = useState("");
+    const [option2, setOption2] = useState("");
+    const [option3, setOption3] = useState("");
+
+    const QUESTION_LIMIT = 30;
+    const handleQuestionChange = (event) => {
+        const updateQuestion = event.target.value.slice(0, QUESTION_LIMIT);
+        setQuestion(updateQuestion);
+    };
+
+    const OPTION_LIMIT = 15;
+    const handleOption1Change = (event) => {
+        const updateOption1 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption1(updateOption1);
+    };
+
+    const handleOption2Change = (event) => {
+        const updateOption2 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption2(updateOption2);
+    };
+
+    const handleOption3Change = (event) => {
+        const updateOption3 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption3(updateOption3);
+    };
 
     useEffect(() => {
         const refreshAccounts = (accounts) => {
@@ -107,6 +135,7 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
+    console.log(question, option1, option2, option3);
     return (
         <Navbar
             isBordered
@@ -162,10 +191,10 @@ export default function NavbarComponent() {
 
             <NavbarContent justify="end">
                 <NavbarItem className="flex gap-3" style={{ marginRight: "-30%", }}>
-                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus/>}>
+                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />}>
                         Community
                     </Button>}
-                    {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus/>}>
+                    {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onOpen}>
                         Public Poll
                     </Button>}
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
@@ -194,6 +223,54 @@ export default function NavbarComponent() {
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Create a Public Poll</ModalHeader>
+                            <ModalBody>
+                                <Textarea
+                                    autoFocus
+                                    label="Question"
+                                    placeholder="Enter question (max 50 characters)"
+                                    value={question}
+                                    onChange={handleQuestionChange}
+                                />
+                                <Input
+                                    autoFocus
+                                    label="Option1"
+                                    placeholder="Enter first option (max 15 characters)"
+                                    value={option1}
+                                    onChange={handleOption1Change}
+                                />
+                                <Input
+                                    autoFocus
+                                    label="Option2"
+                                    placeholder="Enter second option (max 15 characters)"
+                                    value={option2}
+                                    onChange={handleOption2Change}
+                                />
+                                <Input
+                                    autoFocus
+                                    label="Option3"
+                                    placeholder="Enter three option (max 15 characters)"
+                                    value={option3}
+                                    onChange={handleOption3Change}
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" onPress={onClose}>
+                                    Create
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </Navbar>
     )
 }
