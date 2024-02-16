@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from "react-redux";
+import axios from '../api/axiosConfig.js';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function CommunityCard({ community }) {
@@ -39,6 +41,8 @@ export default function CommunityCard({ community }) {
         }
         return hex;
     };
+
+    const id = useSelector((state) => state.user.userId)
 
     const handleJoinCommunity = async () => {
         const id = toast.loading("Please wait verifying your proof");
@@ -80,12 +84,24 @@ export default function CommunityCard({ community }) {
                 isLoading: false,
                 autoClose: 4000
             })
+        if (res.status === 200) {
+            const user = {
+                userID: id,
+                communityID: community.communityId
+            }
+            try {
+                const result = await axios.post('/user/addCommunityForUser', user)
+            } catch (err) {
+                console.log("Error in adding community to user array");
+                console.log(err)
+            }
+        }
     }
     console.log(route);
 
     return (
         <>
-            <Card className="max-w-[600px] p-2 m-4" isPressable>
+            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
                 <CardHeader className="flex gap-9 ">
                     <Avatar
                         alt="community-card"

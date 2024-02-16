@@ -46,7 +46,6 @@ async function createUserIfMetaMaskNotFound(metaMaskId) {
     try {
         const result = await user.save().then(callBack => {
             console.log("User Created")
-            console.log(callBack._id);
             return callBack._id
         })
     } catch (err) {
@@ -62,7 +61,6 @@ const getMongoIDUsingMetamaskID = async (req, res, next) => {
         if (result.length === 0) {
             const _id = createUserIfMetaMaskNotFound(metaMaskID)
         } else {
-            console.log(result)
             res.status(200).json({
                 data: result[0]._id
             });

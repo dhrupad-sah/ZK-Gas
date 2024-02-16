@@ -162,13 +162,13 @@ export default function NavbarComponent() {
                 description
             );
             await community.wait();
-            toast.update(id, {
-                render: "Community created successfully!",
-                type: "success",
-                isLoading: false,
-                autoClose: 4000
-            })
         }
+        toast.update(id, {
+            render: "Community created successfully!",
+            type: "success",
+            isLoading: false,
+            autoClose: 4000
+        })
     }
 
     const NAME_LIMIT = 20;
@@ -299,6 +299,7 @@ export default function NavbarComponent() {
                                     placeholder="Enter question (max 50 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
+                                    variant="flat"
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
