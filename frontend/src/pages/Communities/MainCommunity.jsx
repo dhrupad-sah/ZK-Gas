@@ -146,7 +146,6 @@ export default function MainCommunity() {
                                     </div>
                                 )}
                                 <Input
-                                    autoFocus
                                     label="Email"
                                     placeholder="Enter your email"
                                     variant="bordered"
