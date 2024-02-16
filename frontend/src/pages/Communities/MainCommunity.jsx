@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import { useMetaMask } from "../../hooks/useMetamask";
 import FactoryABI from "../../../ABI/Factory.json";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function MainCommunity() {
     const { wallet } = useMetaMask();
@@ -63,6 +63,7 @@ export default function MainCommunity() {
     }
 
     const handleCreateCommunity = async () => {
+        const id = toast.loading("Please wait creating the community");
         const domain = communityRules.domain;
         const _provider = new ethers.providers.Web3Provider(window.ethereum);
         if (_provider) {
@@ -77,7 +78,14 @@ export default function MainCommunity() {
                 description
             );
             console.log(community);
+            await community.wait();
         }
+        toast.update(id, {
+            render: "Community Created",
+            type: "success",
+            isLoading: false,
+            autoClose: 4000
+        });
     }
 
     const NAME_LIMIT = 20;
@@ -190,7 +198,9 @@ export default function MainCommunity() {
                     )}
                 </ModalContent>
             </Modal>
-            <ToastContainer />
+            <ToastContainer
+                position="top-center" 
+            />
         </div>
     );
 }
