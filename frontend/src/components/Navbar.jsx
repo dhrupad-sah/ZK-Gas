@@ -1,4 +1,4 @@
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, Input, NavbarMenu, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, NavbarMenuItem, useDisclosure, Textarea } from "@nextui-org/react"
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Select, SelectItem, Link, NavbarMenuToggle, Image, Input, NavbarMenu, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, NavbarMenuItem, useDisclosure, Textarea } from "@nextui-org/react"
 import { AcmeLogo } from "../assets/AcmeLogo.jsx"
 import { formatBalance, formatChainAsNum } from '../utils';
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -10,10 +10,14 @@ import { useState, useEffect } from "react";
 import FactoryABI from "../../ABI/Factory.json";
 import { ethers } from "ethers";
 import { useAuth } from "../context/auth.js";
+import { useDispatch } from "react-redux";
+import axios from '../api/axiosConfig.js'
+import { login } from "../store/UserSlice/UserSlice.jsx";
 import { useLocation } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";    
 
 export default function NavbarComponent() {
+    const dispatch = useDispatch();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const location = useLocation();
     const route = location.pathname;
@@ -31,6 +35,12 @@ export default function NavbarComponent() {
     const [option1, setOption1] = useState("");
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
+
+    const [communityRules, setCommunityRules] = useState({
+        domain: "",
+        region: "",
+        gender: ""
+    });
 
     const QUESTION_LIMIT = 30;
     const handleQuestionChange = (event) => {
@@ -79,9 +89,14 @@ export default function NavbarComponent() {
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
-                console.log("Navbar");
+                const user = {
+                    metaMaskID: accounts[0]
+                }
+                const result = await axios.post('/user/getMongoDbIdUsingMetamask', user)
+                dispatch(login(result.data.data))
             }
         }
+
         getProvider()
 
         return () => {
@@ -117,7 +132,12 @@ export default function NavbarComponent() {
         setIsConnecting(false)
     }
 
-    const disableConnect = wallet && isConnecting
+    const handleRulesInput = (e) => {
+        setCommunityRules({
+            ...communityRules,
+            [e.target.name]: e.target.value
+        });
+    }
 
     const menuItems = [
         "Communities",
@@ -131,7 +151,6 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
-    console.log(question, option1, option2, option3);
     return (
         <Navbar
             isBordered
@@ -274,6 +293,48 @@ export default function NavbarComponent() {
                                         Option must be less than 15 characters.
                                     </div>
                                 )}
+                                <Input
+                                    label="Domain"
+                                    placeholder="Enter your domain"
+                                    name="domain"
+                                    onChange={handleRulesInput}
+                                />
+                                <Select
+                                    label="Select region"
+                                    name="region"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="asia-pacific" key="AP">
+                                        Asia Pacific
+                                    </SelectItem>
+                                    <SelectItem value="north-america" key="NA">
+                                        North America
+                                    </SelectItem>
+                                    <SelectItem value="europe" key="EU">
+                                        Europe
+                                    </SelectItem>
+                                    <SelectItem value="middle-east" key="ME">
+                                        Middle East
+                                    </SelectItem>
+                                    <SelectItem value="all" key="AL">
+                                        All
+                                    </SelectItem>
+                                </Select>
+                                <Select
+                                    label="Select gender"
+                                    name="gender"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="male" key="M">
+                                        Male
+                                    </SelectItem>
+                                    <SelectItem value="female" key="F">
+                                        Female
+                                    </SelectItem>
+                                    <SelectItem value="both" key="MF">
+                                        Both
+                                    </SelectItem>
+                                </Select>
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" onPress={onClose}>
