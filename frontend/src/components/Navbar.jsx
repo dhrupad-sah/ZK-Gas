@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
-    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
 
     const location = useLocation();
@@ -378,7 +378,7 @@ export default function NavbarComponent() {
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than {QUESTION_LIMIT} characters.
+                                        Question must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
