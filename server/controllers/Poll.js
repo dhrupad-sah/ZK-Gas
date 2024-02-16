@@ -48,4 +48,22 @@ const getAllPolls = async (req, res, next) => {
     }
 }
 
-module.exports = { postPoll, getAllPolls };
+const getAllPublicPolls = async (req, res, next) => {
+    try {
+        const result = await Poll.find({ belongsToCommunity: false });
+        
+        res.status(200).json({
+            data: result,
+            custom: "Fetched all public polls!!"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching public polls"
+        });
+    }
+};
+
+
+module.exports = { postPoll, getAllPolls, getAllPublicPolls };
