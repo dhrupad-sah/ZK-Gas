@@ -236,27 +236,44 @@ export default function NavbarComponent() {
                                     value={question}
                                     onChange={handleQuestionChange}
                                 />
+                                {question.length >= QUESTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Question must be less than 30 characters.
+                                    </div>
+                                )}
                                 <Input
-                                    autoFocus
                                     label="Option1"
                                     placeholder="Enter first option (max 15 characters)"
                                     value={option1}
                                     onChange={handleOption1Change}
                                 />
+                                {option1.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
                                 <Input
-                                    autoFocus
                                     label="Option2"
                                     placeholder="Enter second option (max 15 characters)"
                                     value={option2}
                                     onChange={handleOption2Change}
                                 />
+                                {option2.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
                                 <Input
-                                    autoFocus
                                     label="Option3"
                                     placeholder="Enter three option (max 15 characters)"
                                     value={option3}
                                     onChange={handleOption3Change}
                                 />
+                                {option3.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" onPress={onClose}>
