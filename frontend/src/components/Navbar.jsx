@@ -44,14 +44,10 @@ export default function NavbarComponent() {
                 const accounts = await window.ethereum.request(
                     { method: 'eth_requestAccounts' }
                 )
-                const signer = _provider.getSigner();
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
                 console.log("Navbar");
-                setAuth({
-                    accountAddress: accounts[0], FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider, signer: signer
-                });
             }
         }
         getProvider()
