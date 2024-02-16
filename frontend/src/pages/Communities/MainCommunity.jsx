@@ -5,17 +5,17 @@ import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../../context/auth";
 import ZKCommunity from "../../../ABI/ZKCommunity.json";
 import { ethers } from "ethers";
+import detectEthereumProvider from "@metamask/detect-provider";
 import { useMetaMask } from "../../hooks/useMetamask";
 
 export default function MainCommunity() {
-    const { wallet } = useMetaMask();
     const { auth, setAuth } = useAuth();
     const [communityRules, setCommunityRules] = useState({
         email: "",
         region: "",
         gender: ""
     });
-
+    const { wallet, hasProvider, isConnecting } = useMetaMask();
     const [ , setCommunityAddress] = useState([]);
     const [communities, setCommunities] = useState([]);
 
@@ -25,24 +25,13 @@ export default function MainCommunity() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
-        console.log(wallet);
-        console.log("Working1?");
-        const fetchCommunities = async () => {
-            console.log("Working2?");
-            const communities = await auth.factoryContract.getAllCommunities();
-            console.log(communities);
-            setCommunityAddress(communities);
-            communities.map(async (community, index) => {
-                const communityInfo = await auth.factoryContract.getCommunityDetails(community);
-                console.log(communityInfo[0]);
-                setCommunities((prev) => [...prev, {
-                    communityName: communityInfo[0],
-                    communityDescription: communityInfo[1],
-                    communityId: index
-                }]);
-            });
+        const getProvider = async () => {
+            const provider = await detectEthereumProvider();
+            console.log(provider);
         }
-        fetchCommunities();
+
+        getProvider();
+
     }, [])
 
     const handleRulesInput = (e) => {
