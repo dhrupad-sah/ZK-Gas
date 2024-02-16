@@ -5,7 +5,7 @@ import Avatar from "../../assets/user_example_avatar.png"
 import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
-import "./Profile.css"
+
 import {
     EmailShareButton,
     FacebookShareButton,
