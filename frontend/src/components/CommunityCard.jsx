@@ -101,7 +101,7 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] p-2 m-4" isPressable>
+            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
                 <CardHeader className="flex gap-9 ">
                     <Avatar
                         alt="community-card"
