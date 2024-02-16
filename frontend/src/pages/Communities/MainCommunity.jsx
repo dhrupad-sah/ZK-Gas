@@ -125,7 +125,6 @@ export default function MainCommunity() {
                                     autoFocus
                                     label="Community Name"
                                     placeholder="Enter name (max 20 characters)"
-                                    variant="bordered"
                                     value={name}
                                     onChange={handleNameChange}
                                 />
@@ -148,7 +147,6 @@ export default function MainCommunity() {
                                 <Input
                                     label="Email"
                                     placeholder="Enter your email"
-                                    variant="bordered"
                                     name="email"
                                     onChange={handleRulesInput}
                                 />
