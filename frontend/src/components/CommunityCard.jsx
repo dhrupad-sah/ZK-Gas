@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Avatar, Chip } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Divider, Avatar, Chip } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ export default function CommunityCard({ community }) {
     const location = useLocation();
     const route = location.pathname;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
     const [description, setDescription] = useState("");
 
     const [communityRules, setCommunityRules] = useState({
@@ -96,7 +97,33 @@ export default function CommunityCard({ community }) {
         }
 
     }
-    console.log(route);
+
+    console.log(community)
+
+    // const [domain, setDomain] = useState();
+    // const [region, setRegion] = useState();
+    // const [gender, setGender] = useState();
+
+    // setDomain(community.domainPub);
+
+    // // if(community.genderPub === 'M') {
+    // //     setGender('Male');
+    // // } else {
+    // //     if(gender === 'F') {
+    // //         setGender('Female');
+    // //     } else {
+    // //         setGender('Male/Female');
+    // //     }
+    // // }
+    // // if(region === 'AP') {
+    // //     setRegion('Asia Pacific');
+    // // } else if(region === 'ME') {
+    // //     setRegion('Middle East');
+    // // } else if(region === 'NA') {
+    // //     setRegion('North America');
+    // // } else {
+    // //     setRegion('Europe');
+    // // }
 
     return (
         <>
@@ -123,19 +150,45 @@ export default function CommunityCard({ community }) {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                    <p>{community.communityDescription}</p> 
+                    <p>{community.communityDescription}</p>
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
-                    <Link to={`/communities/${community.communityId}`} style={{ textDecoration: 'none' }}>
-                        <Button color="secondary" variant="flat" size="md">
-                            View
-                        </Button>
-                    </Link>
-                    <Button color={community.joined? "danger":"success"} variant="flat" size="md" onPress={onOpen}  isDisabled={community.joined} style={{ cursor: community.joined? "not-allowed": "pointer", pointerEvents: community.joined?"all": ""}} >
-                        {community.joined? "Joined" : "Join"}
+                    <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
+                        Rules
+                    </Button>
+                    <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                        {community.joined ? "Joined" : "Join"}
                     </Button>
                 </CardFooter>
+                <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
+                                <ModalBody>
+                                    <Accordion>
+                                        <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
+                                            <p className="font-bold">{community.domainPub}</p>
+                                        </AccordionItem>
+                                        <AccordionItem key="2" aria-label="Accordion 1" title="Region">
+                                            <p className="font-bold">{community.regionPub==="NA"?"North America":community.regionPub==="ME"?"Middle East":community.regionPub==="AP"?"Asia Pacific":"Europe"}</p>
+                                        </AccordionItem>
+                                        <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
+                                            <p className="font-bold">{community.genderPub==="M"?"Male":community.genderPub==="F"?"Female":"Both"}</p>
+                                        </AccordionItem>
+                                    </Accordion>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+
                 <Modal
                     isOpen={isOpen}
                     onOpenChange={onOpenChange}
