@@ -6,6 +6,9 @@ import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Mo
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from '../../api/axiosConfig.js'
 
 
 import {
@@ -29,19 +32,48 @@ export default function Profile() {
     const [address, setAddress] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
-    };
+    const [formData, setFormData] = useState({
+        userID: "",
+        commentString: ""
+    })
 
-    const handleMessageChange = (e) => {
-        setMessage(e.target.value);
+    const handleFormChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Address:', address);
-        console.log('Message:', message);
-        // You can add logic to submit the form data to a backend server or perform any other actions here
+        try {
+            const result = axios.post('/user/addCommentForUser', formData)
+            setFormData({
+                userID: "",
+                commentString: ""
+            })
+            toast.success('Comment Posted!!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (err) {
+            toast.error('Invalid Unique ID', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     };
 
     const id = useSelector((state) => state.user.userId)
@@ -139,14 +171,14 @@ export default function Profile() {
             </div>
 
             {/* Form component */}
-            <form method="POST" action='/user/addCommentForUser' onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="address">Address:</label>
                     <input
                         type="text"
-                        id="address"
-                        value={address}
-                        onChange={handleAddressChange}
+                        name='userID'
+                        value={formData.userID}
+                        onChange={handleFormChange}
                         required
                     />
                 </div>
@@ -154,8 +186,9 @@ export default function Profile() {
                     <label htmlFor="message">Message:</label>
                     <textarea
                         id="message"
-                        value={message}
-                        onChange={handleMessageChange}
+                        name='commentString'
+                        value={formData.commentString}
+                        onChange={handleFormChange}
                         required
                     ></textarea>
                 </div>
@@ -164,6 +197,9 @@ export default function Profile() {
 
             {/* Existing profile content */}
             <Comments />
+            <ToastContainer
+                position="top-center"
+            />
         </div>
     );
 }
