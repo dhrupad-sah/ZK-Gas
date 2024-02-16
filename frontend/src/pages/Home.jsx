@@ -4,7 +4,7 @@ import "./styles/Home.css"
 
 export default function Home() {
     return (
-        <div className="mt-10">
+        <div className="mt-10"> 
             <div className="flex justify-evenly">
                 <div className="flex items-center text-7xl fontface">Anonymous</div>
                 <Image
