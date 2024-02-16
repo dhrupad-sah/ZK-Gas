@@ -162,13 +162,13 @@ export default function NavbarComponent() {
                 description
             );
             await community.wait();
-            toast.update(id, {
-                render: "Community created successfully!",
-                type: "success",
-                isLoading: false,
-                autoClose: 4000
-            })
         }
+        toast.update(id, {
+            render: "Community created successfully!",
+            type: "success",
+            isLoading: false,
+            autoClose: 4000
+        })
     }
 
     const NAME_LIMIT = 20;
