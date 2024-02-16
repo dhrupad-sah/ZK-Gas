@@ -35,6 +35,24 @@ const getAllCommentsOfUser = async (req, res, next) => {
     }
 };
 
+const getAllCommunityOfUser = async (req, res, next) => {
+    try {
+        const { userID } = req.body;
+        const result = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("communityID")
+
+        res.status(200).json({
+            data: result,
+            custom: "Fetched all communities of the user!!"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching all communities of the user"
+        });
+    }
+};
+
 async function createUserIfMetaMaskNotFound(metaMaskId) {
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
@@ -144,4 +162,4 @@ const createUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser };
+module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser, getAllCommunityOfUser };
