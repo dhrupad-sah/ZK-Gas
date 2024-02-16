@@ -5,6 +5,7 @@ import Avatar from "../../assets/user_example_avatar.png"
 import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import "./Profile.css"
 import {
     EmailShareButton,
@@ -42,6 +43,8 @@ export default function Profile() {
         // You can add logic to submit the form data to a backend server or perform any other actions here
     };
 
+    const id = useSelector((state) => state.user.userId)
+
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
             <div className="profiler" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -60,8 +63,8 @@ export default function Profile() {
                                         <ModalBody className="flex-col">
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
-                                                    label="Link"
-                                                    value={`https://zk-gas.com/profile/${wallet.accounts[0]}`}
+                                                    label="Unique ID"
+                                                    value={id}
                                                     readOnly
                                                 />
                                                 <Tooltip content="Copy to clipboard">
@@ -70,7 +73,7 @@ export default function Profile() {
                                                         isIconOnly
                                                         onClick={() => {
                                                             navigator.clipboard.writeText(
-                                                                `https://zk-gas.com/profile/${wallet.accounts[0]}`
+                                                                id
                                                             );
                                                         }}>
                                                         <FaRegCopy />
