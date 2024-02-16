@@ -10,7 +10,7 @@ export default function PollCard({ pollContent }) {
             pollContent.option2?.optionName,
             pollContent.option3?.optionName,
         ],
-        pollCount: 100,
+        pollCount: pollContent.totalOptionConsensus,
         answerWeight: [
             pollContent.option1?.optionConsensus,
             pollContent.option2?.optionConsensus,

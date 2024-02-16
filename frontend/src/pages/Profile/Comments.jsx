@@ -27,6 +27,24 @@ export default function Comments() {
         }
     }, []);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const userID = {
+    //                 // use the user ID to fetch all the comments of the user
+    //                 userID : "123456789"
+    //             }
+    //             const response = await axios.post('/user/getAllCommentsOfUser', userID);
+    //             console.log("Following are all Polls")
+    //             console.log(response.data.data.userComments)
+    //             setAllComments(response.data.data.userComments);
+    //         } catch (error) {
+    //             console.log("Error occured at frontend to fetch polls")
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
+
     return (
         <div style={{ maxWidth: '600px', margin: 'auto' }}>
             {allComments.map((comment, index) => (
