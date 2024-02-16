@@ -5,30 +5,30 @@ import {UltraVerifier} from "../plonk_vk.sol";
 contract ZKPoll {
     UltraVerifier verifier;
 
-    uint256 pollId;
+    uint256 public pollId;
     string public pollName;
     string public pollDescription;
 
     error NOT_A_MEMBER();
 
-    struct CommmunityRules {
+    struct PollRules {
+        string mongoId;
         string domainPub;
         string regionPub;
         string genderPub;
     }
 
-    CommmunityRules public pollRules;
+    PollRules public pollRules;
 
     mapping(address => bool) isInPoll;
 
-    constructor(string memory _domainPub, string memory _regionPub, string memory _genderPub , address _verifier, uint256 _pollId, string memory _pollName, string memory _pollDescription){
+    constructor(string memory _domainPub, string memory _regionPub, string memory _genderPub , address _verifier, uint256 _pollId, string memory _mongoId){
         verifier = UltraVerifier(_verifier);
         pollRules.domainPub = _domainPub;
         pollRules.regionPub = _regionPub;
         pollRules.genderPub = _genderPub;
+        pollRules.mongoId = _mongoId;
         pollId = _pollId;
-        pollName = _pollName;
-        pollDescription = _pollDescription;
     }
 
     function getBtytes(string memory x) internal pure returns(bytes memory){

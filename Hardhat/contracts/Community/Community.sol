@@ -6,7 +6,7 @@ contract ZKCommunity {
     
     UltraVerifier verifier;
 
-    uint256 communityId;
+    uint256 public communityId;
     string public communityName;
     string public communityDescription;
 
@@ -64,6 +64,10 @@ contract ZKCommunity {
         string memory genderPub = communityRules.genderPub;
         bytes memory genderPubBytes = getBtytes(genderPub);
         return (domainPubBytes, regionPubBytes, genderPubBytes);
+    }
+
+    function setIsInCommunity() external {
+        isInCommunity[msg.sender] = true;
     }
 
     function joinCommunity(bytes calldata _proof, bytes32[] calldata _publicInputs) external view returns(bool) {

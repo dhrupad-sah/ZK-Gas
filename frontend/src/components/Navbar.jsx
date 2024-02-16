@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
 
     const location = useLocation();
@@ -42,6 +42,58 @@ export default function NavbarComponent() {
     const [option1, setOption1] = useState("");
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
+
+    function handlePollSubmit() {
+        console.log("hello helo");
+        if (!question || !option1 || !option2 || !option3) {
+            toast.error("Field's can't be empty!!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            const newPoll = {
+                pollTitle: question,
+                belongsToCommunity: false,
+                communityID: "",
+                option1: {
+                    optionName: option1,
+                    optionConsensus: 0,
+                },
+                option2: {
+                    optionName: option2,
+                    optionConsensus: 0,
+                },
+                option3: {
+                    optionName: option3,
+                    optionConsensus: 0,
+                },
+                totalOptionConsensus: 0
+            }
+            try {
+                const result = axios.post('/poll/postPoll', newPoll)
+                toast.success("Poll Posted Successfully!!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                })
+                onClose();
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+    }
 
     const [communityRules, setCommunityRules] = useState({
         domain: "",
@@ -196,6 +248,27 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
+    const handleCreatePoll = async () => {
+        const id = toast.loading("Please wait creating your poll");
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        if (_provider) {
+            const signer = _provider.getSigner();
+            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            const poll = await factoryContract.createPoll(
+                
+                communityRules.domain,
+                communityRules.region,
+            )
+            await poll.wait();
+        }
+        toast.update(id, {
+            render: "Poll created successfully!",
+            type: "success",
+            isLoading: false,
+            autoClose: 4000
+        })
+    }
+
     return (
         <Navbar
             isBordered
@@ -303,7 +376,7 @@ export default function NavbarComponent() {
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 50 characters.
+                                        Question must be less than {QUESTION_LIMIT} characters.
                                     </div>
                                 )}
                                 <Input
@@ -383,8 +456,8 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onPress={onClose}>
-                                    Create
+                                <Button color="primary" onClick={handleCreatePoll} >
+                                    Create Poll
                                 </Button>
                             </ModalFooter>
                         </>
