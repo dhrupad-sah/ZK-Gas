@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 domain = "0x6866646a68676673666a"
 gender = "0x46"
 region = "0x4e41"
 domainPub = "0x6969697461"
 genderPub = "0x4d46"
+=======
+domain = "0x69697467"
+gender = "0x46"
+region = "0x4150"
+domainPub = "0x69697467"
+genderPub = "0x46"
+>>>>>>> 4876a080de7e62426ad120a649ed1bb35420f026
 regionPub = "0x4150"

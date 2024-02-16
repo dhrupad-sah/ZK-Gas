@@ -99,6 +99,31 @@ const addCommentForUser = async (req, res, next) => {
     }
 }
 
+const addCommunityOfUser = async (req, res, next) => {
+    try {
+        const { userID, communityID } = req.body;
+
+        User.updateOne({ _id: new mongoose.Types.ObjectId(userID) }, {
+            $push: {
+                communityID: communityID
+            }
+        }).then(resultOfPushing => {
+            console.log("Community Pushed : ")
+            res.status(200).json({
+                custom: "Community pushed Successfully!!"
+            })
+        }).catch(err => {
+            console.log("Error in pushing the community for the user")
+            console.log(err);
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in Pushing community for User!!"
+        });
+    }
+}
+
 const createUser = async (req, res, next) => {
     try {
         const { metaMaskId } = req.body;
@@ -121,4 +146,4 @@ const createUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID };
+module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser };
