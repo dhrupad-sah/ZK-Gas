@@ -27,8 +27,7 @@ contract Factory {
     }
 
     struct PollDetails{
-        string pollName;
-        string pollDescription;
+        string mongoPollId;
         string domainPub;
         string regionPub;
         string genderPub;
@@ -63,14 +62,13 @@ contract Factory {
         string memory _domainPub,
         string memory _regionPub,
         string memory _genderPub,
-        string memory _pollName,
-        string memory _pollDescription
+        string memory _mongoId
     ) public {
         uint256 _id = pollId;
         address newPoll = address(
-            new ZKPoll(_domainPub, _regionPub, _genderPub, verifier, _id, _pollName, _pollDescription)
+            new ZKPoll(_domainPub, _regionPub, _genderPub, verifier, _id, _mongoId)
         );
-        addressToPollDetails[newPoll] = PollDetails(_pollName, _pollDescription, _domainPub, _regionPub, _genderPub);
+        addressToPollDetails[newPoll] = PollDetails(_mongoId, _domainPub, _regionPub, _genderPub);
         idToPoll[_id] = newPoll;
         allPolls.push(newPoll);
         pollId++;
