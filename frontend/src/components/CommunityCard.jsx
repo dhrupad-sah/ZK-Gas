@@ -1,7 +1,24 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Avatar, Button, Chip } from "@nextui-org/react";
+import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
+import FactoryABI from "../../ABI/Factory.json";
+import { ethers } from "ethers";
+
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
+    const location = useLocation();
+    const route = location.pathname;
+
+    const handleJoinCommunity = async () => {
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        if (_provider) {
+            const signer = _provider.getSigner();
+            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            console.log(factoryContract);
+
+        }
+    }
+    console.log(route);
     return (
         <>
             <Card className="max-w-[600px] p-2 m-4" isPressable>
@@ -33,7 +50,7 @@ export default function CommunityCard({ community }) {
                     <Button color="secondary" variant="flat" size="md" as={Link} href={`/communities/${community.communityId}`}>
                         View
                     </Button>
-                    <Button color="success" variant="flat" size="md">
+                    <Button onClick={handleJoinCommunity} color="success" variant="flat" size="md">
                         Join
                     </Button>
                 </CardFooter>

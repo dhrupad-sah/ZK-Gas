@@ -28,7 +28,8 @@ export default function MainCommunity() {
     useEffect(() => {
         const fetchCommunities = async () => {
             const _provider = new ethers.providers.Web3Provider(window.ethereum);
-            if(_provider){
+            setCommunities([]);
+            if (_provider) {
                 const signer = _provider.getSigner();
                 const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
                 console.log(factoryContract);
@@ -69,14 +70,21 @@ export default function MainCommunity() {
         }
         console.log(email);
         let domain = email.slice(indexAt + 1, indexDot);
-        const community = await factoryContract.createCommunity(
-            domain,
-            communityRules.region,
-            communityRules.gender,
-            name,
-            description
-        );
-        console.log(community);
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        if (_provider) {
+
+            const signer = _provider.getSigner();
+            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            console.log(factoryContract);
+            const community = await factoryContract.createCommunity(
+                domain,
+                communityRules.region,
+                communityRules.gender,
+                name,
+                description
+            );
+            console.log(community);
+        }
     }
 
     const NAME_LIMIT = 20;
