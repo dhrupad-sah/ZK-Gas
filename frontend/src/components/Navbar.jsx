@@ -43,6 +43,60 @@ export default function NavbarComponent() {
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
 
+    async function handlePollSubmit() {
+        console.log("hello helo");
+        if (!question || !option1 || !option2 || !option3) {
+            toast.error("Field's can't be empty!!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            const newPoll = {
+                pollTitle: question,
+                belongsToCommunity: false,
+                communityID: "",
+                option1: {
+                    optionName: option1,
+                    optionConsensus: 0,
+                },
+                option2: {
+                    optionName: option2,
+                    optionConsensus: 0,
+                },
+                option3: {
+                    optionName: option3,
+                    optionConsensus: 0,
+                },
+                totalOptionConsensus: 0
+            }
+            try {
+                const result = axios.post('/poll/postPoll', newPoll)
+                const data_ID = await result;
+                console.log("the result poll id would be : ", data_ID.data.data);
+                toast.success("Poll Posted Successfully!!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                })
+                onClose();
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+    }
+
     const [communityRules, setCommunityRules] = useState({
         domain: "",
         region: "",
@@ -196,25 +250,26 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
-    const handleCreatePoll = async () => {
-        const id = toast.loading("Please wait creating your poll");
-        const _provider = new ethers.providers.Web3Provider(window.ethereum);
-        if (_provider) {
-            const signer = _provider.getSigner();
-            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
-            const poll = await factoryContract.createPoll(
-                communityRules.domain,
-                communityRules.region,
-            )
-            await poll.wait();
-        }
-        toast.update(id, {
-            render: "Poll created successfully!",
-            type: "success",
-            isLoading: false,
-            autoClose: 4000
-        })
-    }
+    // const handleCreatePoll = async () => {
+    //     const id = toast.loading("Please wait creating your poll");
+    //     const _provider = new ethers.providers.Web3Provider(window.ethereum);
+    //     if (_provider) {
+    //         const signer = _provider.getSigner();
+    //         const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+    //         const poll = await factoryContract.createPoll(
+                
+    //             communityRules.domain,
+    //             communityRules.region,
+    //         )
+    //         await poll.wait();
+    //     }
+    //     toast.update(id, {
+    //         render: "Poll created successfully!",
+    //         type: "success",
+    //         isLoading: false,
+    //         autoClose: 4000
+    //     })
+    // }
 
     return (
         <Navbar
@@ -403,7 +458,7 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button onClick={handleCreatePoll} color="primary" onPress={onClose} >
+                                <Button color="primary" onClick={handlePollSubmit} >
                                     Create Poll
                                 </Button>
                             </ModalFooter>

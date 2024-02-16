@@ -33,7 +33,6 @@ export default function CommunityPage() {
     }, [])
     return (
         <div>
-            <div>Community Rules</div>
             <div>
                 {communityRules.map((rule, index) => {
                     console.log(rule);
