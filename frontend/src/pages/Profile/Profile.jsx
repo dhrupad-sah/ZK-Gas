@@ -6,7 +6,8 @@ import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Mo
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import "./Profile.css"
+
+
 import {
     EmailShareButton,
     FacebookShareButton,

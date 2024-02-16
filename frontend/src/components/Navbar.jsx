@@ -299,6 +299,7 @@ export default function NavbarComponent() {
                                     placeholder="Enter question (max 50 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
+                                    variant="flat"
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
