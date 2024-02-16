@@ -14,7 +14,7 @@ export default function MainCommunity() {
     const { wallet } = useMetaMask();
     const { auth, setAuth } = useAuth();
     const [communityRules, setCommunityRules] = useState({
-        email: "",
+        domain: "",
         region: "",
         gender: ""
     });
@@ -63,21 +63,9 @@ export default function MainCommunity() {
     }
 
     const handleCreateCommunity = async () => {
-        const email = communityRules.email;
-        const indexAt = email.indexOf('@');
-        console.log(indexAt);
-        let indexDot = email.length;
-        for (var i = indexAt; i < email.length; i++) {
-            if (email[i] == '.') {
-                indexDot = i;
-                break;
-            }
-        }
-        console.log(email);
-        let domain = email.slice(indexAt + 1, indexDot);
+        const domain = communityRules.domain;
         const _provider = new ethers.providers.Web3Provider(window.ethereum);
         if (_provider) {
-
             const signer = _provider.getSigner();
             const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
             console.log(factoryContract);
@@ -151,9 +139,9 @@ export default function MainCommunity() {
                                     </div>
                                 )}
                                 <Input
-                                    label="Email"
-                                    placeholder="Enter your email"
-                                    name="email"
+                                    label="Domain"
+                                    placeholder="Enter your domain"
+                                    name="domain"
                                     onChange={handleRulesInput}
                                 />
                                 <Select
