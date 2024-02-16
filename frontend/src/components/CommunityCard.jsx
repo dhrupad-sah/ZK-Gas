@@ -9,14 +9,36 @@ export default function CommunityCard({ community }) {
     const location = useLocation();
     const route = location.pathname;
 
+    const stringToHex = (str) => {
+        let hex = '';
+        for (let i = 0; i < str.length; i++) {
+          const charCode = str.charCodeAt(i);
+          const hexValue = charCode.toString(16);
+      
+          // Pad with zeros to ensure two-digit representation
+          hex += hexValue.padStart(2, '0');
+        }
+        return hex;
+      };
+
     const handleJoinCommunity = async () => {
         const _provider = new ethers.providers.Web3Provider(window.ethereum);
-        if (_provider) {
-            const signer = _provider.getSigner();
-            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
-            console.log(factoryContract);
-
-        }
+        const domainPub = community.domainPub;
+        const regionPub = community.regionPub;
+        const genderPub = community.genderPub;
+        console.log(domainPub, regionPub, genderPub);
+        const domain = "0x"+stringToHex(domainPub);
+        const region = "0x"+stringToHex(regionPub);
+        const gender = "0x"+stringToHex(genderPub);
+        console.log(domain, region, gender);
+        const res = await fetch("http://localhost:3000/joinCommunity", {
+            method: "POST",
+            body: JSON.stringify({ communityId: community.communityId, domain, region, gender }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        console.log(res);
     }
     console.log(route);
     return (

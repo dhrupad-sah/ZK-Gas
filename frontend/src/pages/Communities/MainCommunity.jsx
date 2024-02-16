@@ -42,7 +42,10 @@ export default function MainCommunity() {
                     setCommunities((prev) => [...prev, {
                         communityName: communityInfo[0],
                         communityDescription: communityInfo[1],
-                        communityId: index
+                        communityId: index,
+                        domainPub: communityInfo[2],
+                        regionPub: communityInfo[3],
+                        genderPub: communityInfo[4]
                     }]);
                 });
             }
