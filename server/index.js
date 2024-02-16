@@ -131,13 +131,19 @@ app.post("/joinCommunity", async (req, res) => {
           const domainPub = verifierData.domainPub;
           const genderPub = verifierData.genderPub;
           const regionPub = verifierData.regionPub;
+
+          const VerifierContract = new ethers.Contract(
+            VerifierABI.address,
+            VerifierABI.abi,
+            signer
+          );
   
           const pubArray = [domainPub, regionPub, genderPub];
   
           const bool = await communityContract.functions.joinCommunity(proofHex, pubArray);
           
           res.send(bool);  
-          // console.log(bool);
+          console.log(bool);
         });
 
     });
