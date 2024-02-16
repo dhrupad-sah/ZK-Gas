@@ -43,7 +43,7 @@ export default function NavbarComponent() {
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
 
-    function handlePollSubmit() {
+    async function handlePollSubmit() {
         console.log("hello helo");
         if (!question || !option1 || !option2 || !option3) {
             toast.error("Field's can't be empty!!", {
@@ -77,6 +77,8 @@ export default function NavbarComponent() {
             }
             try {
                 const result = axios.post('/poll/postPoll', newPoll)
+                const data_ID = await result;
+                console.log("the result poll id would be : ", data_ID.data.data);
                 toast.success("Poll Posted Successfully!!", {
                     position: "top-center",
                     autoClose: 3000,
@@ -248,26 +250,26 @@ export default function NavbarComponent() {
         '/profile',
     ]
 
-    const handleCreatePoll = async () => {
-        const id = toast.loading("Please wait creating your poll");
-        const _provider = new ethers.providers.Web3Provider(window.ethereum);
-        if (_provider) {
-            const signer = _provider.getSigner();
-            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
-            const poll = await factoryContract.createPoll(
+    // const handleCreatePoll = async () => {
+    //     const id = toast.loading("Please wait creating your poll");
+    //     const _provider = new ethers.providers.Web3Provider(window.ethereum);
+    //     if (_provider) {
+    //         const signer = _provider.getSigner();
+    //         const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+    //         const poll = await factoryContract.createPoll(
                 
-                communityRules.domain,
-                communityRules.region,
-            )
-            await poll.wait();
-        }
-        toast.update(id, {
-            render: "Poll created successfully!",
-            type: "success",
-            isLoading: false,
-            autoClose: 4000
-        })
-    }
+    //             communityRules.domain,
+    //             communityRules.region,
+    //         )
+    //         await poll.wait();
+    //     }
+    //     toast.update(id, {
+    //         render: "Poll created successfully!",
+    //         type: "success",
+    //         isLoading: false,
+    //         autoClose: 4000
+    //     })
+    // }
 
     return (
         <Navbar
@@ -456,7 +458,7 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={handleCreatePoll} >
+                                <Button color="primary" onClick={handlePollSubmit} >
                                     Create Poll
                                 </Button>
                             </ModalFooter>
