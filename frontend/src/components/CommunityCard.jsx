@@ -101,7 +101,7 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
+            <Card className="w-[350px] h-[250px] p-2 m-4" >
                 <CardHeader className="flex gap-9 ">
                     <Avatar
                         alt="community-card"
@@ -122,7 +122,7 @@ export default function CommunityCard({ community }) {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                    <p>{community.communityDescription}</p>
+                    <p>{community.communityDescription}</p> 
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
@@ -131,8 +131,8 @@ export default function CommunityCard({ community }) {
                             View
                         </Button>
                     </Link>
-                    <Button color="success" variant="flat" size="md" onPress={onOpen}>
-                        Join
+                    <Button color={community.joined? "danger":"success"} variant="flat" size="md" onPress={onOpen}  isDisabled={community.joined} style={{ cursor: community.joined? "not-allowed": "pointer", pointerEvents: community.joined?"all": ""}} >
+                        {community.joined? "Joined" : "Join"}
                     </Button>
                 </CardFooter>
                 <Modal
