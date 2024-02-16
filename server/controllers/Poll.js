@@ -21,7 +21,7 @@ const postPoll = async (req, res, next) => {
         console.log("The id would be: ", result._id)
 
         res.status(200).json({
-            data : result._id,
+            data: result._id,
             custom: "Poll Posted!!"
         })
 
@@ -36,7 +36,7 @@ const postPoll = async (req, res, next) => {
 
 const getAllPolls = async (req, res, next) => {
     try {
-        const result  = await Poll.find().exec()
+        const result = await Poll.find().exec()
         res.status(200).json({
             data: result,
             custom: "Fetched all polls!!"
@@ -53,7 +53,7 @@ const getAllPolls = async (req, res, next) => {
 const getAllPublicPolls = async (req, res, next) => {
     try {
         const result = await Poll.find({ belongsToCommunity: false });
-        
+
         res.status(200).json({
             data: result,
             custom: "Fetched all public polls!!"
@@ -67,5 +67,23 @@ const getAllPublicPolls = async (req, res, next) => {
     }
 };
 
+const getAllPollsByCommunityID = async (req, res, next) => {
+    try {
+        const { communityID } = req.body;
+        const result = await Poll.find({ communityID: communityID })
 
-module.exports = { postPoll, getAllPolls, getAllPublicPolls };
+        res.status(200).json({
+            data: result,
+            custom: "Fetched all polls of the community ID!!"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching all polls of the community ID"
+        });
+    }
+};
+
+
+module.exports = { postPoll, getAllPolls, getAllPublicPolls, getAllPollsByCommunityID };
