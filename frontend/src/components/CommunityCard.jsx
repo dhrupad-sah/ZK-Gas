@@ -42,7 +42,7 @@ export default function CommunityCard({ community }) {
         return hex;
     };
 
-    const id = useSelector((state) => state.user.userId)
+    const userMongoID = useSelector((state) => state.user.userId)
 
     const handleJoinCommunity = async () => {
         const id = toast.loading("Please wait verifying your proof");
@@ -86,7 +86,7 @@ export default function CommunityCard({ community }) {
             })
         if (res.status === 200) {
             const user = {
-                userID: id,
+                userID: userMongoID,
                 communityID: community.communityId
             }
             try {
