@@ -23,7 +23,7 @@ import {
 export default function Profile() {
     const { wallet, hasProvider, isConnecting } = useMetaMask();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+    
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
             <div className="profiler" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
