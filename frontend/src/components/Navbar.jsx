@@ -10,10 +10,14 @@ import { useState, useEffect } from "react";
 import FactoryABI from "../../ABI/Factory.json";
 import { ethers } from "ethers";
 import { useAuth } from "../context/auth.js";
+import { useDispatch } from "react-redux";
+import axios from '../api/axiosConfig.js'
+import { login } from "../store/UserSlice/UserSlice.jsx";
 import { useLocation } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";    
 
 export default function NavbarComponent() {
+    const dispatch = useDispatch();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
 
@@ -91,12 +95,14 @@ export default function NavbarComponent() {
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
-                console.log("Navbar");
-                setAuth({
-                    accountAddress: accounts[0], FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider, signer: signer
-                });
+                const user = {
+                    metaMaskID: accounts[0]
+                }
+                const result = await axios.post('/user/getMongoDbIdUsingMetamask', user)
+                dispatch(login(result.data.data))
             }
         }
+
         getProvider()
 
         return () => {
