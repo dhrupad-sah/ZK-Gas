@@ -21,7 +21,7 @@ const getAllCommentsOfUser = async (req, res, next) => {
     try {
         const { userID } = req.body;
         const result = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("userComments")
-        
+
         res.status(200).json({
             data: result,
             custom: "Fetched all comments of the user!!"
@@ -31,6 +31,46 @@ const getAllCommentsOfUser = async (req, res, next) => {
         console.log(err);
         res.status(403).json({
             custom: "Error in fetching all comments of the user"
+        });
+    }
+};
+
+async function createUserIfMetaMaskNotFound(metaMaskId) {
+    const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        metaMaskId: metaMaskId,
+        userComments: [],
+        communityID: [],
+    });
+
+    try {
+        const result = await user.save().then(callBack => {
+            console.log("User Created")
+            console.log(callBack._id);
+            return callBack._id
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const getMongoIDUsingMetamaskID = async (req, res, next) => {
+    try {
+        const { metaMaskID } = req.body;
+        const result = await User.find({ metaMaskId: metaMaskID }).select("_id");
+
+        if (result.length === 0) {
+            const _id = createUserIfMetaMaskNotFound(metaMaskID)
+        } else {
+            console.log(result)
+            res.status(200).json({
+                data: result[0]._id
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching _id of the user"
         });
     }
 };
@@ -61,28 +101,24 @@ const addCommentForUser = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
     try {
-        const { metaMaskId, commentID, communityID } = req.body
+        const { metaMaskId } = req.body;
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             metaMaskId: metaMaskId,
-            commentID: commentID,
-            communityID: communityID,
-        })
-
-        const result = user.save()
+            userComments: [],
+            communityID: [],
+        });
+        await user.save();
         console.log("User got created");
-
         res.status(200).json({
             custom: "User Created!!"
-        })
-
+        });
     } catch (err) {
         console.log(err);
-        res.status(403)
-            .json({
-                custom: "Error in creating the User"
-            });
+        res.status(403).json({
+            custom: "Error in creating the User"
+        });
     }
-}
+};
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser };
+module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID };
