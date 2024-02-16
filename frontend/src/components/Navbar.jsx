@@ -10,8 +10,12 @@ import { useState, useEffect } from "react";
 import FactoryABI from "../../ABI/Factory.json";
 import { ethers } from "ethers";
 import { useAuth } from "../context/auth.js";
+import { useLocation } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 
 export default function NavbarComponent() {
+    const location = useLocation();
+    const route = location.pathname;
     const { auth, setAuth } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hasProvider, setHasProvider] = useState(null)
@@ -157,7 +161,13 @@ export default function NavbarComponent() {
             </NavbarContent>
 
             <NavbarContent justify="end">
-                <NavbarItem style={{ marginRight: "-30%" }}>
+                <NavbarItem className="flex gap-3" style={{ marginRight: "-30%", }}>
+                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus/>}>
+                        Community
+                    </Button>}
+                    {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus/>}>
+                        Public Poll
+                    </Button>}
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
                         <Image
                             src={Metamask}
