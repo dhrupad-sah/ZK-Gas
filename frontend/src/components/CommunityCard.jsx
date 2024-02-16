@@ -40,7 +40,19 @@ export default function CommunityCard({ community }) {
     };
 
     const handleJoinCommunity = async () => {
-        const domain = "0x" + stringToHex(communityRules.email);
+        const email = communityRules.email;
+        const indexAt = email.indexOf('@');
+        console.log(indexAt);
+        let indexDot = email.length;
+        for (var i = indexAt; i < email.length; i++) {
+            if (email[i] == '.') {
+                indexDot = i;
+                break;
+            }
+        }
+        console.log(email);
+        let _domain = email.slice(indexAt + 1, indexDot);
+        const domain = "0x" + stringToHex(_domain);
         const region = "0x" + stringToHex(communityRules.region);
         const gender = "0x" + stringToHex(communityRules.gender);
         console.log(domain, region, gender);
