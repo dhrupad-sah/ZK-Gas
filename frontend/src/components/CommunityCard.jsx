@@ -14,18 +14,19 @@ export default function CommunityCard({ community }) {
                         width={40}
                         isBordered
                         color="primary"
+
                     />
                     <div className="flex flex-col ">
-                        <p className="text-base ">{ community.communityName }</p>
+                        <p className="text-base ">{community.communityName}</p>
                         {/* <p className="text-small text-default-500">nextui.org</p> */}
                     </div>
-                    <Chip variant="bordered" startContent={<FaHashtag/>}>
-                        {community.communityId.substring(0,4)}
+                    <Chip variant="bordered" startContent={<FaHashtag />}>
+                        {community.communityId}
                     </Chip>
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                    <p>{ community.communityDescription }</p>
+                    <p>{community.communityDescription}</p>
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">

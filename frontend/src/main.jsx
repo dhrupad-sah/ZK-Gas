@@ -7,8 +7,8 @@ import AuthProvider from './providers/auth.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <NextUIProvider>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
+            <AuthProvider>
+                <App />
+            </AuthProvider>
     </NextUIProvider>
 )
