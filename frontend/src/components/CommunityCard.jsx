@@ -74,7 +74,7 @@ export default function CommunityCard({ community }) {
         console.log(res);
         res.status === 200 ?
             toast.update(id, {
-                render: "Proof verified Successfully! You are now a part of the community!",
+                render: "Proof verified Successfully!",
                 type: "success",
                 isLoading: false,
                 autoClose: 4000
@@ -96,25 +96,28 @@ export default function CommunityCard({ community }) {
                 console.log(err)
             }
         }
+
     }
     console.log(route);
 
     return (
         <>
             <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
-                <CardHeader className="flex gap-9 ">
-                    <Avatar
-                        alt="community-card"
-                        height={40}
-                        radius="sm"
-                        name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
-                        width={40}
-                        isBordered
-                        color="primary"
-                    />
-                    <div className="flex flex-col ">
-                        <p className="text-base ">{community.communityName}</p>
-                        {/* <p className="text-small text-default-500">nextui.org</p> */}
+                <CardHeader className="flex justify-between">
+                    <div className="flex gap-9 items-center" >
+                        <Avatar
+                            alt="community-card"
+                            height={40}
+                            radius="sm"
+                            name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
+                            width={40}
+                            isBordered
+                            color="primary"
+                        />
+                        <div className="flex flex-col ">
+                            <p className="text-base ">{community.communityName}</p>
+                            {/* <p className="text-small text-default-500">nextui.org</p> */}
+                        </div>
                     </div>
                     <Chip variant="bordered" startContent={<FaHashtag />}>
                         {community.communityId}
@@ -122,7 +125,7 @@ export default function CommunityCard({ community }) {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                    <p>{community.communityDescription}</p>
+                    <p>{community.communityDescription}</p> 
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
@@ -131,8 +134,8 @@ export default function CommunityCard({ community }) {
                             View
                         </Button>
                     </Link>
-                    <Button color="success" variant="flat" size="md" onPress={onOpen}>
-                        Join
+                    <Button color={community.joined? "danger":"success"} variant="flat" size="md" onPress={onOpen}  isDisabled={community.joined} style={{ cursor: community.joined? "not-allowed": "pointer", pointerEvents: community.joined?"all": ""}} >
+                        {community.joined? "Joined" : "Join"}
                     </Button>
                 </CardFooter>
                 <Modal
