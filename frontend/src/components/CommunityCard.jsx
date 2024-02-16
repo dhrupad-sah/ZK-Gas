@@ -1,8 +1,6 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Avatar, Chip } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
-import FactoryABI from "../../ABI/Factory.json";
-import { ethers } from "ethers";
 import { Link } from "react-router-dom";
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";

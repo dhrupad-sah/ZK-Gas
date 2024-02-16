@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PollCard from "./PollCard";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody, ScrollShadow } from "@nextui-org/react";
 import { MdOutlinePublic } from "react-icons/md";
 import axios from "../../api/axiosConfig.js"
 import { RiChatPrivateLine, RiGitRepositoryPrivateLine } from "react-icons/ri";
@@ -29,9 +29,11 @@ export default function MainPoll() {
                 } className="p-2">
                     <Card >
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {allPolls.map((poll) => (
-                                !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
-                            ))}
+                            <ScrollShadow hideScrollBar className="w-[400px] h-[750px] flex-col items-center justify-center">
+                                {allPolls.map((poll) => (
+                                    !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
+                                ))}
+                            </ScrollShadow>
                         </CardBody>
                     </Card>
                 </Tab>
@@ -39,9 +41,9 @@ export default function MainPoll() {
                 } className="p-2">
                     <Card >
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {allPolls.map((poll, index) => (
-                                poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
-                            ))}
+                                {allPolls.map((poll, index) => (
+                                    poll.belongsToCommunity && <PollCard key={index} pollContent={poll} />
+                                ))}
                         </CardBody>
                     </Card>
                 </Tab>
