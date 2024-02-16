@@ -1,4 +1,4 @@
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, Image, NavbarMenu, NavbarMenuItem } from "@nextui-org/react"
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Select, SelectItem, Link, NavbarMenuToggle, Image, Input, NavbarMenu, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, NavbarMenuItem, useDisclosure, Textarea } from "@nextui-org/react"
 import { AcmeLogo } from "../assets/AcmeLogo.jsx"
 import { formatBalance, formatChainAsNum } from '../utils';
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -10,8 +10,17 @@ import { useState, useEffect } from "react";
 import FactoryABI from "../../ABI/Factory.json";
 import { ethers } from "ethers";
 import { useAuth } from "../context/auth.js";
+import { useDispatch } from "react-redux";
+import axios from '../api/axiosConfig.js'
+import { login } from "../store/UserSlice/UserSlice.jsx";
+import { useLocation } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";    
 
 export default function NavbarComponent() {
+    const dispatch = useDispatch();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const location = useLocation();
+    const route = location.pathname;
     const { auth, setAuth } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hasProvider, setHasProvider] = useState(null)
@@ -21,6 +30,39 @@ export default function NavbarComponent() {
     const [isConnecting, setIsConnecting] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [question, setQuestion] = useState("");
+    const [option1, setOption1] = useState("");
+    const [option2, setOption2] = useState("");
+    const [option3, setOption3] = useState("");
+
+    const [communityRules, setCommunityRules] = useState({
+        domain: "",
+        region: "",
+        gender: ""
+    });
+
+    const QUESTION_LIMIT = 30;
+    const handleQuestionChange = (event) => {
+        const updateQuestion = event.target.value.slice(0, QUESTION_LIMIT);
+        setQuestion(updateQuestion);
+    };
+
+    const OPTION_LIMIT = 15;
+    const handleOption1Change = (event) => {
+        const updateOption1 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption1(updateOption1);
+    };
+
+    const handleOption2Change = (event) => {
+        const updateOption2 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption2(updateOption2);
+    };
+
+    const handleOption3Change = (event) => {
+        const updateOption3 = event.target.value.slice(0, OPTION_LIMIT);
+        setOption3(updateOption3);
+    };
 
     useEffect(() => {
         const refreshAccounts = (accounts) => {
@@ -44,16 +86,17 @@ export default function NavbarComponent() {
                 const accounts = await window.ethereum.request(
                     { method: 'eth_requestAccounts' }
                 )
-                const signer = _provider.getSigner();
                 refreshAccounts(accounts)
                 window.ethereum.on('accountsChanged', refreshAccounts)
                 window.ethereum.on("chainChanged", refreshChain)
-                console.log("Navbar");
-                setAuth({
-                    accountAddress: accounts[0], FactoryContract: new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer), provider: _provider, signer: signer
-                });
+                const user = {
+                    metaMaskID: accounts[0]
+                }
+                const result = await axios.post('/user/getMongoDbIdUsingMetamask', user)
+                dispatch(login(result.data.data))
             }
         }
+
         getProvider()
 
         return () => {
@@ -89,7 +132,12 @@ export default function NavbarComponent() {
         setIsConnecting(false)
     }
 
-    const disableConnect = wallet && isConnecting
+    const handleRulesInput = (e) => {
+        setCommunityRules({
+            ...communityRules,
+            [e.target.name]: e.target.value
+        });
+    }
 
     const menuItems = [
         "Communities",
@@ -157,7 +205,13 @@ export default function NavbarComponent() {
             </NavbarContent>
 
             <NavbarContent justify="end">
-                <NavbarItem style={{ marginRight: "-30%" }}>
+                <NavbarItem className="flex gap-3" style={{ marginRight: "-30%", }}>
+                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />}>
+                        Community
+                    </Button>}
+                    {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onOpen}>
+                        Public Poll
+                    </Button>}
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
                         <Image
                             src={Metamask}
@@ -184,6 +238,113 @@ export default function NavbarComponent() {
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Create a Public Poll</ModalHeader>
+                            <ModalBody>
+                                <Textarea
+                                    autoFocus
+                                    label="Question"
+                                    placeholder="Enter question (max 50 characters)"
+                                    value={question}
+                                    onChange={handleQuestionChange}
+                                />
+                                {question.length >= QUESTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Question must be less than 30 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option1"
+                                    placeholder="Enter first option (max 15 characters)"
+                                    value={option1}
+                                    onChange={handleOption1Change}
+                                />
+                                {option1.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option2"
+                                    placeholder="Enter second option (max 15 characters)"
+                                    value={option2}
+                                    onChange={handleOption2Change}
+                                />
+                                {option2.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option3"
+                                    placeholder="Enter three option (max 15 characters)"
+                                    value={option3}
+                                    onChange={handleOption3Change}
+                                />
+                                {option3.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Domain"
+                                    placeholder="Enter your domain"
+                                    name="domain"
+                                    onChange={handleRulesInput}
+                                />
+                                <Select
+                                    label="Select region"
+                                    name="region"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="asia-pacific" key="AP">
+                                        Asia Pacific
+                                    </SelectItem>
+                                    <SelectItem value="north-america" key="NA">
+                                        North America
+                                    </SelectItem>
+                                    <SelectItem value="europe" key="EU">
+                                        Europe
+                                    </SelectItem>
+                                    <SelectItem value="middle-east" key="ME">
+                                        Middle East
+                                    </SelectItem>
+                                    <SelectItem value="all" key="AL">
+                                        All
+                                    </SelectItem>
+                                </Select>
+                                <Select
+                                    label="Select gender"
+                                    name="gender"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="male" key="M">
+                                        Male
+                                    </SelectItem>
+                                    <SelectItem value="female" key="F">
+                                        Female
+                                    </SelectItem>
+                                    <SelectItem value="both" key="MF">
+                                        Both
+                                    </SelectItem>
+                                </Select>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" onPress={onClose}>
+                                    Create
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </Navbar>
     )
 }

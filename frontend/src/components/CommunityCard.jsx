@@ -6,7 +6,8 @@ import { ethers } from "ethers";
 import { Link } from "react-router-dom";
 import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -40,6 +41,7 @@ export default function CommunityCard({ community }) {
     };
 
     const handleJoinCommunity = async () => {
+        const id = toast.loading("Please wait verifying your proof");
         const email = communityRules.email;
         const indexAt = email.indexOf('@');
         console.log(indexAt);
@@ -63,10 +65,23 @@ export default function CommunityCard({ community }) {
                 "Content-Type": "application/json"
             }
         });
-        console.log(res);
+        const data = await res.json();
+        console.log(res.json());
+        console.log(typeof data);
+        data === true ?
+            toast.update(id, {
+                render: "Proof verified Successfully! You are now a part of the community!",
+                type: "success",
+                isLoading: false,
+                autoClose: 4000
+            }) : toast.update(id, {
+                render: "Proof verification failed! Please try again!",
+                type: "error",
+                isLoading: false,
+                autoClose: 4000
+            })
     }
     console.log(route);
-
 
     return (
         <>
@@ -166,6 +181,9 @@ export default function CommunityCard({ community }) {
                         )}
                     </ModalContent>
                 </Modal>
+                <ToastContainer
+                    position="top-center"
+                />
             </Card>
         </>
     )
