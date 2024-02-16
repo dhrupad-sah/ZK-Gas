@@ -1,16 +1,17 @@
-*{
+* {
     margin: 0px;
-    padding:0px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
 body {
     font-family: sans-serif;
     background: #f0f5ff;
-    height: 100vh;
+    width: 100vw;
+    min-height: 100vh;
 }
 
-.poll{
+.poll {
     width: 400px;
     background: #fff;
     border-radius: 10px;
@@ -25,7 +26,7 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-.poll .answers{
+.poll .answers {
     padding: 20px 20px 10px;
 }
 
@@ -66,7 +67,8 @@ body {
     background: #ccd8f1;
     transition: width 300ms ease-in-out;
 }
-.answer .text-answers{
+
+.answer .text-answers {
     z-index: 1;
     position: relative;
 }
