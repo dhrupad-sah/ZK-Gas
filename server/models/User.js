@@ -5,6 +5,7 @@ const User = new mongoose.Schema({
     metaMaskId: { type: String, required: true },
     userComments: [{ type: String, required: false }],
     communityID: [{ type: Number, required: false }],
+    verifiedPolls: [{ type: Number, required: false }],
 })
 
 module.exports = mongoose.model('User', User)
