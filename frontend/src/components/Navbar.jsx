@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
 
     const location = useLocation();
@@ -44,7 +44,7 @@ export default function NavbarComponent() {
     const [option3, setOption3] = useState("");
 
     async function handlePollSubmit() {
-        console.log("hello helo");
+        const id = toast.loading("Please wait creating your community");
         if (!question || !option1 || !option2 || !option3) {
             toast.error("Field's can't be empty!!", {
                 position: "top-center",
@@ -75,25 +75,27 @@ export default function NavbarComponent() {
                 },
                 totalOptionConsensus: 0
             }
-            try {
-                const result = axios.post('/poll/postPoll', newPoll)
-                const data_ID = await result;
-                console.log("the result poll id would be : ", data_ID.data.data);
-                toast.success("Poll Posted Successfully!!", {
-                    position: "top-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                })
-                onClose();
-            } catch (err) {
-                console.log(err)
-            }
-
+            const result = axios.post('/poll/postPoll', newPoll)
+            const data_ID = await result;
+            console.log("the result poll id would be : ", data_ID.data.data);
+            const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = _provider.getSigner();
+            const contratFactory = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            console.log(contratFactory);
+            const poll = await contratFactory.createPoll(
+                data_ID.data.data,
+                communityRules.domain,
+                communityRules.region,
+                communityRules.gender
+            );
+            await poll.wait();
+            toast.update(id, {
+                render: "Community created successfully!",
+                type: "success",
+                isLoading: false,
+                autoClose: 4000
+            })
+            onClose()
         }
     }
 
@@ -257,7 +259,7 @@ export default function NavbarComponent() {
     //         const signer = _provider.getSigner();
     //         const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
     //         const poll = await factoryContract.createPoll(
-                
+
     //             communityRules.domain,
     //             communityRules.region,
     //         )
