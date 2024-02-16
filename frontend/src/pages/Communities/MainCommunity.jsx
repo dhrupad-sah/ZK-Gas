@@ -7,6 +7,8 @@ import ZKCommunity from "../../../ABI/ZKCommunity.json";
 import { ethers } from "ethers";
 import { useMetaMask } from "../../hooks/useMetamask";
 import FactoryABI from "../../../ABI/Factory.json";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function MainCommunity() {
     const { wallet } = useMetaMask();
@@ -200,6 +202,7 @@ export default function MainCommunity() {
                     )}
                 </ModalContent>
             </Modal>
+            <ToastContainer />
         </div>
     );
 }
