@@ -1,0 +1,47 @@
+/* Add this CSS to your existing stylesheet or create a new one */
+.container {
+    font-family: Arial, sans-serif;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
