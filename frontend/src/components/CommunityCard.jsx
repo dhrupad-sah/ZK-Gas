@@ -66,9 +66,9 @@ export default function CommunityCard({ community }) {
             }
         });
         const data = await res.json();
-        console.log(res.json());
-        console.log(typeof data);
-        data === true ?
+        // console.log(res.json());
+        console.log(res);
+        res.status === 200 ?
             toast.update(id, {
                 render: "Proof verified Successfully! You are now a part of the community!",
                 type: "success",
