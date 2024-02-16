@@ -15,6 +15,8 @@ import { FaPlus } from "react-icons/fa";
 
 export default function NavbarComponent() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
+
     const location = useLocation();
     const route = location.pathname;
     const { auth, setAuth } = useAuth();
@@ -26,6 +28,9 @@ export default function NavbarComponent() {
     const [isConnecting, setIsConnecting] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
 
     const [question, setQuestion] = useState("");
     const [option1, setOption1] = useState("");
@@ -134,6 +139,37 @@ export default function NavbarComponent() {
         });
     }
 
+    const handleCreateCommunity = async () => {
+        const domain = communityRules.domain;
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        if (_provider) {
+            const signer = _provider.getSigner();
+            const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            console.log(factoryContract);
+            const community = await factoryContract.createCommunity(
+                domain,
+                communityRules.region,
+                communityRules.gender,
+                name,
+                description
+            );
+            console.log(community);
+        }
+    }
+
+    const NAME_LIMIT = 20;
+    const DESCRIPTION_LIMIT = 100;
+
+    const handleNameChange = (event) => {
+        const updatedName = event.target.value.slice(0, NAME_LIMIT);
+        setName(updatedName);
+    };
+
+    const handleDescriptionChange = (event) => {
+        const updatedDescription = event.target.value.slice(0, DESCRIPTION_LIMIT);
+        setDescription(updatedDescription);
+    };
+
     const menuItems = [
         "Communities",
         "Polls",
@@ -201,7 +237,7 @@ export default function NavbarComponent() {
 
             <NavbarContent justify="end">
                 <NavbarItem className="flex gap-3" style={{ marginRight: "-30%", }}>
-                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />}>
+                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" onClick={onCommunityOpen} startContent={<FaPlus />}>
                         Community
                     </Button>}
                     {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onOpen}>
@@ -333,6 +369,91 @@ export default function NavbarComponent() {
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" onPress={onClose}>
+                                    Create
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+            <Modal
+                isOpen={isCommunityOpen}
+                onOpenChange={onCommunityOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Add Community Details</ModalHeader>
+                            <ModalBody>
+                                <Input
+                                    autoFocus
+                                    label="Community Name"
+                                    placeholder="Enter name (max 20 characters)"
+                                    value={name}
+                                    onChange={handleNameChange}
+                                />
+                                {name.length >= NAME_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Name must be less than 20 characters.
+                                    </div>
+                                )}
+                                <Textarea
+                                    label="Community Description"
+                                    placeholder="Enter description (max 100 characters)"
+                                    onChange={handleDescriptionChange}
+                                    value={description}
+                                />
+                                {description.length >= DESCRIPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Description must be less than 100 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Domain"
+                                    placeholder="Enter your domain"
+                                    name="domain"
+                                    onChange={handleRulesInput}
+                                />
+                                <Select
+                                    label="Select region"
+                                    name="region"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="asia-pacific" key="AP">
+                                        Asia Pacific
+                                    </SelectItem>
+                                    <SelectItem value="north-america" key="NA">
+                                        North America
+                                    </SelectItem>
+                                    <SelectItem value="europe" key="EU">
+                                        Europe
+                                    </SelectItem>
+                                    <SelectItem value="middle-east" key="ME">
+                                        Middle East
+                                    </SelectItem>
+                                    <SelectItem value="all" key="AL">
+                                        All
+                                    </SelectItem>
+                                </Select>
+                                <Select
+                                    label="Select gender"
+                                    name="gender"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="male" key="M">
+                                        Male
+                                    </SelectItem>
+                                    <SelectItem value="female" key="F">
+                                        Female
+                                    </SelectItem>
+                                    <SelectItem value="both" key="MF">
+                                        Both
+                                    </SelectItem>
+                                </Select>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button onClick={handleCreateCommunity} color="primary" onPress={onClose}>
                                     Create
                                 </Button>
                             </ModalFooter>

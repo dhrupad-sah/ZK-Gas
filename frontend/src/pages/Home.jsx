@@ -1,5 +1,4 @@
 import { Image, Divider, Card, CardHeader, CardBody, CardFooter, Link } from "@nextui-org/react";
-import { AcmeLogo } from "../assets/AcmeLogo";
 import AnonymousGhost from "../assets/anonymous.png";
 import "./styles/Home.css"
 

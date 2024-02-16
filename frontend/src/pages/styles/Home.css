@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Protest+Strike&display=swap');
 
 .fontface {
-    font-family: "Protest Strike", sans-serif;
+    font-family: "Archivo", sans-serif;
+    font-optical-sizing: auto;
 }
