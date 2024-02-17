@@ -116,7 +116,6 @@ export default function CommunityCard({ community }) {
         }
 
     }
-
     console.log(community)
 
     // const [domain, setDomain] = useState();
