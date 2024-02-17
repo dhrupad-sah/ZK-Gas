@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import './poll.css';
 import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
-import axios from "axios";
+import axios from "../../api/axiosConfig.js";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
