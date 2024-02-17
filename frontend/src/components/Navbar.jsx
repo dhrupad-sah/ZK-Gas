@@ -8,6 +8,7 @@ import { BsPeople } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 import { useState, useEffect } from "react";
 import FactoryABI from "../../ABI/Factory.json";
+import ZKCommunityABI from "../../ABI/ZKCommunity.json";
 import { ethers } from "ethers";
 import { useAuth } from "../context/auth.js";
 import { useDispatch } from "react-redux";
@@ -87,10 +88,10 @@ export default function NavbarComponent() {
             const contratFactory = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
             console.log(contratFactory);
             const poll = await contratFactory.createPoll(
-                data_ID.data.data,
                 communityRules.domain,
                 communityRules.region,
-                communityRules.gender
+                communityRules.gender,
+                data_ID.data.data
             );
             await poll.wait();
             toast.update(id, {
@@ -280,6 +281,15 @@ export default function NavbarComponent() {
                 description
             );
             await community.wait();
+            console.log(community);
+            const getDeployedAddress = await factoryContract.getLastCommunityAddress();
+            console.log(getDeployedAddress);
+            const communityContract = new ethers.Contract(getDeployedAddress, ZKCommunityABI.abi, signer);
+            console.log(communityContract);
+            const communityIdBigNumber = await communityContract.getCommunityId();
+            console.log(communityIdBigNumber);
+            const communityId = communityIdBigNumber.toNumber();
+            console.log(communityId);
         }
         toast.update(id, {
             render: "Community created successfully!",

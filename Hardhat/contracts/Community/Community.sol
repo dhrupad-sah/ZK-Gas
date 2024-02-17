@@ -41,6 +41,10 @@ contract ZKCommunity {
         return communityName;
     }
 
+    function getCommunityId() external view returns(uint256){
+        return communityId;
+    }
+
     function getCommunityDescription() external view returns(string memory){
         return communityDescription;
     }
