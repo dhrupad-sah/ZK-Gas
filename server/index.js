@@ -242,7 +242,7 @@ app.post("/joinPoll", async (req, res) => {
 
         const pubArray = [domainPub, regionPub, genderPub];
 
-        const bool = await communityContract.functions.joinPoll(proofHex, pubArray);
+        const bool = await PollContract.functions.joinPoll(proofHex, pubArray);
 
         res.send(bool);
 
