@@ -1,13 +1,12 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Avatar, Chip } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Divider, Avatar, Chip, LinkIcon } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+import { Button, useDisclosure, Link, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../api/axiosConfig.js';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -127,134 +126,134 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
-                <CardHeader className="flex justify-between">
-                    <div className="flex gap-9 items-center" >
-                        <Avatar
-                            alt="community-card"
-                            height={40}
-                            radius="sm"
-                            name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
-                            width={40}
-                            isBordered
-                            color="primary"
-                        />
-                        <div className="flex flex-col ">
-                            <p className="text-base ">{community.communityName}</p>
-                            {/* <p className="text-small text-default-500">nextui.org</p> */}
+                <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
+                    <CardHeader className="flex justify-between" color="foreground" as={Link} href={`/communities/${community.communityId}`}>
+                        <div className="flex gap-9 items-center" >
+                            <Avatar
+                                alt="community-card"
+                                height={40}
+                                radius="sm"
+                                name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
+                                width={40}
+                                isBordered
+                                color="primary"
+                            />
+                            <div className="flex flex-col ">
+                                <p className="text-base ">{community.communityName}</p>
+                                {/* <p className="text-small text-default-500">nextui.org</p> */}
+                            </div>
                         </div>
-                    </div>
-                    <Chip variant="bordered" startContent={<FaHashtag />}>
-                        {community.communityId}
-                    </Chip>
-                </CardHeader>
-                <Divider />
-                <CardBody>
-                    <p>{community.communityDescription}</p>
-                </CardBody>
-                <Divider />
-                <CardFooter className="flex justify-between">
-                    <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
-                        Rules
-                    </Button>
-                    <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        {community.joined ? "Joined" : "Join"}
-                    </Button>
-                </CardFooter>
-                <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
-                    <ModalContent>
-                        {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
-                                <ModalBody>
-                                    <Accordion>
-                                        <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
-                                            <p className="font-bold">{community.domainPub}</p>
-                                        </AccordionItem>
-                                        <AccordionItem key="2" aria-label="Accordion 1" title="Region">
-                                            <p className="font-bold">{community.regionPub==="NA"?"North America":community.regionPub==="ME"?"Middle East":community.regionPub==="AP"?"Asia Pacific":"Europe"}</p>
-                                        </AccordionItem>
-                                        <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
-                                            <p className="font-bold">{community.genderPub==="M"?"Male":community.genderPub==="F"?"Female":"Both"}</p>
-                                        </AccordionItem>
-                                    </Accordion>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color="danger" variant="light" onPress={onClose}>
-                                        Close
-                                    </Button>
-                                </ModalFooter>
-                            </>
-                        )}
-                    </ModalContent>
-                </Modal>
+                        <Chip variant="bordered" startContent={<FaHashtag />}>
+                            {community.communityId}
+                        </Chip>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody color="foreground" as={Link} href={`/communities/${community.communityId}`}>
+                        <p>{community.communityDescription}</p>
+                    </CardBody>
+                    <Divider />
+                    <CardFooter className="flex justify-between">
+                        <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
+                            Rules
+                        </Button>
+                        <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                            {community.joined ? "Joined" : "Join"}
+                        </Button>
+                    </CardFooter>
+                    <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
+                                    <ModalBody>
+                                        <Accordion>
+                                            <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
+                                                <p className="font-bold">{community.domainPub}</p>
+                                            </AccordionItem>
+                                            <AccordionItem key="2" aria-label="Accordion 1" title="Region">
+                                                <p className="font-bold">{community.regionPub === "NA" ? "North America" : community.regionPub === "ME" ? "Middle East" : community.regionPub === "AP" ? "Asia Pacific" : "Europe"}</p>
+                                            </AccordionItem>
+                                            <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
+                                                <p className="font-bold">{community.genderPub === "M" ? "Male" : community.genderPub === "F" ? "Female" : "Both"}</p>
+                                            </AccordionItem>
+                                        </Accordion>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="danger" variant="light" onPress={onClose}>
+                                            Close
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
 
-                <Modal
-                    isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    placement="top-center"
-                >
-                    <ModalContent>
-                        {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1">Add Community Details</ModalHeader>
-                                <ModalBody>
-                                    <Input
-                                        label="Email"
-                                        placeholder="Enter your email"
-                                        name="email"
-                                        onChange={handleRulesInput}
-                                    />
-                                    <Select
-                                        label="Select region"
-                                        name="region"
-                                        onChange={handleRulesInput}
-                                    >
-                                        <SelectItem value="asia-pacific" key="AP">
-                                            Asia Pacific
-                                        </SelectItem>
-                                        <SelectItem value="north-america" key="NA">
-                                            North America
-                                        </SelectItem>
-                                        <SelectItem value="europe" key="EU">
-                                            Europe
-                                        </SelectItem>
-                                        <SelectItem value="middle-east" key="ME">
-                                            Middle East
-                                        </SelectItem>
-                                        <SelectItem value="all" key="AL">
-                                            All
-                                        </SelectItem>
-                                    </Select>
-                                    <Select
-                                        label="Select gender"
-                                        name="gender"
-                                        onChange={handleRulesInput}
-                                    >
-                                        <SelectItem value="male" key="M">
-                                            Male
-                                        </SelectItem>
-                                        <SelectItem value="female" key="F">
-                                            Female
-                                        </SelectItem>
-                                        <SelectItem value="both" key="MF">
-                                            Both
-                                        </SelectItem>
-                                    </Select>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button onClick={handleJoinCommunity} color="primary" onPress={onClose}>
-                                        Join Community
-                                    </Button>
-                                </ModalFooter>
-                            </>
-                        )}
-                    </ModalContent>
-                </Modal>
-                <ToastContainer
-                    position="top-center"
-                />
-            </Card>
+                    <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        placement="top-center"
+                    >
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">Add Community Details</ModalHeader>
+                                    <ModalBody>
+                                        <Input
+                                            label="Email"
+                                            placeholder="Enter your email"
+                                            name="email"
+                                            onChange={handleRulesInput}
+                                        />
+                                        <Select
+                                            label="Select region"
+                                            name="region"
+                                            onChange={handleRulesInput}
+                                        >
+                                            <SelectItem value="asia-pacific" key="AP">
+                                                Asia Pacific
+                                            </SelectItem>
+                                            <SelectItem value="north-america" key="NA">
+                                                North America
+                                            </SelectItem>
+                                            <SelectItem value="europe" key="EU">
+                                                Europe
+                                            </SelectItem>
+                                            <SelectItem value="middle-east" key="ME">
+                                                Middle East
+                                            </SelectItem>
+                                            <SelectItem value="all" key="AL">
+                                                All
+                                            </SelectItem>
+                                        </Select>
+                                        <Select
+                                            label="Select gender"
+                                            name="gender"
+                                            onChange={handleRulesInput}
+                                        >
+                                            <SelectItem value="male" key="M">
+                                                Male
+                                            </SelectItem>
+                                            <SelectItem value="female" key="F">
+                                                Female
+                                            </SelectItem>
+                                            <SelectItem value="both" key="MF">
+                                                Both
+                                            </SelectItem>
+                                        </Select>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button onClick={handleJoinCommunity} color="primary" onPress={onClose}>
+                                            Join Community
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                    <ToastContainer
+                        position="top-center"
+                    />
+                </Card>
         </>
     )
 }

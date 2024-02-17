@@ -1,9 +1,22 @@
 import { useState } from "react";
-import { Button } from "@nextui-org/react";
 import axios from '../../api/axiosConfig.js'
 import './poll.css';
+import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import factoryContractABI from "../../../ABI/Factory.json";
+import { ethers } from "ethers";
 
 export default function PollCard({ pollContent }) {
+    const [pollRules, setPollRules] = useState({
+        email: "",
+        region: "",
+        gender: ""
+    });
+    // console.log(pollContent);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
+
     const [poll, setPoll] = useState({
         itemId: pollContent?._id,
         question: pollContent.pollTitle,
@@ -30,7 +43,7 @@ export default function PollCard({ pollContent }) {
         try {
             document.querySelector(".poll .answers .answer.selected").classList.remove("selected");
         } catch (error) {
-
+            console.log(error);
         }
 
         document.querySelector(`#answer-${poll.itemId}-${index}`).classList.add("selected");
@@ -59,15 +72,15 @@ export default function PollCard({ pollContent }) {
         try {
             const updatedPoll = {
                 _id: poll.itemId,
-                option1:{
+                option1: {
                     optionName: poll.answers[0],
                     optionConsensus: poll.answerWeight[0]
                 },
-                option2:{
+                option2: {
                     optionName: poll.answers[1],
                     optionConsensus: poll.answerWeight[1]
                 },
-                option3:{
+                option3: {
                     optionName: poll.answers[2],
                     optionConsensus: poll.answerWeight[2]
                 },
@@ -78,6 +91,73 @@ export default function PollCard({ pollContent }) {
         } catch (err) {
             console.log("the error in updating the database will be: ", err)
         }
+    }
+
+    const handleRulesInput = (e) => {
+        setPollRules({
+            ...pollRules,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const stringToHex = (str) => {
+        let hex = '';
+        for (let i = 0; i < str.length; i++) {
+            const charCode = str.charCodeAt(i);
+            const hexValue = charCode.toString(16);
+            hex += hexValue.padStart(2, '0');
+        }
+        return hex;
+    };
+
+    const handleJoinPoll = async () => {
+        const id = toast.loading("Please wait verifying your proof");
+        const email = pollRules.email;
+        const indexAt = email.indexOf('@');
+        console.log(indexAt);
+        let indexDot = email.length;
+        for (var i = indexAt; i < email.length; i++) {
+            if (email[i] == '.') {
+                indexDot = i;
+                break;
+            }
+        }
+        console.log(email);
+        let _domain = email.slice(indexAt + 1, indexDot);
+        const domain = "0x" + stringToHex(_domain);
+        const region = "0x" + stringToHex(pollRules.region);
+        const gender = "0x" + stringToHex(pollRules.gender);
+        console.log(domain, region, gender)
+        const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        console.log(_provider);
+        const signer = _provider.getSigner();
+        console.log(signer);
+        const factoryContract = new ethers.Contract(factoryContractABI.address, factoryContractABI.abi, signer);
+        console.log(factoryContract);
+        console.log(pollContent._id);
+        const bigNumberId = await factoryContract.getIdFromMongoId(pollContent._id);
+        const pollId = bigNumberId.toString();
+        console.log(pollId);
+        const res = await fetch("http://localhost:3000/joinPoll", {
+            method: "POST",
+            body: JSON.stringify({ pollId, domain, region, gender }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        console.log(res);
+        res.status === 200 ?
+            toast.update(id, {
+                render: "Proof verified Successfully!",
+                type: "success",
+                isLoading: false,
+                autoClose: 4000
+            }) : toast.update(id, {
+                render: "Proof verification failed! Please try again!",
+                type: "error",
+                isLoading: false,
+                autoClose: 4000
+            });
     }
 
     return (
@@ -96,10 +176,99 @@ export default function PollCard({ pollContent }) {
                 <Button color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>
-                <Button color="success" variant="flat" size="md" className="mb-5">
+                <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
                     Verify
                 </Button>
             </div>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Add Poll Details</ModalHeader>
+                            <ModalBody>
+                                <Input
+                                    label="Email"
+                                    placeholder="Enter your email"
+                                    name="email"
+                                    onChange={handleRulesInput}
+                                />
+                                <Select
+                                    label="Select region"
+                                    name="region"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="asia-pacific" key="AP">
+                                        Asia Pacific
+                                    </SelectItem>
+                                    <SelectItem value="north-america" key="NA">
+                                        North America
+                                    </SelectItem>
+                                    <SelectItem value="europe" key="EU">
+                                        Europe
+                                    </SelectItem>
+                                    <SelectItem value="middle-east" key="ME">
+                                        Middle East
+                                    </SelectItem>
+                                    <SelectItem value="all" key="AL">
+                                        All
+                                    </SelectItem>
+                                </Select>
+                                <Select
+                                    label="Select gender"
+                                    name="gender"
+                                    onChange={handleRulesInput}
+                                >
+                                    <SelectItem value="male" key="M">
+                                        Male
+                                    </SelectItem>
+                                    <SelectItem value="female" key="F">
+                                        Female
+                                    </SelectItem>
+                                    <SelectItem value="both" key="MF">
+                                        Both
+                                    </SelectItem>
+                                </Select>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button onClick={handleJoinPoll} color="primary" onPress={onClose}>
+                                    Join Poll
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+            <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
+                            <ModalBody>
+                                <Accordion>
+                                    <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
+                                        <p className="font-bold">{community.domainPub}</p>
+                                    </AccordionItem>
+                                    <AccordionItem key="2" aria-label="Accordion 1" title="Region">
+                                        <p className="font-bold">{community.regionPub === "NA" ? "North America" : community.regionPub === "ME" ? "Middle East" : community.regionPub === "AP" ? "Asia Pacific" : "Europe"}</p>
+                                    </AccordionItem>
+                                    <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
+                                        <p className="font-bold">{community.genderPub === "M" ? "Male" : community.genderPub === "F" ? "Female" : "Both"}</p>
+                                    </AccordionItem>
+                                </Accordion>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 }
