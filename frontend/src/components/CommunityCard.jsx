@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import axios from '../api/axiosConfig.js';
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { ScrollShadow } from "@nextui-org/react";
+import "../pages/styles/Community.css";
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -28,14 +29,14 @@ export default function CommunityCard({ community }) {
 
     useEffect(() => {
         const getAllUsersUsingCommunityID = async () => {
-            try{
+            try {
                 const body = {
                     communityID: community.communityId
                 }
                 const result = await axios.post('/user/getAllUserUsingCommunities', body)
                 // console.log("the communitites wil be : ", result.data.data)
                 setAllUserFromCommunity(result.data.data)
-            } catch(err){
+            } catch (err) {
                 console.log("error in fetching all user for a communithy")
             }
         }
@@ -145,9 +146,9 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] h-[250px] p-2 m-4">
+            <Card className="w-[350px] h-[250px] p-2 m-4 bg-[#cfc6e2]">
                 <CardHeader className="flex justify-between" color="foreground">
-                    <div className="flex gap-9 items-center" >
+                    <div className="flex gap-4 items-center" >
                         <Avatar
                             alt="community-card"
                             height={40}
@@ -158,14 +159,14 @@ export default function CommunityCard({ community }) {
                             color="primary"
                         />
                         <div className="flex flex-col ">
-                            <p className="text-base ">{community.communityName}</p>
+                            <p className="text-base font-bold text-xl">{community.communityName}</p>
                             {/* <p className="text-small text-default-500">nextui.org</p> */}
                         </div>
                     </div>
                     {/* <div>
                         <IoMdInformationCircleOutline onPress={onRulesOpen} />
                     </div> */}
-                    <Button color="secondary" variant="bordered" size="md" onPress={onRulesOpen}>
+                    <Button color="secondary" className="font-bold" variant="bordered" size="md" onPress={onRulesOpen}>
                         Rules
                     </Button>
                     {/* <Chip variant="bordered" startContent={<FaHashtag />}>
@@ -186,8 +187,10 @@ export default function CommunityCard({ community }) {
                         Rules
                     </Button> */}
                     {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
-                    <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        {community.joined ? "Joined" : "Join"}
+                    <Button variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} className={!community.joined ? "text-black bg-green-500 font-bold" : "text-black font-bold"} >
+                        <span className="text-black" >
+                            {community.joined ? "Joined" : "Join"}
+                        </span>
                     </Button>
                 </CardFooter>
                 <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>

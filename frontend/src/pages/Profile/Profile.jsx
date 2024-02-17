@@ -80,18 +80,17 @@ export default function Profile() {
 
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
-                                    <PersonalWallHeader/>
-
+            <PersonalWallHeader />
             <div className="profiler" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div className="userImage" style={{ borderRadius: "50%", overflow: "hidden", marginRight: "10px" }}>
                     <Image src={Avatar} alt="User Profile" width={100} height={100} style={{ maxWidth: '100%' }} />
                 </div>
-                
+
                 <div className="fine" style={{ flex: "1", display: "flex", flexDirection: "column" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
-                        <p className="flex items-center font-bold text-left">{wallet.accounts[0]}</p>
+                        <p className="flex items-center font-bold text-left text-[1.4rem] text-white">{wallet.accounts[0]}</p>
                         <Button key="blur" onPress={onOpen} color="primary" style={{ textAlign: "right", marginBottom: "10px" }}>Share Profile</Button>
-                        
+
                         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
 
                             <ModalContent>
@@ -179,8 +178,8 @@ export default function Profile() {
                 <Comments />
 
                 {/* Form container */}
-                <form onSubmit={handleSubmit} style={{ marginTop:"30px", backgroundColor: '#c8e0fc', color: '#000', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
-                <h1 style={{ marginBottom: '20px', textAlign: 'center', fontSize: '1rem', color: '#000', fontWeight: 'bold', letterSpacing: '0.05em' }}>Share Your Thoughts</h1>
+                <form onSubmit={handleSubmit} style={{ marginTop: "30px", backgroundColor: '#c8e0fc', color: '#000', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
+                    <h1 style={{ marginBottom: '20px', textAlign: 'center', fontSize: '1rem', color: '#000', fontWeight: 'bold', letterSpacing: '0.05em' }}>Share Your Thoughts</h1>
                     <div className="form-group">
                         <label htmlFor="uniqueId" style={{ fontWeight: 'bold' }}>Unique ID:</label>
                         <input
@@ -190,7 +189,7 @@ export default function Profile() {
                             name="userID"
                             onChange={handleFormChange}
                             required
-                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' , color:'black'}}
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black' }}
                         />
                     </div>
                     <div className="form-group">
@@ -201,7 +200,7 @@ export default function Profile() {
                             value={formData.commentString}
                             onChange={handleFormChange}
                             required
-                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px' ,color:'black'}}
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black' }}
                         ></textarea>
                     </div>
                     <button type="submit" style={{ backgroundColor: '#fff', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Post</button>
