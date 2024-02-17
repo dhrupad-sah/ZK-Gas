@@ -189,4 +189,23 @@ const createUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser, getAllCommunityOfUser, addPollForUser };
+const getAllVerifiedPollsOfUser = async (req, res, next) => {
+    try {
+        const { userID } = req.body;
+        const result = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("verifiedPolls")
+
+        res.status(200).json({
+            data: result,
+            custom: "Fetched all verified polls of the user!!"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching all verified polls of the user"
+        });
+    }
+}
+
+module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser,
+     getAllCommunityOfUser, addPollForUser, getAllVerifiedPollsOfUser };
