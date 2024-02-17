@@ -143,7 +143,7 @@ app.post("/joinCommunity", async (req, res) => {
           const bool = await communityContract.functions.joinCommunity(proofHex, pubArray);
           
           res.send(bool);  
-          console.log(bool);
+          // console.log(bool);
         });
 
     });
@@ -175,9 +175,9 @@ app.post("/joinPoll", async (req, res) => {
 
     const pollRules = await PollContract.functions.getRules();
 
-    console.log("domain", pollRules[0]);
-    console.log("region", pollRules[1]);
-    console.log("gender", pollRules[2]);
+    // console.log("domain", pollRules[0]);
+    // console.log("region", pollRules[1]);
+    // console.log("gender", pollRules[2]);
 
 
     const domainPub = pollRules[0];
@@ -246,7 +246,7 @@ app.post("/joinPoll", async (req, res) => {
 
         res.send(bool);
 
-        console.log(bool);
+        // console.log(bool);
       });
     });
 
