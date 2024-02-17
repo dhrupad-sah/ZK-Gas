@@ -31,8 +31,16 @@ export default function Home() {
           <span className="text-grad-rev">Create Poll</span>
         </Button>
       </div>
+      <div>
+        <div className="text-6xl text-white font-semibold text-center pt-48">
+            Partners
+        </div>
+        <div>
+
+        </div>
+      </div>
       <div className="flex gap-[900px] pt-56">
-        <div>sup nigga</div>
+        <div>Filler content</div>
         <Atropos className="my-atropos" shadow={false} highlight={false}>
           <Image
             isBlurred
