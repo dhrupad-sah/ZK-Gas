@@ -132,7 +132,7 @@ const addPollForUser = async (req, res, next) => {
                 custom: "Comment pushed Successfully!!"
             })
         }).catch(err => {
-            console.log("Error in pushing the comment for the user")
+            console.log("Error in pushing the comment for the user",err)
         })
     } catch (err) {
         console.log(err);
