@@ -19,6 +19,7 @@ export default function PollCard({ pollContent }) {
 
     const [poll, setPoll] = useState({
         itemId: pollContent?._id,
+        belongsToCommunity: pollContent.belongsToCommunity,
         question: pollContent.pollTitle,
         answers: [
             pollContent.option1?.optionName,
@@ -138,8 +139,8 @@ export default function PollCard({ pollContent }) {
         const bigNumberId = await factoryContract.getIdFromMongoId(pollContent._id);
         const pollIdString = bigNumberId.toString();
         const pollId = parseInt(pollIdString)
-        console.log(typeof(pollId));
-        
+        console.log(typeof (pollId));
+
         const res = await fetch("http://localhost:3000/joinPoll", {
             method: "POST",
             body: JSON.stringify({ pollId, domain, region, gender }),
@@ -175,12 +176,12 @@ export default function PollCard({ pollContent }) {
                 ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Button color="secondary" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && <Button color="secondary" variant="flat" size="md" className="mb-5">
                     View
-                </Button>
-                <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
+                </Button>}
+                {!poll.belongsToCommunity && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
                     Verify
-                </Button>
+                </Button>}
             </div>
             <Modal
                 isOpen={isOpen}
