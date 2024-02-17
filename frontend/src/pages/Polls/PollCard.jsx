@@ -11,6 +11,7 @@ import { ethers } from "ethers";
 
 export default function PollCard({ pollContent }) {
     const mongoID = useSelector((state) => state.user.userId);
+    const [userVerifiedPolls, setUserVerifiedPolls] = useState([]);
     const [pollRules, setPollRules] = useState({
         email: "",
         region: "",
@@ -137,7 +138,22 @@ export default function PollCard({ pollContent }) {
             }
             );
         }
+
+        const getAllVerifiedPolls = async () => {
+            try{
+                const body = {
+                    userID : mongoID
+                }
+                const result = axios.post('/user/getAllVerifiedPollsOfUser', body);
+                console.log("All the verified polls are : ")
+                console.log((await result).data.data)
+            } catch(err){
+                console.log("error in getting all verified polls", err)
+            }
+
+        }
         getPollRules();
+        getAllVerifiedPolls();
     }, [])
 
     const handleJoinPoll = async () => {
