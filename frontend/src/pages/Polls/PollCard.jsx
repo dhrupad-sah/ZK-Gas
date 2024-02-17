@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './poll.css';
 import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import axios from "../../api/axiosConfig.js";
-
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import factoryContractABI from "../../../ABI/Factory.json";
@@ -10,6 +10,7 @@ import pollContractABI from "../../../ABI/ZKPoll.json";
 import { ethers } from "ethers";
 
 export default function PollCard({ pollContent }) {
+    const mongoID = useSelector((state) => state.user.userId);
     const [pollRules, setPollRules] = useState({
         email: "",
         region: "",
@@ -177,6 +178,18 @@ export default function PollCard({ pollContent }) {
             }
         });
         console.log(res);
+        if (res.status === 200) {
+            try {
+                const body = {
+                    userID: mongoID,
+                    pollID: poll.itemId
+                }
+                const result = axios.post('/user/addPollIdToUser', body);
+                console.log("poll id posted to user instance")
+            } catch (err) {
+                console.log("error in pusing poll id to user", err)
+            }
+        }
         res.status === 200 ?
             toast.update(id, {
                 render: "Proof verified Successfully!",
@@ -204,7 +217,7 @@ export default function PollCard({ pollContent }) {
                 ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                {!poll.belongsToCommunity && <Button onPress={onRulesOpen}  color="secondary" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>}
                 {!poll.belongsToCommunity && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
