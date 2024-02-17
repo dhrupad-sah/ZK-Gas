@@ -3,7 +3,7 @@ import { useMetaMask } from "../../hooks/useMetamask";
 import Comments from "./Comments";
 import PersonalWallHeader from './PersonalWallHeader.jsx';
 import Avatar from "../../assets/user_example_avatar.png"
-import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link } from "@nextui-org/react"
+import { Image, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Tooltip, Link, Textarea } from "@nextui-org/react"
 import "../../hooks/useMetamask";
 import { FaRegCopy } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -178,32 +178,67 @@ export default function Profile() {
                 <Comments />
 
                 {/* Form container */}
-                <form onSubmit={handleSubmit} style={{ marginTop: "30px", backgroundColor: '#c8e0fc', color: '#000', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
-                    <h1 style={{ marginBottom: '20px', textAlign: 'center', fontSize: '1rem', color: '#000', fontWeight: 'bold', letterSpacing: '0.05em' }}>Share Your Thoughts</h1>
-                    <div className="form-group">
-                        <label htmlFor="uniqueId" style={{ fontWeight: 'bold' }}>Unique ID:</label>
-                        <input
+                <form onSubmit={handleSubmit} style={{ marginTop: "40px", backgroundColor: '#cfc6e2', color: '#000', padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', width: '600px', marginLeft: '20px' }}>
+                    <h1
+                        className="text-2xl font-bold text-gray-800 mb-8"
+                    // style={{ marginBottom: '20px', textAlign: 'center', fontSize: '1rem', color: '#000', fontWeight: 'bold', letterSpacing: '0.05em' }}
+                    >Share Your Thoughts...</h1>
+                    <div className="form-group" style={{ marginTop: "36px" }}>
+                        {/* <label htmlFor="uniqueId" style={{ fontWeight: 'bold' }}>Unique ID:</label> */}
+                        {/* <input
                             type="text"
                             id="uniqueId"
                             value={formData.userID}
                             name="userID"
                             onChange={handleFormChange}
                             required
-                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black' }}
-                        />
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black', marginTop: "5px" }}
+                        /> */}
+                        <Input
+                            id="uniqueId"
+                            value={formData.userID}
+                            type="text"
+                            label="Unique ID"
+                            placeholder="Enter Unique ID"
+                            name="userID"
+                            onChange={handleFormChange}
+                            required />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="message" style={{ fontWeight: 'bold' }}>Message:</label>
-                        <textarea
+                    <div className="form-group" style={{ marginTop: "25px" }}>
+                        {/* <label htmlFor="message" style={{ fontWeight: 'bold' }}>Message:</label> */}
+                        {/* <textarea
                             id="message"
                             name="commentString"
                             value={formData.commentString}
                             onChange={handleFormChange}
                             required
-                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black' }}
-                        ></textarea>
+                            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: 'none', marginBottom: '20px', color: 'black', marginTop: "5px" }}
+                        ></textarea> */}
+                        <Textarea
+                            label="Message"
+                            placeholder="Share your thoughts here"
+                            id="message"
+                            name="commentString"
+                            value={formData.commentString}
+                            onChange={handleFormChange}
+                            required
+                        />
                     </div>
-                    <button type="submit" style={{ backgroundColor: '#fff', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Post</button>
+                    {/* <button type="submit"
+                        style={{
+                            backgroundColor: '#fff', color: '#000', padding: '10px 20px', border: 'none',
+                            borderRadius: '5px', cursor: 'pointer'
+                        }}>Post</button> */}
+                    <Button type="submit"
+                        radius = "lg"
+                        style={{
+                            marginTop: "30px", backgroundColor: '#fff', color: '#000', padding: '10px 20px', border: 'none',
+                            cursor: 'pointer'
+                        }}
+
+                    >
+                        Post
+                    </Button>
                 </form>
             </div>
         </div>
