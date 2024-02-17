@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './poll.css';
 import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+import BigNumber from 'bignumber';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import factoryContractABI from "../../../ABI/Factory.json";
+import pollContractABI from "../../../ABI/ZKPoll.json";
 import { ethers } from "ethers";
 
 export default function PollCard({ pollContent }) {
     const [pollRules, setPollRules] = useState({
         email: "",
+        region: "",
+        gender: ""
+    });
+
+    const [pollPublicRules, setPollPublicRules] = useState({
+        domain: "",
         region: "",
         gender: ""
     });
@@ -82,6 +90,31 @@ export default function PollCard({ pollContent }) {
         return hex;
     };
 
+    useEffect(() => {
+        const getPollRules = async () => {
+            const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            console.log(_provider);
+            const signer = _provider.getSigner();
+            console.log(signer);
+            const factoryContract = new ethers.Contract(factoryContractABI.address, factoryContractABI.abi, signer);
+            console.log(factoryContract);
+            console.log(pollContent._id);
+            const bigNumberId = await factoryContract.getIdFromMongoId(pollContent._id);
+            const pollId = bigNumberId.toString();
+            console.log(pollId);
+            const PollContractAddress = await factoryContract.getPoll(pollId);
+            console.log(PollContractAddress);
+            const rules = await factoryContract.getPollDetails(PollContractAddress);
+            setPollPublicRules({
+                domain: rules[1],
+                region: rules[2],
+                gender: rules[3]
+            }
+            );
+        }
+        getPollRules();
+    }, [])
+
     const handleJoinPoll = async () => {
         const id = toast.loading("Please wait verifying your proof");
         const email = pollRules.email;
@@ -145,7 +178,7 @@ export default function PollCard({ pollContent }) {
                 ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Button color="secondary" variant="flat" size="md" className="mb-5">
+                <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>
                 <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
@@ -215,32 +248,32 @@ export default function PollCard({ pollContent }) {
                 </ModalContent>
             </Modal>
             <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
-                    <ModalContent>
-                        {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
-                                <ModalBody>
-                                    <Accordion>
-                                        <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
-                                            <p className="font-bold">{community.domainPub}</p>
-                                        </AccordionItem>
-                                        <AccordionItem key="2" aria-label="Accordion 1" title="Region">
-                                            <p className="font-bold">{community.regionPub==="NA"?"North America":community.regionPub==="ME"?"Middle East":community.regionPub==="AP"?"Asia Pacific":"Europe"}</p>
-                                        </AccordionItem>
-                                        <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
-                                            <p className="font-bold">{community.genderPub==="M"?"Male":community.genderPub==="F"?"Female":"Both"}</p>
-                                        </AccordionItem>
-                                    </Accordion>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color="danger" variant="light" onPress={onClose}>
-                                        Close
-                                    </Button>
-                                </ModalFooter>
-                            </>
-                        )}
-                    </ModalContent>
-                </Modal>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
+                            <ModalBody>
+                                <Accordion>
+                                    <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
+                                        <p className="font-bold">{pollPublicRules.domain}</p>
+                                    </AccordionItem>
+                                    <AccordionItem key="2" aria-label="Accordion 1" title="Region">
+                                        <p className="font-bold">{pollPublicRules.region === "NA" ? "North America" : pollPublicRules.region === "ME" ? "Middle East" : pollPublicRules.region === "AP" ? "Asia Pacific" : "Europe"}</p>
+                                    </AccordionItem>
+                                    <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
+                                        <p className="font-bold">{pollPublicRules.gender === "M" ? "Male" : pollPublicRules.gender === "F" ? "Female" : "Both"}</p>
+                                    </AccordionItem>
+                                </Accordion>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 }

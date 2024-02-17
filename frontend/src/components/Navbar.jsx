@@ -83,10 +83,10 @@ export default function NavbarComponent() {
             const contratFactory = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
             console.log(contratFactory);
             const poll = await contratFactory.createPoll(
-                data_ID.data.data,
                 communityRules.domain,
                 communityRules.region,
-                communityRules.gender
+                communityRules.gender,
+                data_ID.data.data
             );
             await poll.wait();
             toast.update(id, {
