@@ -48,11 +48,10 @@ export default function MainPoll() {
     return (
         <div className="flex w-full flex-col items-center justify-center">
             <Tabs aria-label="Options" color="primary" size="lg" variant="underlined">
-                <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>
-                } className="p-2">
-                    <Card >
-                        <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
+                <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>} className="p-2">
+                    <Card>
+                        <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-8 w-[900px] h-full max-h-[1000px] px-10">
                                 {allPolls.map((poll) => (
                                     !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                                 ))}
@@ -60,11 +59,10 @@ export default function MainPoll() {
                         </CardBody>
                     </Card>
                 </Tab>
-                <Tab key="Community" title={<span className="flex align-center"><RiGitRepositoryPrivateLine className="mt-1" />&nbsp;<span>Private</span></span>
-                } className="p-2">
-                    <Card >
+                <Tab key="Community" title={<span className="flex align-center"><RiGitRepositoryPrivateLine className="mt-1" />&nbsp;<span>Private</span></span>} className="p-2">
+                    <Card>
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
+                            <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-4 w-[600px] h-[750px] px-10">
                                 {allPrivatePolls.map((poll) => (
                                     poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                                 ))}
@@ -74,6 +72,8 @@ export default function MainPoll() {
                 </Tab>
             </Tabs>
         </div>
+
+
 
     );
 }

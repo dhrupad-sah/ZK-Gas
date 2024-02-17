@@ -68,7 +68,8 @@ export default function PollCard({ pollContent }) {
     const showResults = (index) => {
         for (let i = 0; i < poll.answers.length; i++) {
             let percentage = 0;
-            percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount + 1));
+            percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount));
+            console.log("percentage is: ", percentage)
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-bar`).style.width = percentage + "%";
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-value`).innerText = percentage + "%";
         }
@@ -142,8 +143,8 @@ export default function PollCard({ pollContent }) {
         const getAllVerifiedPolls = async () => {
             try{
                 const body = {
-                    userID : mongoID
-                    // userID: "65cf9c8d1bd93826860485f1"
+                    // userID : mongoID
+                    userID: "65cf9c8d1bd93826860485f1"
                 }
                 const result = await axios.post('/user/getAllVerifiedPollsOfUser', body);
                 console.log("All the verified polls are : ")
