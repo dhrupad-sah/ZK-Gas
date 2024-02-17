@@ -40,6 +40,7 @@ contract Factory {
     mapping(uint256 => address) public idToPoll;
     mapping(address => CommunityDetails) public addressToCommunityDetails;
     mapping(address => PollDetails) public addressToPollDetails;
+    mapping(string => uint256) mongoIdToPollId;
 
     function createCommunity(
         string memory _domainPub,
@@ -71,6 +72,7 @@ contract Factory {
         addressToPollDetails[newPoll] = PollDetails(_mongoId, _domainPub, _regionPub, _genderPub);
         idToPoll[_id] = newPoll;
         allPolls.push(newPoll);
+        mongoIdToPollId[_mongoId] = _id;
         pollId++;
     }
 
@@ -84,6 +86,14 @@ contract Factory {
 
     function getCommunityDetails(address _communityAddress) public view returns (CommunityDetails memory) {
         return addressToCommunityDetails[_communityAddress];
+    }
+
+    function getPollIdFromMongoId(string memory _mongoId) public view returns (uint256) {
+        return mongoIdToPollId[_mongoId];
+    }
+
+    function getIdFromMongoId(string calldata _mongoId) external view returns(uint256){
+        return mongoIdToPollId[_mongoId];
     }
 
     function getPoll(uint256 _id) public view returns (address) {

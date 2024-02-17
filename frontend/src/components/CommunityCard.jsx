@@ -4,9 +4,9 @@ import { FaHashtag } from "react-icons/fa";
 import { Button, useDisclosure, Link, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../api/axiosConfig.js';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
