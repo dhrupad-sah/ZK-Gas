@@ -36,6 +36,9 @@ export default function PollCard({ pollContent }) {
     });
 
     const markAnswer = (index) => {
+        poll.answerWeight[index]++
+        poll.pollCount++
+        updateDatabase();
         setPoll(prevPoll => {
             const newPoll = { ...prevPoll, selectedAnswer: index };
             return newPoll;
@@ -55,15 +58,7 @@ export default function PollCard({ pollContent }) {
     const showResults = (index) => {
         for (let i = 0; i < poll.answers.length; i++) {
             let percentage = 0;
-            if (i === index) {
-                percentage = Math.round((poll.answerWeight[i] + 1) * 100 / (poll.pollCount + 1));
-                poll.answerWeight[i]++
-                poll.pollCount++
-                updateDatabase();
-            } else {
-                percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount + 1));
-            }
-
+            percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount + 1));
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-bar`).style.width = percentage + "%";
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-value`).innerText = percentage + "%";
         }
