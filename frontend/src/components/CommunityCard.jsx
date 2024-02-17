@@ -10,6 +10,7 @@ import axios from '../api/axiosConfig.js';
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { ScrollShadow } from "@nextui-org/react";
 import "../pages/styles/Community.css";
+import { FaRegCopy } from "react-icons/fa";
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -287,10 +288,31 @@ export default function CommunityCard({ community }) {
                     <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Members</ModalHeader>
-                                <ScrollShadow hideScrollBar className="w-[300px] h-[400px]">
-                                    {allUserFromCommunity.map((members) => (
-                                        <p>{members._id}</p>
+                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Community members</ModalHeader>
+                                <ScrollShadow hideScrollBar className="w-[400px] h-[150px]">
+                                    {allUserFromCommunity.map((members, index) => (
+                                        <ModalBody key={index}>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
+                                                <Input
+                                                    label="UNIQUE ID"
+                                                    style={{fontSize: "15px"}}
+                                                    value={members._id}
+                                                    readOnly
+                                                />
+                                                <Tooltip content="Copy to clipboard">
+                                                    <Button
+                                                        color="primary"
+                                                        isIconOnly
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                members._id
+                                                            );
+                                                        }}>
+                                                        <FaRegCopy />
+                                                    </Button>
+                                                </Tooltip>
+                                            </div>
+                                        </ModalBody>
                                     ))}
                                 </ScrollShadow>
                                 <ModalFooter>
