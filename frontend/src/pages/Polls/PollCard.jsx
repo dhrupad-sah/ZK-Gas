@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './poll.css';
 import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
 import axios from "../../api/axiosConfig.js";
-
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import factoryContractABI from "../../../ABI/Factory.json";
@@ -10,6 +10,8 @@ import pollContractABI from "../../../ABI/ZKPoll.json";
 import { ethers } from "ethers";
 
 export default function PollCard({ pollContent }) {
+    const mongoID = useSelector((state) => state.user.userId);
+    const [userVerifiedPolls, setUserVerifiedPolls] = useState([]);
     const [pollRules, setPollRules] = useState({
         email: "",
         region: "",
@@ -136,7 +138,24 @@ export default function PollCard({ pollContent }) {
             }
             );
         }
+
+        const getAllVerifiedPolls = async () => {
+            try{
+                const body = {
+                    userID : mongoID
+                    // userID: "65cf9c8d1bd93826860485f1"
+                }
+                const result = await axios.post('/user/getAllVerifiedPollsOfUser', body);
+                console.log("All the verified polls are : ")
+                console.log(result.data.data[0].verifiedPolls)
+                setUserVerifiedPolls(result.data.data[0].verifiedPolls)
+            } catch(err){
+                console.log("error in getting all verified polls", err)
+            }
+
+        }
         getPollRules();
+        getAllVerifiedPolls();
     }, [])
 
     const handleJoinPoll = async () => {
@@ -177,6 +196,18 @@ export default function PollCard({ pollContent }) {
             }
         });
         console.log(res);
+        if (res.status === 200) {
+            try {
+                const body = {
+                    userID: mongoID,
+                    pollID: poll.itemId
+                }
+                const result = axios.post('/user/addPollIdToUser', body);
+                console.log("poll id posted to user instance")
+            } catch (err) {
+                console.log("error in pusing poll id to user", err)
+            }
+        }
         res.status === 200 ?
             toast.update(id, {
                 render: "Proof verified Successfully!",
@@ -194,7 +225,7 @@ export default function PollCard({ pollContent }) {
     return (
         <div className="poll">
             <div className="question">{poll.question}</div>
-            <div className="answers">
+            {(userVerifiedPolls.includes(poll.itemId) || poll.belongsToCommunity) && <div className="answers">
                 {poll.answers.map((answer, i) => (
                     <div key={i} id={`answer-${poll.itemId}-${i}`} className={`answer ${poll.itemId} ${i === poll.selectedAnswer ? 'selected' : ''}`} onClick={() => markAnswer(i)}>
                         <span className="text-answers">{answer}</span>
@@ -202,12 +233,12 @@ export default function PollCard({ pollContent }) {
                         <span className="percentage-value"></span>
                     </div>
                 ))}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                {!poll.belongsToCommunity && <Button onPress={onRulesOpen}  color="secondary" variant="flat" size="md" className="mb-5">
+            </div>}
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: "15px" }}>
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>}
-                {!poll.belongsToCommunity && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
                     Verify
                 </Button>}
             </div>
