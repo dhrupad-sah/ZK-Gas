@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { Button, Image } from "@nextui-org/react";
-import styled from "styled-components";
 import BackgroundImage1 from "./Home/3.png";
 import Anonymous from "../assets/anonymous.png";
 import "./styles/Home.css";
@@ -9,10 +8,10 @@ import Atropos from "atropos/react";
 export default function Home() {
   return (
     <div className="pt-28">
-      <h1 className="text-[73px] grad text-center">
+      <h1 className="text-[73px] grad text-center" style={{ fontFamily: "Poppins, sans-serif" }}>
         Empower Identity, Protect Privacy
       </h1>
-      <h1 className="text-[73px] grad text-center">Build Communities</h1>
+      <h1 className="text-[73px] grad text-center" style={{ fontFamily: "Poppins, sans-serif" }}>Build Communities</h1>
       <div className="flex justify-center gap-[200px] p-10">
         <Button
           radius="full"
