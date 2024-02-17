@@ -2,7 +2,7 @@
   "_format": "hh-sol-artifact-1",
   "contractName": "UltraVerifier",
   "sourceName": "contracts/plonk_vk.sol",
-  "address": "0xCc447f58F26F82b64dC3dC0bab05a3a902Fb86c3",
+  "address": "0x5F74BF90F2428B5C9ce9e5CB3894d9dF3A1014E9",
   "abi": [
     {
       "inputs": [],

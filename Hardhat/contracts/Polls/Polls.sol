@@ -76,5 +76,4 @@ contract ZKPoll {
         }
         return false;
     }
-
 }
