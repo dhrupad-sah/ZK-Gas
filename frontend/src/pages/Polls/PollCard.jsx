@@ -143,8 +143,8 @@ export default function PollCard({ pollContent }) {
         const getAllVerifiedPolls = async () => {
             try{
                 const body = {
-                    // userID : mongoID
-                    userID: "65cf9c8d1bd93826860485f1"
+                    userID : mongoID
+                    // userID: "65cf9c8d1bd93826860485f1"
                 }
                 const result = await axios.post('/user/getAllVerifiedPollsOfUser', body);
                 console.log("All the verified polls are : ")
