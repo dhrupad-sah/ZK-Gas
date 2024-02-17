@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Protest+Strike&display=swap');
-
-.fontface {
-    font-family: "Archivo", sans-serif;
-    font-optical-sizing: auto;
+.grad {
+    text-transform: uppercase;
+	background: -webkit-linear-gradient(right, #FF3BFF, #ECBFBF, #5C24FF, #D94FD5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: sans-serif;
 }
