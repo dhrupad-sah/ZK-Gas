@@ -270,7 +270,6 @@ export default function CommunityCard({ community }) {
                             <>
                                 <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Members</ModalHeader>
                                 <ScrollShadow hideScrollBar className="w-[300px] h-[400px]">
-
                                 </ScrollShadow>
                                 <ModalFooter>
                                     <Button color="danger" variant="light" onPress={onClose}>
