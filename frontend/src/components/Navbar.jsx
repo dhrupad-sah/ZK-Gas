@@ -22,7 +22,7 @@ export default function NavbarComponent() {
     const dispatch = useDispatch();
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
-    const { isOpen: isPrivateOpen, onOpen: onPrivateOpen, onOpenChange: onPrivateOpenChange, onClose: onPrivateClose } = useDisclosure();
+    const { isOpen: isCommunityPollOpen, onOpen: onCommunityPollOpen, onOpenChange: onCommunityPollOpenChange, onClose: onCommunityPollClose } = useDisclosure();
 
     const location = useLocation();
     const route = location.pathname;
@@ -103,8 +103,8 @@ export default function NavbarComponent() {
         }
     }
 
-    async function handlePrivatePollSubmit() {
-        onPrivateClose();
+    async function handleCommunityPollPollSubmit() {
+        onCommunityPollClose();
         const id = toast.loading("Please wait while we create your poll");
         const communityId = route.charAt(route.lastIndexOf('/') + 1);
         console.log(communityId);
@@ -399,8 +399,8 @@ export default function NavbarComponent() {
                     {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onOpen}>
                         Public Poll
                     </Button>}
-                    {patternCommunityCard.test(route) && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onPrivateOpen}>
-                        Private Poll
+                    {patternCommunityCard.test(route) && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onCommunityPollOpen}>
+                        Community Poll
                     </Button>}
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
                         <Image
@@ -531,14 +531,14 @@ export default function NavbarComponent() {
                 </ModalContent>
             </Modal>
             <Modal
-                isOpen={isPrivateOpen}
-                onOpenChange={onPrivateOpenChange}
+                isOpen={isCommunityPollOpen}
+                onOpenChange={onCommunityPollOpenChange}
                 placement="top-center"
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Create a Private Poll</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Create a CommunityPoll</ModalHeader>
                             <ModalBody>
                                 <Textarea
                                     autoFocus
@@ -588,7 +588,7 @@ export default function NavbarComponent() {
                                 )}
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={handlePrivatePollSubmit} >
+                                <Button color="primary" onClick={handleCommunityPollPollSubmit} >
                                     Create Poll
                                 </Button>
                             </ModalFooter>
