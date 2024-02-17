@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './poll.css';
-import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+import { Button, useDisclosure, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import factoryContractABI from "../../../ABI/Factory.json";
@@ -14,6 +15,7 @@ export default function PollCard({ pollContent }) {
     });
     // console.log(pollContent);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
 
     const [poll, setPoll] = useState({
         itemId: pollContent?._id,
@@ -127,19 +129,7 @@ export default function PollCard({ pollContent }) {
                 type: "error",
                 isLoading: false,
                 autoClose: 4000
-            })
-        if (res.status === 200) {
-            const user = {
-                userID: userMongoID,
-                communityID: community.communityId
-            }
-            try {
-                const result = await axios.post('/user/addCommunityForUser', user)
-            } catch (err) {
-                console.log("Error in adding community to user array");
-                console.log(err)
-            }
-        }
+            });
     }
 
     return (
@@ -224,6 +214,33 @@ export default function PollCard({ pollContent }) {
                     )}
                 </ModalContent>
             </Modal>
+            <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
+                                <ModalBody>
+                                    <Accordion>
+                                        <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
+                                            <p className="font-bold">{community.domainPub}</p>
+                                        </AccordionItem>
+                                        <AccordionItem key="2" aria-label="Accordion 1" title="Region">
+                                            <p className="font-bold">{community.regionPub==="NA"?"North America":community.regionPub==="ME"?"Middle East":community.regionPub==="AP"?"Asia Pacific":"Europe"}</p>
+                                        </AccordionItem>
+                                        <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
+                                            <p className="font-bold">{community.genderPub==="M"?"Male":community.genderPub==="F"?"Female":"Both"}</p>
+                                        </AccordionItem>
+                                    </Accordion>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
         </div>
     );
 }

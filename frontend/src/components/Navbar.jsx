@@ -528,7 +528,7 @@ export default function NavbarComponent() {
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={handlePollSubmit} >
+                                <Button onPress={onClose} color="primary" onClick={handlePollSubmit} >
                                     Create Poll
                                 </Button>
                             </ModalFooter>
