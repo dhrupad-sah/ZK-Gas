@@ -68,7 +68,8 @@ export default function PollCard({ pollContent }) {
     const showResults = (index) => {
         for (let i = 0; i < poll.answers.length; i++) {
             let percentage = 0;
-            percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount + 1));
+            percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount));
+            console.log("percentage is: ", percentage)
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-bar`).style.width = percentage + "%";
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-value`).innerText = percentage + "%";
         }
@@ -143,10 +144,12 @@ export default function PollCard({ pollContent }) {
             try{
                 const body = {
                     userID : mongoID
+                    // userID: "65cf9c8d1bd93826860485f1"
                 }
-                const result = axios.post('/user/getAllVerifiedPollsOfUser', body);
+                const result = await axios.post('/user/getAllVerifiedPollsOfUser', body);
                 console.log("All the verified polls are : ")
-                console.log((await result).data.data)
+                console.log(result.data.data[0].verifiedPolls)
+                setUserVerifiedPolls(result.data.data[0].verifiedPolls)
             } catch(err){
                 console.log("error in getting all verified polls", err)
             }
@@ -223,7 +226,7 @@ export default function PollCard({ pollContent }) {
     return (
         <div className="poll">
             <div className="question">{poll.question}</div>
-            <div className="answers">
+            {(userVerifiedPolls.includes(poll.itemId) || poll.belongsToCommunity) && <div className="answers">
                 {poll.answers.map((answer, i) => (
                     <div key={i} id={`answer-${poll.itemId}-${i}`} className={`answer ${poll.itemId} ${i === poll.selectedAnswer ? 'selected' : ''}`} onClick={() => markAnswer(i)}>
                         <span className="text-answers">{answer}</span>
@@ -231,12 +234,12 @@ export default function PollCard({ pollContent }) {
                         <span className="percentage-value"></span>
                     </div>
                 ))}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                {!poll.belongsToCommunity && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
+            </div>}
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: "15px" }}>
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>}
-                {!poll.belongsToCommunity && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
                     Verify
                 </Button>}
             </div>

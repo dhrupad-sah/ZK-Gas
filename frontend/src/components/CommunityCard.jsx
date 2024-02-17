@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../api/axiosConfig.js';
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { ScrollShadow } from "@nextui-org/react";
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -14,6 +16,7 @@ export default function CommunityCard({ community }) {
     const route = location.pathname;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
+    const { isOpen: isMembersOpen, onOpen: onMemberOpen, onOpenChange: onMemberOpenChange } = useDisclosure();
     const [description, setDescription] = useState("");
 
     const [communityRules, setCommunityRules] = useState({
@@ -126,7 +129,7 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
+            <Card className="w-[350px] h-[250px] p-2 m-4">
                 <CardHeader className="flex justify-between" color="foreground">
                     <div className="flex gap-9 items-center" >
                         <Avatar
@@ -143,9 +146,15 @@ export default function CommunityCard({ community }) {
                             {/* <p className="text-small text-default-500">nextui.org</p> */}
                         </div>
                     </div>
-                    <Chip variant="bordered" startContent={<FaHashtag />}>
+                    {/* <div>
+                        <IoMdInformationCircleOutline onPress={onRulesOpen} />
+                    </div> */}
+                    <Button color="secondary" variant="bordered" size="md" onPress={onRulesOpen}>
+                        Rules
+                    </Button>
+                    {/* <Chip variant="bordered" startContent={<FaHashtag />}>
                         {community.communityId}
-                    </Chip>
+                    </Chip> */}
                 </CardHeader>
                 <Divider />
 
@@ -157,9 +166,10 @@ export default function CommunityCard({ community }) {
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
-                    <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
+                    {/* <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
                         Rules
-                    </Button>
+                    </Button> */}
+                    {!community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
                     <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
                         {community.joined ? "Joined" : "Join"}
                     </Button>
@@ -248,6 +258,22 @@ export default function CommunityCard({ community }) {
                                 <ModalFooter>
                                     <Button onClick={handleJoinCommunity} color="primary" onPress={onClose}>
                                         Join Community
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+                <Modal isOpen={isMembersOpen} onOpenChange={onMemberOpenChange} >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Members</ModalHeader>
+                                <ScrollShadow hideScrollBar className="w-[300px] h-[400px]">
+                                </ScrollShadow>
+                                <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                        Close
                                     </Button>
                                 </ModalFooter>
                             </>
