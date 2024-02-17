@@ -17,6 +17,7 @@
         "@pushprotocol/restapi": "^1.6.8",
         "@pushprotocol/uiweb": "^1.2.5",
         "@reduxjs/toolkit": "^2.2.1",
+        "atropos": "^2.0.2",
         "axios": "^0.27.2",
         "ethers": "^5.7.2",
         "framer-motion": "^11.0.3",
