@@ -24,3 +24,9 @@
     height: 400px;
     background: transparent;
 }
+
+.aztec {
+    background-image: url('../../assets/aztec.png');
+    background-color: blue;
+    background-blend-mode: multiply;
+}
