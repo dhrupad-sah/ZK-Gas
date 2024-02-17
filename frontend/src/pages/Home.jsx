@@ -7,7 +7,8 @@ import "./styles/Home.css";
 export default function Home() {
     return (
         <div>
-            <h1 className="text-9xl grad">Hello</h1>
+            <h1 className="text-6xl grad">Empower Identity, Protect Privacy</h1>
+            <h1 className="text-6xl grad">Build Communities</h1>
         </div>
     )
 }
