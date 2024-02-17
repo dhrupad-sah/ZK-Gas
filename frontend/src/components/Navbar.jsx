@@ -22,6 +22,7 @@ export default function NavbarComponent() {
     const dispatch = useDispatch();
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
+    const { isOpen: isPrivateOpen, onOpen: onPrivateOpen, onOpenChange: onPrivateOpenChange, onClose: onPrivateClose } = useDisclosure();
 
     const location = useLocation();
     const route = location.pathname;
@@ -42,6 +43,9 @@ export default function NavbarComponent() {
     const [option1, setOption1] = useState("");
     const [option2, setOption2] = useState("");
     const [option3, setOption3] = useState("");
+
+    const patternCommunityCard = /^\/communities\/\d+$/;
+    const patternCommunity = /^\/communities$/;
 
     async function handlePollSubmit() {
         const id = toast.loading("Please wait creating your community");
@@ -96,6 +100,64 @@ export default function NavbarComponent() {
                 autoClose: 4000
             })
             onClose()
+        }
+    }
+
+    async function handlePrivatePollSubmit() {
+        onPrivateClose();
+        const id = toast.loading("Please wait while we create your poll");
+        const communityId = route.charAt(route.lastIndexOf('/') + 1);
+        console.log(communityId);
+        if (!question || !option1 || !option2 || !option3) {
+            toast.error("Field's can't be empty!!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            const newPoll = {
+                pollTitle: question,
+                belongsToCommunity: true,
+                communityID: communityId,
+                option1: {
+                    optionName: option1,
+                    optionConsensus: 0,
+                },
+                option2: {
+                    optionName: option2,
+                    optionConsensus: 0,
+                },
+                option3: {
+                    optionName: option3,
+                    optionConsensus: 0,
+                },
+                totalOptionConsensus: 0
+            }
+            const result = axios.post('/poll/postPoll', newPoll)
+            const data_ID = await result;
+            console.log("the result poll id would be : ", data_ID.data.data);
+            const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = _provider.getSigner();
+            const contratFactory = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+            console.log(contratFactory);
+            const poll = await contratFactory.createPoll(
+                data_ID.data.data,
+                communityRules.domain,
+                communityRules.region,
+                communityRules.gender
+            );
+            await poll.wait();
+            toast.update(id, {
+                render: "Poll created successfully!",
+                type: "success",
+                isLoading: false,
+                autoClose: 4000
+            })
         }
     }
 
@@ -273,6 +335,9 @@ export default function NavbarComponent() {
     //     })
     // }
 
+
+    console.log(route);
+
     return (
         <Navbar
             isBordered
@@ -328,11 +393,14 @@ export default function NavbarComponent() {
 
             <NavbarContent justify="end">
                 <NavbarItem className="flex gap-3" style={{ marginRight: "-30%", }}>
-                    {route.indexOf("communities") >= 0 && <Button as={Link} color="secondary" variant="light" onClick={onCommunityOpen} startContent={<FaPlus />}>
+                    {patternCommunity.test(route) && <Button as={Link} color="secondary" variant="light" onClick={onCommunityOpen} startContent={<FaPlus />}>
                         Community
                     </Button>}
                     {route.indexOf("polls") >= 0 && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onOpen}>
                         Public Poll
+                    </Button>}
+                    {patternCommunityCard.test(route) && <Button as={Link} color="secondary" variant="light" startContent={<FaPlus />} onClick={onPrivateOpen}>
+                        Private Poll
                     </Button>}
                     <Button onClick={handleConnect} as={Link} color="primary" variant="flat" >
                         <Image
@@ -439,9 +507,6 @@ export default function NavbarComponent() {
                                     <SelectItem value="middle-east" key="ME">
                                         Middle East
                                     </SelectItem>
-                                    <SelectItem value="all" key="AL">
-                                        All
-                                    </SelectItem>
                                 </Select>
                                 <Select
                                     label="Select gender"
@@ -454,13 +519,76 @@ export default function NavbarComponent() {
                                     <SelectItem value="female" key="F">
                                         Female
                                     </SelectItem>
-                                    <SelectItem value="both" key="MF">
-                                        Both
-                                    </SelectItem>
                                 </Select>
                             </ModalBody>
                             <ModalFooter>
                                 <Button onPress={onClose} color="primary" onClick={handlePollSubmit} >
+                                    Create Poll
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+            <Modal
+                isOpen={isPrivateOpen}
+                onOpenChange={onPrivateOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Create a Private Poll</ModalHeader>
+                            <ModalBody>
+                                <Textarea
+                                    autoFocus
+                                    label="Question"
+                                    placeholder="Enter question (max 50 characters)"
+                                    value={question}
+                                    onChange={handleQuestionChange}
+                                    variant="flat"
+                                />
+                                {question.length >= QUESTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Question must be less than 50 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option1"
+                                    placeholder="Enter first option (max 15 characters)"
+                                    value={option1}
+                                    onChange={handleOption1Change}
+                                />
+                                {option1.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option2"
+                                    placeholder="Enter second option (max 15 characters)"
+                                    value={option2}
+                                    onChange={handleOption2Change}
+                                />
+                                {option2.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                                <Input
+                                    label="Option3"
+                                    placeholder="Enter three option (max 15 characters)"
+                                    value={option3}
+                                    onChange={handleOption3Change}
+                                />
+                                {option3.length >= OPTION_LIMIT && (
+                                    <div className="text-sm text-error ml-1 text-red-500">
+                                        Option must be less than 15 characters.
+                                    </div>
+                                )}
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" onClick={handlePrivatePollSubmit} >
                                     Create Poll
                                 </Button>
                             </ModalFooter>
@@ -524,9 +652,6 @@ export default function NavbarComponent() {
                                     <SelectItem value="middle-east" key="ME">
                                         Middle East
                                     </SelectItem>
-                                    <SelectItem value="all" key="AL">
-                                        All
-                                    </SelectItem>
                                 </Select>
                                 <Select
                                     label="Select gender"
@@ -538,9 +663,6 @@ export default function NavbarComponent() {
                                     </SelectItem>
                                     <SelectItem value="female" key="F">
                                         Female
-                                    </SelectItem>
-                                    <SelectItem value="both" key="MF">
-                                        Both
                                     </SelectItem>
                                 </Select>
                             </ModalBody>

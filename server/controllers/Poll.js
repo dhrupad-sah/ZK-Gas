@@ -1,4 +1,5 @@
-const Poll = require('../models/Poll.js')
+const Poll = require('../models/Poll.js');
+const User = require('../models/User.js');
 const mongoose = require('mongoose');
 
 const postPoll = async (req, res, next) => {
@@ -31,6 +32,46 @@ const postPoll = async (req, res, next) => {
             .json({
                 custom: "Error in posting the Poll"
             });
+    }
+};
+
+const updateThePoll = async (req, res, next) => {
+    try {
+        const { _id, option1, option2, option3, totalOptionConsensus } = req.body;
+        if (!_id) {
+            return res.status(400).json({
+                custom: "Poll ID is required for updating the poll",
+            });
+        }
+
+        const updateObject = {};
+        if (option1) updateObject['option1'] = option1;
+        if (option2) updateObject['option2'] = option2;
+        if (option3) updateObject['option3'] = option3;
+        if (totalOptionConsensus) updateObject['totalOptionConsensus'] = totalOptionConsensus;
+
+        const updatedPoll = await Poll.findByIdAndUpdate(
+            _id,
+            { $set: updateObject },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedPoll) {
+            return res.status(404).json({
+                custom: "Poll not found with the provided ID",
+            });
+        }
+
+        res.status(200).json({
+            data: updatedPoll,
+            custom: "Updated the poll"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            custom: "Error in updating the Polls",
+        });
     }
 };
 
@@ -85,5 +126,30 @@ const getAllPollsByCommunityID = async (req, res, next) => {
     }
 };
 
+const getAllPrivatePollsForUser = async (req, res, next) => {
+    try {
+        const { userID } = req.body
+        const userCommunities = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("communityID")
+        console.log("userCommunities : " , userCommunities)
+        console.log("userCommunities.communityID : ", userCommunities[0].communityID);
+        if (!userCommunities || !userCommunities[0].communityID) {
+            return res.status(404).json({
+                custom: 'User not found or has no communityIDs',
+            });
+        }
+        const resultPolls = await Poll.find({
+            communityID: { $in: userCommunities[0].communityID },
+        });
 
-module.exports = { postPoll, getAllPolls, getAllPublicPolls, getAllPollsByCommunityID };
+        res.status(200).json({
+            data: resultPolls,
+            custom: "Fetching all Community polls joined by the user successfully!!"
+        });
+
+    } catch (err) {
+        console.log("Error in fetching polls from communities joined by user : ", err)
+    }
+}
+
+
+module.exports = { postPoll, getAllPolls, getAllPublicPolls, getAllPollsByCommunityID, updateThePoll, getAllPrivatePollsForUser };
