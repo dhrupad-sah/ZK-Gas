@@ -2,7 +2,7 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Avatar, Chip, LinkIcon
 import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
 import { Button, useDisclosure, Link, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
@@ -18,12 +18,29 @@ export default function CommunityCard({ community }) {
     const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
     const { isOpen: isMembersOpen, onOpen: onMemberOpen, onOpenChange: onMemberOpenChange } = useDisclosure();
     const [description, setDescription] = useState("");
+    const [allUserFromCommunity, setAllUserFromCommunity] = useState([])
 
     const [communityRules, setCommunityRules] = useState({
         email: "",
         region: "",
         gender: ""
     });
+
+    useEffect(() => {
+        const getAllUsersUsingCommunityID = async () => {
+            try{
+                const body = {
+                    communityID: community.communityId
+                }
+                const result = await axios.post('/user/getAllUserUsingCommunities', body)
+                // console.log("the communitites wil be : ", result.data.data)
+                setAllUserFromCommunity(result.data.data)
+            } catch(err){
+                console.log("error in fetching all user for a communithy")
+            }
+        }
+        getAllUsersUsingCommunityID();
+    }, [])
 
     const handleRulesInput = (e) => {
         setCommunityRules({
@@ -169,7 +186,7 @@ export default function CommunityCard({ community }) {
                     {/* <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
                         Rules
                     </Button> */}
-                    {!community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
+                    {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
                     <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
                         {community.joined ? "Joined" : "Join"}
                     </Button>
@@ -270,6 +287,9 @@ export default function CommunityCard({ community }) {
                             <>
                                 <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Members</ModalHeader>
                                 <ScrollShadow hideScrollBar className="w-[300px] h-[400px]">
+                                    {allUserFromCommunity.map((members) => (
+                                        <p>{members._id}</p>
+                                    ))}
                                 </ScrollShadow>
                                 <ModalFooter>
                                     <Button color="danger" variant="light" onPress={onClose}>
