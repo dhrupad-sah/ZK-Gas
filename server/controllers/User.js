@@ -77,7 +77,10 @@ const getMongoIDUsingMetamaskID = async (req, res, next) => {
         const result = await User.find({ metaMaskId: metaMaskID }).select("_id");
 
         if (result.length === 0) {
-            const _id = createUserIfMetaMaskNotFound(metaMaskID)
+            const idFromMongo = createUserIfMetaMaskNotFound(metaMaskID)
+            res.status(200).json({
+                data: idFromMongo
+            });
         } else {
             res.status(200).json({
                 data: result[0]._id

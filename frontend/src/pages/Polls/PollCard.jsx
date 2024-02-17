@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@nextui-org/react";
+import axios from '../../api/axiosConfig.js'
 import './poll.css';
 
 export default function PollCard({ pollContent }) {
@@ -42,12 +43,40 @@ export default function PollCard({ pollContent }) {
             let percentage = 0;
             if (i === index) {
                 percentage = Math.round((poll.answerWeight[i] + 1) * 100 / (poll.pollCount + 1));
+                poll.answerWeight[i]++
+                poll.pollCount++
+                updateDatabase();
             } else {
                 percentage = Math.round(poll.answerWeight[i] * 100 / (poll.pollCount + 1));
             }
 
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-bar`).style.width = percentage + "%";
             document.querySelector(`#answer-${poll.itemId}-${i} .percentage-value`).innerText = percentage + "%";
+        }
+    }
+
+    function updateDatabase() {
+        try {
+            const updatedPoll = {
+                _id: poll.itemId,
+                option1:{
+                    optionName: poll.answers[0],
+                    optionConsensus: poll.answerWeight[0]
+                },
+                option2:{
+                    optionName: poll.answers[1],
+                    optionConsensus: poll.answerWeight[1]
+                },
+                option3:{
+                    optionName: poll.answers[2],
+                    optionConsensus: poll.answerWeight[2]
+                },
+                totalOptionConsensus: poll.pollCount
+            }
+            const result = axios.post('/poll/updateThePoll', updatedPoll)
+            console.log("Poll updated Successfully!!")
+        } catch (err) {
+            console.log("the error in updating the database will be: ", err)
         }
     }
 
@@ -63,7 +92,7 @@ export default function PollCard({ pollContent }) {
                     </div>
                 ))}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                 <Button color="secondary" variant="flat" size="md" className="mb-5">
                     View
                 </Button>
