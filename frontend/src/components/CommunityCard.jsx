@@ -148,11 +148,13 @@ export default function CommunityCard({ community }) {
                     </Chip>
                 </CardHeader>
                 <Divider />
-                <Tooltip content={community.joined?"Click to enter":"Join community before entering"}>
-                    <CardBody color="foreground" as={Link} href={community.joined ? `/communities/${community.communityId}` : "#"} style={{ pointerEvents: community.joined ? "all" : "none" }}>
+
+                <CardBody color="foreground" as={Link} href={community.joined ? `/communities/${community.communityId}` : "#"} style={{ pointerEvents: community.joined ? "all" : "none" }}>
+                    <Tooltip color="foreground" content={community.joined ? "Click to enter" : "Join community before entering"} showArrow={true} placement="bottom" classNames={{
+                    }}>
                         <p>{community.communityDescription}</p>
-                    </CardBody>
-                </Tooltip>
+                    </Tooltip>
+                </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
                     <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
