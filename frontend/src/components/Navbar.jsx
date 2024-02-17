@@ -507,9 +507,6 @@ export default function NavbarComponent() {
                                     <SelectItem value="middle-east" key="ME">
                                         Middle East
                                     </SelectItem>
-                                    <SelectItem value="all" key="AL">
-                                        All
-                                    </SelectItem>
                                 </Select>
                                 <Select
                                     label="Select gender"
@@ -521,9 +518,6 @@ export default function NavbarComponent() {
                                     </SelectItem>
                                     <SelectItem value="female" key="F">
                                         Female
-                                    </SelectItem>
-                                    <SelectItem value="both" key="MF">
-                                        Both
                                     </SelectItem>
                                 </Select>
                             </ModalBody>
@@ -658,9 +652,6 @@ export default function NavbarComponent() {
                                     <SelectItem value="middle-east" key="ME">
                                         Middle East
                                     </SelectItem>
-                                    <SelectItem value="all" key="AL">
-                                        All
-                                    </SelectItem>
                                 </Select>
                                 <Select
                                     label="Select gender"
@@ -672,9 +663,6 @@ export default function NavbarComponent() {
                                     </SelectItem>
                                     <SelectItem value="female" key="F">
                                         Female
-                                    </SelectItem>
-                                    <SelectItem value="both" key="MF">
-                                        Both
                                     </SelectItem>
                                 </Select>
                             </ModalBody>
