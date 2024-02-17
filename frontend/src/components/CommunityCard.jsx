@@ -157,7 +157,7 @@ export default function CommunityCard({ community }) {
                             name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
                             width={40}
                             isBordered
-                            color="primary"
+                            className="bg-[#bd7fce]"
                         />
                         <div className="flex flex-col ">
                             <p className="text-base font-bold text-xl">{community.communityName}</p>
@@ -188,8 +188,8 @@ export default function CommunityCard({ community }) {
                         Rules
                     </Button> */}
                     {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
-                    <Button variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} className={!community.joined ? "text-black bg-green-500 font-bold" : "text-black font-bold"} >
-                        <span className="text-black" >
+                    <Button color="success" variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                        <span className="text-black font-bold">
                             {community.joined ? "Joined" : "Join"}
                         </span>
                     </Button>
@@ -295,7 +295,7 @@ export default function CommunityCard({ community }) {
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
                                                     label="UNIQUE ID"
-                                                    style={{fontSize: "15px"}}
+                                                    style={{ fontSize: "15px" }}
                                                     value={members._id}
                                                     readOnly
                                                 />
