@@ -225,7 +225,7 @@ export default function PollCard({ pollContent }) {
     return (
         <div className="poll">
             <div className="question">{poll.question}</div>
-            {userVerifiedPolls.includes(poll.itemId) && <div className="answers">
+            {(userVerifiedPolls.includes(poll.itemId) || poll.belongsToCommunity) && <div className="answers">
                 {poll.answers.map((answer, i) => (
                     <div key={i} id={`answer-${poll.itemId}-${i}`} className={`answer ${poll.itemId} ${i === poll.selectedAnswer ? 'selected' : ''}`} onClick={() => markAnswer(i)}>
                         <span className="text-answers">{answer}</span>

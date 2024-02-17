@@ -17,10 +17,12 @@ import { login } from "../store/UserSlice/UserSlice.jsx";
 import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function NavbarComponent() {
     const dispatch = useDispatch();
+    const mongoID = useSelector((state) => state.user.userId);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { isOpen: isCommunityOpen, onOpen: onCommunityOpen, onOpenChange: onCommunityOpenChange } = useDisclosure();
     const { isOpen: isCommunityPollOpen, onOpen: onCommunityPollOpen, onOpenChange: onCommunityPollOpenChange, onClose: onCommunityPollClose } = useDisclosure();
@@ -290,6 +292,16 @@ export default function NavbarComponent() {
             console.log(communityIdBigNumber);
             const communityId = communityIdBigNumber.toNumber();
             console.log(communityId);
+            const body = {
+                userID : mongoID,
+                communityID : communityId
+            }
+            try{
+                const result = await axios.post('/user/addCommunityForUser', body)
+                console.log("Community id added to user instance")
+            } catch(errPush){
+                console.log("error in pushing community ID to user instance")
+            }
         }
         toast.update(id, {
             render: "Community created successfully!",
