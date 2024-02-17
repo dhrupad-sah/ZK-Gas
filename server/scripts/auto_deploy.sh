@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Change directory to the desired location
-cd ~/Circuit-Breaker/Breaker/ZK-Gas/noir-app/circuits
+cd ../noir-app/circuits
 
 # Run "cargo check"
 echo "Running 'nargo check'..."
