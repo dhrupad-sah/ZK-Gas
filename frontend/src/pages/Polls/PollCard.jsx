@@ -106,8 +106,10 @@ export default function PollCard({ pollContent }) {
         console.log(factoryContract);
         console.log(pollContent._id);
         const bigNumberId = await factoryContract.getIdFromMongoId(pollContent._id);
-        const pollId = bigNumberId.toString();
-        console.log(pollId);
+        const pollIdString = bigNumberId.toString();
+        const pollId = parseInt(pollIdString)
+        console.log(typeof(pollId));
+        
         const res = await fetch("http://localhost:3000/joinPoll", {
             method: "POST",
             body: JSON.stringify({ pollId, domain, region, gender }),

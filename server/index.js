@@ -7,7 +7,7 @@ const { config } = require("dotenv");
 const FactoryABI = require("./ABI/Factory.json");
 const ZKCommunityABI = require("./ABI/ZKCommunity.json");
 const VerifierABI = require("./ABI/UltraVerifier.json");
-// const ZKPollABI = require("./ABI/ZKPoll.json")
+const ZKPollABI = require("./ABI/ZKPoll.json")
 const bodyParser = require("body-parser");
 const toml = require('@iarna/toml');
 const mongoose = require('mongoose');
@@ -174,6 +174,11 @@ app.post("/joinPoll", async (req, res) => {
     );
 
     const pollRules = await PollContract.functions.getRules();
+
+    console.log("domain", pollRules[0]);
+    console.log("region", pollRules[1]);
+    console.log("gender", pollRules[2]);
+
 
     const domainPub = pollRules[0];
     const regionPub = pollRules[1];
