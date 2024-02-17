@@ -4,7 +4,7 @@ import { Tabs, Tab, Card, CardBody, ScrollShadow } from "@nextui-org/react";
 import { MdOutlinePublic } from "react-icons/md";
 import axios from "../../api/axiosConfig.js"
 import { useSelector } from "react-redux";
-import { RiChatPrivateLine, RiGitRepositoryPrivateLine } from "react-icons/ri";
+import { RiGitRepositoryPrivateLine } from "react-icons/ri";
 
 export default function MainPoll() {
 
@@ -64,9 +64,11 @@ export default function MainPoll() {
                 } className="p-2">
                     <Card >
                         <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {allPrivatePolls.map((poll) => (
-                                poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
-                            ))}
+                            <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
+                                {allPrivatePolls.map((poll) => (
+                                    poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
+                                ))}
+                            </ScrollShadow>
                         </CardBody>
                     </Card>
                 </Tab>
