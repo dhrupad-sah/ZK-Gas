@@ -208,13 +208,13 @@ export default function NavbarComponent() {
         gender: "",
     });
 
-    const QUESTION_LIMIT = 50;
+    const QUESTION_LIMIT = 150;
     const handleQuestionChange = (event) => {
         const updateQuestion = event.target.value.slice(0, QUESTION_LIMIT);
         setQuestion(updateQuestion);
     };
 
-    const OPTION_LIMIT = 15;
+    const OPTION_LIMIT = 50;
     const handleOption1Change = (event) => {
         const updateOption1 = event.target.value.slice(0, OPTION_LIMIT);
         setOption1(updateOption1);
@@ -610,47 +610,47 @@ export default function NavbarComponent() {
                                 <Textarea
                                     autoFocus
                                     label="Question"
-                                    placeholder="Enter question (max 50 characters)"
+                                    placeholder="Enter question (max 150 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
                                     variant="flat"
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 50 characters.
+                                        Question must be less than 150 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option1"
-                                    placeholder="Enter first option (max 15 characters)"
+                                    placeholder="Enter first option (max 50 characters)"
                                     value={option1}
                                     onChange={handleOption1Change}
                                 />
                                 {option1.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option2"
-                                    placeholder="Enter second option (max 15 characters)"
+                                    placeholder="Enter second option (max 50 characters)"
                                     value={option2}
                                     onChange={handleOption2Change}
                                 />
                                 {option2.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option3"
-                                    placeholder="Enter three option (max 15 characters)"
+                                    placeholder="Enter three option (max 50 characters)"
                                     value={option3}
                                     onChange={handleOption3Change}
                                 />
                                 {option3.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -726,47 +726,47 @@ export default function NavbarComponent() {
                                 <Textarea
                                     autoFocus
                                     label="Question"
-                                    placeholder="Enter question (max 50 characters)"
+                                    placeholder="Enter question (max 150 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
                                     variant="flat"
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 50 characters.
+                                        Question must be less than 150 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option1"
-                                    placeholder="Enter first option (max 15 characters)"
+                                    placeholder="Enter first option (max 50 characters)"
                                     value={option1}
                                     onChange={handleOption1Change}
                                 />
                                 {option1.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option2"
-                                    placeholder="Enter second option (max 15 characters)"
+                                    placeholder="Enter second option (max 50 characters)"
                                     value={option2}
                                     onChange={handleOption2Change}
                                 />
                                 {option2.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
                                     label="Option3"
-                                    placeholder="Enter three option (max 15 characters)"
+                                    placeholder="Enter three option (max 50 characters)"
                                     value={option3}
                                     onChange={handleOption3Change}
                                 />
                                 {option3.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                             </ModalBody>
