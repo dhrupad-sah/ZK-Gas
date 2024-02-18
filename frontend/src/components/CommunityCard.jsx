@@ -214,7 +214,7 @@ export default function CommunityCard({ community }) {
                                         <AccordionItem key="2" aria-label="Accordion 1" title={<span className="text-white">Region</span>}>
                                             <p className="font-bold text-white">{community.regionPub === "NA" ? "North America" : community.regionPub === "ME" ? "Middle East" : community.regionPub === "AP" ? "Asia Pacific" : "Europe"}</p>
                                         </AccordionItem>
-                                        <AccordionItem key="3" aria-label="Accordion 1" title={<span className="text-white">Domain</span>}>
+                                        <AccordionItem key="3" aria-label="Accordion 1" title={<span className="text-white">Gender</span>}>
                                             <p className="font-bold text-white">{community.genderPub === "M" ? "Male" : community.genderPub === "F" ? "Female" : "Both"}</p>
                                         </AccordionItem>
                                     </Accordion>

@@ -25,9 +25,12 @@ const UserComments = () => {
 
     return (
         <div className="max-w-3xl ml-10 mt-20 lg:mt-10 lg:w-1/2 lg:ml-24 overflow-y-auto">
-            <div className="border-2 border-blue-300 rounded-lg p-6 shadow-md" style={{backgroundColor: "#cfc6e2"}}>
+            <div className="border-2 border-blue-300 rounded-lg p-6 shadow-md" style={{ backgroundColor: "#cfc6e2" }}>
                 <h1 className="text-2xl font-bold text-gray-800 mb-8">What others think about you...</h1>
-                {allComments.map((comment, index) => (
+                {allComments.length <= 0 && <div style={{display: "flex", alignItems: "center", justifyContent: "center", padding: "100px"}}>
+                    <p style={{ color: "#000", fontFamily: "sans-serif", fontSize: "25px"}}>No comments to display yet</p>
+                </div>}
+                {(allComments.length > 0) && allComments.map((comment, index) => (
                     <Card key={index} className="mb-4">
                         <CardBody>
                             <p className="text-black">{comment}</p>
