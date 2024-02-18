@@ -257,49 +257,49 @@ export default function NavbarComponent() {
             }
         }
 
-        const handleCreateCommunity = async () => {
-            const id = toast.loading("Please wait creating your community");
-            const domain = communityRules.domain;
-            const _provider = new ethers.providers.Web3Provider(window.ethereum);
-            if (_provider) {
-                const signer = _provider.getSigner();
-                const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
-                console.log(factoryContract);
-                const community = await factoryContract.createCommunity(
-                    domain,
-                    communityRules.region,
-                    communityRules.gender,
-                    name,
-                    description
-                );
-                await community.wait();
-                console.log(community);
-                const getDeployedAddress = await factoryContract.getLastCommunityAddress();
-                console.log(getDeployedAddress);
-                const communityContract = new ethers.Contract(getDeployedAddress, ZKCommunityABI.abi, signer);
-                console.log(communityContract);
-                const communityIdBigNumber = await communityContract.getCommunityId();
-                console.log(communityIdBigNumber);
-                const communityId = communityIdBigNumber.toNumber();
-                console.log(communityId);
-                const body = {
-                    userID: mongoID,
-                    communityID: communityId
-                }
-                try {
-                    const result = await axios.post('/user/addCommunityForUser', body)
-                    console.log("Community id added to user instance")
-                } catch (errPush) {
-                    console.log("error in pushing community ID to user instance")
-                }
-            }
-            toast.update(id, {
-                render: "Community created successfully!",
-                type: "success",
-                isLoading: false,
-                autoClose: 4000
-            })
-        }
+        // const handleCreateCommunity = async () => {
+        //     const id = toast.loading("Please wait creating your community");
+        //     const domain = communityRules.domain;
+        //     const _provider = new ethers.providers.Web3Provider(window.ethereum);
+        //     if (_provider) {
+        //         const signer = _provider.getSigner();
+        //         const factoryContract = new ethers.Contract(FactoryABI.address, FactoryABI.abi, signer);
+        //         console.log(factoryContract);
+        //         const community = await factoryContract.createCommunity(
+        //             domain,
+        //             communityRules.region,
+        //             communityRules.gender,
+        //             name,
+        //             description
+        //         );
+        //         await community.wait();
+        //         console.log(community);
+        //         const getDeployedAddress = await factoryContract.getLastCommunityAddress();
+        //         console.log(getDeployedAddress);
+        //         const communityContract = new ethers.Contract(getDeployedAddress, ZKCommunityABI.abi, signer);
+        //         console.log(communityContract);
+        //         const communityIdBigNumber = await communityContract.getCommunityId();
+        //         console.log(communityIdBigNumber);
+        //         const communityId = communityIdBigNumber.toNumber();
+        //         console.log(communityId);
+        //         const body = {
+        //             userID: mongoID,
+        //             communityID: communityId
+        //         }
+        //         try {
+        //             const result = await axios.post('/user/addCommunityForUser', body)
+        //             console.log("Community id added to user instance")
+        //         } catch (errPush) {
+        //             console.log("error in pushing community ID to user instance")
+        //         }
+        //     }
+        //     toast.update(id, {
+        //         render: "Community created successfully!",
+        //         type: "success",
+        //         isLoading: false,
+        //         autoClose: 4000
+        //     })
+        // }
 
         const NAME_LIMIT = 20;
         const DESCRIPTION_LIMIT = 100;
@@ -388,6 +388,16 @@ export default function NavbarComponent() {
             console.log(communityIdBigNumber);
             const communityId = communityIdBigNumber.toNumber();
             console.log(communityId);
+            const body = {
+                userID: mongoID,
+                communityID: communityId
+            }
+            try {
+                const result = await axios.post('/user/addCommunityForUser', body)
+                console.log("Community id added to user instance")
+            } catch (errPush) {
+                console.log("error in pushing community ID to user instance")
+            }
         }
         toast.update(id, {
             render: "Community created successfully!",
