@@ -344,10 +344,10 @@ export default function CommunityCard({ community }) {
                         )}
                     </ModalContent>
                 </Modal>
-                <ToastContainer
-                    position="top-center"
-                />
             </Card>
+            <ToastContainer
+                position="top-center"
+            />
         </>
     )
 }
