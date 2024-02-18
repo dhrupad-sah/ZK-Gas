@@ -188,8 +188,8 @@ export default function CommunityCard({ community }) {
                         Rules
                     </Button> */}
                     {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
-                    <Button color="success" variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        <span className="text-black font-bold">
+                    <Button variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ border: "2px solid #8f9fe8", cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                        <span className="font-bold" style={{color : "#8f9fe8"}}>
                             {community.joined ? "Joined" : "Join"}
                         </span>
                     </Button>

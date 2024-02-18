@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Link } from "@nextui-org/react";
 import BackgroundImage1 from "./Home/3.png";
 import Anonymous from "../assets/anonymous.png";
 import AztecLogo from "../assets/aztec.png";
@@ -28,17 +28,21 @@ export default function Home() {
             radius="full"
             variant="bordered"
             className="w-[15rem] h-[4rem] px-15 font-semibold border-[#D94FD5]"
+            as={Link}
+            href="/communities"
           >
             <span className="text-[20px] text-[#ECBFBF]">
-              Create Community
+              Show Communities
             </span>
           </Button>
           <Button
             radius="full"
             variant="bordered"
             className="w-[15rem] h-[4rem] text-[20px] font-semibold border-[#D94FD5]"
+            as={Link}
+            href="/polls"
           >
-            <span className="text-[#ECBFBF]">Create Poll</span>
+            <span className="text-[#ECBFBF]">Show Polls</span>
           </Button>
         </div>
       </div>

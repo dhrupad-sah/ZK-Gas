@@ -21,8 +21,9 @@ body {
 .poll .question {
     padding: 20px;
     color: #111;
+    font-weight: 700;
     font-size: 18px;
-    border-bottom: 1px solid #eee;
+    border-bottom: none;
 }
 
 .poll .answers {
@@ -37,14 +38,14 @@ body {
     line-height: 40px;
     color: #111;
     margin-bottom: 10px;
-    border: 1px solid #d4d4d4;
+    border: 1px solid #000;
     border-radius: 10px;
     cursor: pointer;
     overflow: hidden;
 }
 
 .poll .answers .answer.selected {
-    border: 2px solid #8f9fe8;
+    border: 2px solid #000;
 }
 
 .poll .answers .answer span.percentage-value {
@@ -63,7 +64,7 @@ body {
     left: 0px;
     width: 0%;
     height: 100%;
-    background: #ccd8f1;
+    background: #8f9fe8;
     transition: width 300ms ease-in-out;
 }
 
