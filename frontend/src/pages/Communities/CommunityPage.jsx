@@ -213,7 +213,7 @@ export default function CommunityPage() {
             >
                 <ChatUIProvider theme={darkChatTheme}>
                     <ChatView
-                        chatId="8eb60adbf0da4bbd216a93df1be613e70d8054323ed654ba05fa09750f956618"
+                        chatId="49f0ff3635e99467bb9b4a71d57bfadd0a2314646e8833ff3c93f3b6078d93f7"
                         limit={10}
                         isConnected={true}
                         onVerificationFail={() => setShowFaucet(true)}

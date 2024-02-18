@@ -6,6 +6,8 @@ import FactoryABI from "../../../ABI/Factory.json";
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../../api/axiosConfig.js'
+import Atropos from 'atropos/react';
+
 export default function MainCommunity() {
     const [, setCommunityAddress] = useState([]);
     const [communities, setCommunities] = useState([]);
@@ -42,7 +44,7 @@ export default function MainCommunity() {
                 });
             }
         }
-        
+
         fetchCommunities();
     }, [])
 
@@ -54,7 +56,9 @@ export default function MainCommunity() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {communities.map((community, index) => (
                     <div key={index}>
-                        <CommunityCard community={community} />
+                        <Atropos rotateXMax={1} rotateYInvert={1}>
+                            <CommunityCard community={community} />
+                        </Atropos>
                     </div>
                 ))}
             </div>
