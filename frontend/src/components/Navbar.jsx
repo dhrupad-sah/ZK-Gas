@@ -527,7 +527,7 @@ export default function NavbarComponent() {
                         <Button
                             as={Link}
                             color="success"
-                            variant="light"
+                            variant="flat"
                             startContent={<FaPlus />}
                             onClick={onCommunityPollOpen}
                         >
