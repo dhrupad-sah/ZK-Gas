@@ -7,14 +7,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../../api/axiosConfig.js'
 import Atropos from 'atropos/react';
+import { Spinner } from "@nextui-org/react";
 
 export default function MainCommunity() {
     const [, setCommunityAddress] = useState([]);
     const [communities, setCommunities] = useState([]);
     const userMongoId = useSelector((state) => state.user.userId)
+    const [spinnerLoading, setSpinnerLoading] = useState(false);
+
 
     useEffect(() => {
         const fetchCommunities = async () => {
+            setSpinnerLoading(true)
             const user = {
                 userID: userMongoId
             }
@@ -43,6 +47,7 @@ export default function MainCommunity() {
                     }]);
                 });
             }
+            setSpinnerLoading(false)
         }
 
         fetchCommunities();
@@ -53,6 +58,9 @@ export default function MainCommunity() {
 
     return (
         <div className="container mx-auto" >
+            <div className="flex justify-center" >
+                {spinnerLoading && <Spinner label="Loading" color="warning" labelColor="warning" />}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {communities.map((community, index) => (
                     <div key={index}>
