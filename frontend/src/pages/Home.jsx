@@ -14,8 +14,8 @@ export default function Home() {
   const lines_1 = ["Protect Privacy, Build Communities"];
 
   return (
-    <div className="flex-col" style={{ minHeight: '180vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', minHeight: '80vh', paddingTop: '8rem' }}>
+    <div className="flex-col" style={{ minHeight: '80vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '5rem', minHeight: '80vh', paddingTop: '8rem' }}>
         <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem', paddingLeft: "5rem" }}>
           <div style={{ width: '75%' }}>
             <h1 className="text-[73px] grad" style={{ fontFamily: "Poppins"}}>
@@ -45,28 +45,22 @@ export default function Home() {
             <span className="text-[#ECBFBF]">Show Polls</span>
           </Button>
         </div>
-      </div>
-      <div className="">
-        <div className="flex justify-between pt-56">
-          <div className="flex-col text-6xl text-[#cac7d0] ml-10">
-            <h1 className="pb-2">Privacy First Blockchain Based</h1>
-            <h1>Social Media Application</h1>
-            <p className="text-2xl">
-              <br />
-              Validation of your information using zero knowledge,
-            </p>
-            <p className="text-2xl">
-              giving you complete privacy
-            </p>
-          </div>
-          <Atropos className="my-atropos" shadow={false} highlight={false}>
-            <Image
-              isBlurred
-              style={{ width: "90%", height: "100%" }}
-              alt="Home Image"
-              src={Anonymous}
-            />
-          </Atropos>
+        <div style={{display: 'flex', justifyContent: 'center' }} >
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <div style={{display: 'flex', fontFamily: 'Poppins', fontSize: '3rem', color:'#cac7cf', paddingBottom: '7rem', paddingLeft: '5rem'}} >
+                    Privacy First Blockchain Based Social Media Application
+                </div>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
+                    <Atropos className="my-atropos" shadow={false} highlight={false} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '10rem', paddingTop: '3rem'}} >
+                        <Image
+                        isBlurred
+                        style={{ width: "70%", height: '100%' }}
+                        alt="Home Image"
+                        src={Anonymous}
+                        />
+                    </Atropos>
+                </div>
+            </div>
         </div>
       </div>
     </div>
