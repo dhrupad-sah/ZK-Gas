@@ -79,9 +79,10 @@ export default function Profile() {
     const id = useSelector((state) => state.user.userId)
 
     return (
-        <div className="container" style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
+        // minHeight: '200vh', '
+        <div style={{ display: "flex", flexDirection: "column", padding: "20px", minHeight: '100vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)' }}>
             <PersonalWallHeader />
-            <div className="profiler" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div className="userImage" style={{ borderRadius: "50%", overflow: "hidden", marginRight: "10px" }}>
                     <Image src={Avatar} alt="User Profile" width={100} height={100} style={{ maxWidth: '100%' }} />
                 </div>
@@ -173,7 +174,7 @@ export default function Profile() {
                     <Divider style={{ borderTop: "2px solid #9e9d9d", width: "100%" }} />
                 </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: '10rem' }}>
                 {/* Comments container */}
                 <Comments />
 

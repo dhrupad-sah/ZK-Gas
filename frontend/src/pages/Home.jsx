@@ -14,11 +14,11 @@ export default function Home() {
   const lines_1 = ["Protect Privacy, Build Communities"];
 
   return (
-    <div className="flex-col" style={{ minHeight: '200vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
+    <div className="flex-col" style={{ minHeight: '180vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', minHeight: '80vh', paddingTop: '8rem' }}>
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem' }}>
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem', paddingLeft: "5rem" }}>
           <div style={{ width: '75%' }}>
-            <h1 className="text-[73px] grad">
+            <h1 className="text-[73px] grad" style={{ fontFamily: "Poppins"}}>
               <AnimatedHeading lines={lines_1} />
             </h1>
           </div>

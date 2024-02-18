@@ -46,7 +46,7 @@ export default function MainPoll() {
     }, []);
 
     return (
-        <div className="flex w-full flex-col items-center justify-center">
+        <div className="flex w-full flex-col items-center" style={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}} >
             <Tabs aria-label="Options" color="warning" size="lg" variant="underlined">
                 <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>} className="p-2">
                     <Card style={{backgroundColor: "transparent"}}>
