@@ -17,6 +17,7 @@
         "@pushprotocol/restapi": "^1.6.8",
         "@pushprotocol/uiweb": "^1.2.5",
         "@reduxjs/toolkit": "^2.2.1",
+        "@tsparticles/react": "^3.0.0",
         "atropos": "^2.0.2",
         "axios": "^0.27.2",
         "ethers": "^5.7.2",
@@ -29,10 +30,12 @@
         "react-router-dom": "^6.22.0",
         "react-share": "^5.1.0",
         "react-toastify": "^10.0.4",
+        "react-tsparticles": "^2.12.2",
         "redux-persist": "^6.0.0",
         "styled-components": "^6.1.8",
         "survey-analytics": "^1.9.129",
         "survey-core": "^1.9.129",
+        "tsparticles": "^3.2.1",
         "uuid": "^9.0.1"
     },
     "devDependencies": {

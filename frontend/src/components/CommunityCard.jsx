@@ -189,7 +189,7 @@ export default function CommunityCard({ community }) {
                     </Button> */}
                     {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
                     <Button variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ border: "2px solid #8f9fe8", cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        <span className="font-bold" style={{color : "#8f9fe8"}}>
+                        <span className="font-bold" style={{ color: "#8f9fe8" }}>
                             {community.joined ? "Joined" : "Join"}
                         </span>
                     </Button>
@@ -232,6 +232,13 @@ export default function CommunityCard({ community }) {
                     isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     placement="top-center"
+                    classNames={{
+                        body: "py-6",
+                        backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                        base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                        header: "border-b-[1px] border-[#292f46]",
+                        closeButton: "hover:bg-white/5 active:bg-white/10",
+                    }}
                 >
                     <ModalContent>
                         {(onClose) => (
