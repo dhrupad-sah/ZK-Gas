@@ -224,7 +224,7 @@ export default function PollCard({ pollContent }) {
     }
 
     return (
-        <div className="poll">
+        <div className="poll" style={{backgroundColor: "#cfc6e2"}}>
             <div className="question">{poll.question}</div>
             {(userVerifiedPolls.includes(poll.itemId) || poll.belongsToCommunity) && <div className="answers">
                 {poll.answers.map((answer, i) => (
@@ -236,11 +236,11 @@ export default function PollCard({ pollContent }) {
                 ))}
             </div>}
             <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: "15px" }}>
-                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button variant="bordered" onPress={onRulesOpen} color="secondary" size="md" className="mb-5">
                     View
                 </Button>}
-                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
-                    Verify
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button variant="bordered" onPress={onOpen} color="success" size="md" className="mb-5">
+                    <span className="text-black font-bold">Verify</span>
                 </Button>}
             </div>
             <Modal
