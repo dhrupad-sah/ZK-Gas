@@ -106,6 +106,15 @@ export default function NavbarComponent() {
             const result = axios.post("/poll/postPoll", newPoll);
             const data_ID = await result;
             console.log("the result poll id would be : ", data_ID.data.data);
+            const bodyPollIDToUser = {
+                userID: mongoID,
+                pollID: data_ID.data.data
+            }
+            try{
+                const resultOfPushing = axios.post('/user/addPollIdToUser', bodyPollIDToUser)
+            } catch(errPushingID){
+                console.log("error in pusing id to user", errPushingID)
+            }
             const _provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = _provider.getSigner();
             const contratFactory = new ethers.Contract(
@@ -122,7 +131,7 @@ export default function NavbarComponent() {
             );
             await poll.wait();
             toast.update(id, {
-                render: "Community created successfully!",
+                render: "Poll created successfully!",
                 type: "success",
                 isLoading: false,
                 autoClose: 4000,
