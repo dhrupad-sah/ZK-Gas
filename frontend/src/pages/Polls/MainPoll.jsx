@@ -72,8 +72,5 @@ export default function MainPoll() {
                 </Tab>
             </Tabs>
         </div>
-
-
-
     );
 }
