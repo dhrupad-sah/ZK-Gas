@@ -189,18 +189,21 @@ export default function CommunityPage() {
         getRules();
     }, [])
     return (
-        <div className="flex justify-between mx-20">
+        <div className="flex justify-between px-20">
             <Card style={{backgroundColor: "transparent"}}>
-                <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: "800px" }}>
-                    <div className="text-xl pb-2 font-bold">
-                        <span style={{color: "#cfc6e2"}}>Community Polls</span>
-                    </div>
+                <div className="text-2xl pb-2 font-bold" style={{ display: "flex" ,alignItems: "center", justifyContent: "center"}}>
+                    <span style={{color: "#cfc6e2"}}>Community Polls</span>
+                </div>
+                {(allCommunityPolls.length <= 0) && <CardBody style={{ width: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                            <p style={{ color: "#cfc6e2", fontFamily: "sans-serif", fontSize: "20px" }}>No polls to show!</p>
+                        </CardBody>}
+                {(allCommunityPolls.length > 0) && <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: "800px" }}>
                     <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
                         {allCommunityPolls.map((poll) => (
                             poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                         ))}
                     </ScrollShadow>
-                </CardBody>
+                </CardBody>}
             </Card>
             <div
                 style={{

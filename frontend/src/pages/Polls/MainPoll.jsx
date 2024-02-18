@@ -46,28 +46,34 @@ export default function MainPoll() {
     }, []);
 
     return (
-        <div className="flex w-full flex-col items-center" style={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}} >
+        <div className="flex w-full flex-col items-center" style={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)' }} >
             <Tabs aria-label="Options" color="warning" size="lg" variant="underlined">
                 <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>} className="p-2">
-                    <Card style={{backgroundColor: "transparent"}}>
-                        <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Card style={{ backgroundColor: "transparent" }}>
+                        {(allPolls.length <= 0) && <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: "150px" }}>
+                            <p style={{ color: "#cfc6e2", fontFamily: "sans-serif", fontSize: "25px" }}>No polls to show!</p>
+                        </CardBody>}
+                        {(allPolls.length > 0) && <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-8 w-[900px] h-full max-h-[1000px] px-10">
                                 {allPolls.map((poll) => (
                                     !poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                                 ))}
                             </ScrollShadow>
-                        </CardBody>
+                        </CardBody>}
                     </Card>
                 </Tab>
                 <Tab key="Community" title={<span className="flex align-center"><RiGitRepositoryPrivateLine className="mt-1" />&nbsp;<span>Private</span></span>} className="p-2">
-                    <Card style={{backgroundColor: "transparent"}}>
-                        <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Card style={{ backgroundColor: "transparent" }}>
+                        {(allPrivatePolls.length <= 0) && <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: "150px" }}>
+                            <p style={{ color: "#cfc6e2", fontFamily: "sans-serif", fontSize: "25px" }}>No polls to show!</p>
+                        </CardBody>}
+                        {(allPrivatePolls.length > 0) && <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-8 w-[900px] h-full max-h-[1000px] px-10">
                                 {allPrivatePolls.map((poll) => (
                                     poll.belongsToCommunity && <PollCard key={poll?.pollID} pollContent={poll} />
                                 ))}
                             </ScrollShadow>
-                        </CardBody>
+                        </CardBody>}
                     </Card>
                 </Tab>
             </Tabs>

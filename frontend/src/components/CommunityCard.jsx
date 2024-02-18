@@ -147,6 +147,7 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
+            {/* <ToastContainer position="top-center"/> */}
             <Card className="w-[350px] h-[250px] p-2 m-4 bg-[#cfc6e2]">
                 <CardHeader className="flex justify-between" color="foreground">
                     <div className="flex gap-4 items-center" >
@@ -344,10 +345,10 @@ export default function CommunityCard({ community }) {
                         )}
                     </ModalContent>
                 </Modal>
-                <ToastContainer
-                    position="top-center"
-                />
             </Card>
+            {/* <ToastContainer
+                position="top-center"
+            /> */}
         </>
     )
 }
