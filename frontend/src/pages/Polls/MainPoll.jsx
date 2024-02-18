@@ -47,9 +47,9 @@ export default function MainPoll() {
 
     return (
         <div className="flex w-full flex-col items-center justify-center">
-            <Tabs aria-label="Options" color="primary" size="lg" variant="underlined">
+            <Tabs aria-label="Options" color="warning" size="lg" variant="underlined">
                 <Tab key="Public" title={<span className="flex align-center"><MdOutlinePublic className="mt-1" />&nbsp;<span>Public</span></span>} className="p-2">
-                    <Card>
+                    <Card style={{backgroundColor: "transparent"}}>
                         <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-8 w-[900px] h-full max-h-[1000px] px-10">
                                 {allPolls.map((poll) => (
@@ -60,7 +60,7 @@ export default function MainPoll() {
                     </Card>
                 </Tab>
                 <Tab key="Community" title={<span className="flex align-center"><RiGitRepositoryPrivateLine className="mt-1" />&nbsp;<span>Private</span></span>} className="p-2">
-                    <Card>
+                    <Card style={{backgroundColor: "transparent"}}>
                         <CardBody style={{ width: '1000px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <ScrollShadow hideScrollBar className="grid grid-cols-2 gap-8 w-[900px] h-full max-h-[1000px] px-10">
                                 {allPrivatePolls.map((poll) => (
