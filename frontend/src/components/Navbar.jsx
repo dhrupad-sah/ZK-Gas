@@ -610,7 +610,7 @@ export default function NavbarComponent() {
                                 <Textarea
                                     autoFocus
                                     label="Question"
-                                    placeholder="Enter question (max 50 characters)"
+                                    placeholder="Enter question (max 150 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
                                     variant="flat"
@@ -622,7 +622,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option1"
-                                    placeholder="Enter first option (max 15 characters)"
+                                    placeholder="Enter first option (max 50 characters)"
                                     value={option1}
                                     onChange={handleOption1Change}
                                 />
@@ -633,7 +633,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option2"
-                                    placeholder="Enter second option (max 15 characters)"
+                                    placeholder="Enter second option (max 50 characters)"
                                     value={option2}
                                     onChange={handleOption2Change}
                                 />
@@ -644,7 +644,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option3"
-                                    placeholder="Enter three option (max 15 characters)"
+                                    placeholder="Enter three option (max 50 characters)"
                                     value={option3}
                                     onChange={handleOption3Change}
                                 />
@@ -726,7 +726,7 @@ export default function NavbarComponent() {
                                 <Textarea
                                     autoFocus
                                     label="Question"
-                                    placeholder="Enter question (max 50 characters)"
+                                    placeholder="Enter question (max 150 characters)"
                                     value={question}
                                     onChange={handleQuestionChange}
                                     variant="flat"
@@ -738,7 +738,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option1"
-                                    placeholder="Enter first option (max 15 characters)"
+                                    placeholder="Enter first option (max 50 characters)"
                                     value={option1}
                                     onChange={handleOption1Change}
                                 />
@@ -749,7 +749,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option2"
-                                    placeholder="Enter second option (max 15 characters)"
+                                    placeholder="Enter second option (max 50 characters)"
                                     value={option2}
                                     onChange={handleOption2Change}
                                 />
@@ -760,7 +760,7 @@ export default function NavbarComponent() {
                                 )}
                                 <Input
                                     label="Option3"
-                                    placeholder="Enter three option (max 15 characters)"
+                                    placeholder="Enter three option (max 50 characters)"
                                     value={option3}
                                     onChange={handleOption3Change}
                                 />
