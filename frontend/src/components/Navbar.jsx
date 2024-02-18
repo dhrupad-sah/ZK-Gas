@@ -199,13 +199,13 @@ export default function NavbarComponent() {
         gender: "",
     });
 
-    const QUESTION_LIMIT = 50;
+    const QUESTION_LIMIT = 150;
     const handleQuestionChange = (event) => {
         const updateQuestion = event.target.value.slice(0, QUESTION_LIMIT);
         setQuestion(updateQuestion);
     };
 
-    const OPTION_LIMIT = 15;
+    const OPTION_LIMIT = 50;
     const handleOption1Change = (event) => {
         const updateOption1 = event.target.value.slice(0, OPTION_LIMIT);
         setOption1(updateOption1);
@@ -598,7 +598,7 @@ export default function NavbarComponent() {
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 50 characters.
+                                        Question must be less than 150 characters.
                                     </div>
                                 )}
                                 <Input
@@ -609,7 +609,7 @@ export default function NavbarComponent() {
                                 />
                                 {option1.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -620,7 +620,7 @@ export default function NavbarComponent() {
                                 />
                                 {option2.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -631,7 +631,7 @@ export default function NavbarComponent() {
                                 />
                                 {option3.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -714,7 +714,7 @@ export default function NavbarComponent() {
                                 />
                                 {question.length >= QUESTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Question must be less than 50 characters.
+                                        Question must be less than 150 characters.
                                     </div>
                                 )}
                                 <Input
@@ -725,7 +725,7 @@ export default function NavbarComponent() {
                                 />
                                 {option1.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -736,7 +736,7 @@ export default function NavbarComponent() {
                                 />
                                 {option2.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                                 <Input
@@ -747,7 +747,7 @@ export default function NavbarComponent() {
                                 />
                                 {option3.length >= OPTION_LIMIT && (
                                     <div className="text-sm text-error ml-1 text-red-500">
-                                        Option must be less than 15 characters.
+                                        Option must be less than 50 characters.
                                     </div>
                                 )}
                             </ModalBody>
