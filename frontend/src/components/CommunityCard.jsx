@@ -244,7 +244,7 @@ export default function CommunityCard({ community }) {
                     <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1">Add Community Details</ModalHeader>
+                                <ModalHeader className="flex flex-col gap-1">Verify Community Details</ModalHeader>
                                 <ModalBody>
                                     <Input
                                         label="Email"

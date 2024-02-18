@@ -258,7 +258,7 @@ export default function PollCard({ pollContent }) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Add Poll Details</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Verify Poll Details</ModalHeader>
                             <ModalBody>
                                 <Input
                                     label="Email"

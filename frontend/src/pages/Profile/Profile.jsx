@@ -101,7 +101,7 @@ export default function Profile() {
                                         <ModalBody className="flex-col">
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
                                                 <Input
-                                                    label="Link"
+                                                    label="Unique ID"
                                                     value={id}
                                                     readOnly
                                                 />
