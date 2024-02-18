@@ -190,10 +190,10 @@ export default function CommunityPage() {
     }, [])
     return (
         <div className="flex justify-between mx-20">
-            <Card >
+            <Card style={{backgroundColor: "transparent"}}>
                 <CardBody style={{ width: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: "800px" }}>
                     <div className="text-xl pb-2 font-bold">
-                        Community Polls
+                        <span style={{color: "#cfc6e2"}}>Community Polls</span>
                     </div>
                     <ScrollShadow hideScrollBar className="w-[480px] h-[750px] flex-col items-center justify-center px-10">
                         {allCommunityPolls.map((poll) => (
