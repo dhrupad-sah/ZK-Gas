@@ -72,7 +72,7 @@ export default function NavbarComponent() {
     const patternCommunity = /^\/communities$/;
 
     async function handlePollSubmit() {
-        const id = toast.loading("Please wait creating your community");
+        const id = toast.loading("Please wait while we create your Poll");
         if (!question || !option1 || !option2 || !option3) {
             toast.error("Field's can't be empty!!", {
                 position: "top-center",
