@@ -346,9 +346,9 @@ export default function CommunityCard({ community }) {
                     </ModalContent>
                 </Modal>
             </Card>
-            <ToastContainer
+            {/* <ToastContainer
                 position="top-center"
-            />
+            /> */}
         </>
     )
 }
