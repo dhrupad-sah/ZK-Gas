@@ -1,6 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Protest+Strike&display=swap');
+.grad {
+	background: -webkit-linear-gradient(right, #FF3BFF, #ECBFBF, #5C24FF, #D94FD5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: sans-serif;
+}
 
-.fontface {
-    font-family: "Archivo", sans-serif;
-    font-optical-sizing: auto;
+.text-grad {
+    background: -webkit-linear-gradient(right, #5C24FF, #ECBFBF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: sans-serif
+}
+
+.text-grad-rev {
+    background: -webkit-linear-gradient(right, #ECBFBF, #5C24FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: sans-serif
+}
+
+.my-atropos {
+    width: 500px;
+    height: 400px;
+    background: transparent;
+}
+
+.aztec {
+    background-image: url('../../assets/aztec.png');
+    background-color: blue;
+    background-blend-mode: multiply;
 }

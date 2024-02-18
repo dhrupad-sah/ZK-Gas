@@ -18,8 +18,8 @@ const postPoll = async (req, res, next) => {
         })
 
         const result = await poll.save()
-        console.log("Poll Got Posted : ", result);
-        console.log("The id would be: ", result._id)
+        // console.log("Poll Got Posted : ", result);
+        // console.log("The id would be: ", result._id)
 
         res.status(200).json({
             data: result._id,
@@ -130,8 +130,8 @@ const getAllPrivatePollsForUser = async (req, res, next) => {
     try {
         const { userID } = req.body
         const userCommunities = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("communityID")
-        console.log("userCommunities : " , userCommunities)
-        console.log("userCommunities.communityID : ", userCommunities[0].communityID);
+        // console.log("userCommunities : " , userCommunities)
+        // console.log("userCommunities.communityID : ", userCommunities[0].communityID);
         if (!userCommunities || !userCommunities[0].communityID) {
             return res.status(404).json({
                 custom: 'User not found or has no communityIDs',

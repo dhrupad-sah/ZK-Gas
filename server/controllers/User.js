@@ -132,7 +132,7 @@ const addPollForUser = async (req, res, next) => {
                 custom: "Comment pushed Successfully!!"
             })
         }).catch(err => {
-            console.log("Error in pushing the comment for the user")
+            console.log("Error in pushing the comment for the user", err)
         })
     } catch (err) {
         console.log(err);
@@ -189,4 +189,45 @@ const createUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser, getAllCommunityOfUser, addPollForUser };
+const getAllVerifiedPollsOfUser = async (req, res, next) => {
+    try {
+        const { userID } = req.body;
+        const result = await User.find({ _id: new mongoose.Types.ObjectId(userID) }).select("verifiedPolls")
+
+        res.status(200).json({
+            data: result,
+            custom: "Fetched all verified polls of the user!!"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            custom: "Error in fetching all verified polls of the user"
+        });
+    }
+}
+
+const getAllUserUsingCommunities = async (req, res, next) => {
+    try {
+        const { communityID } = req.body;
+        const usersWithCommunityId = await User.find({
+            communityID: { $in: [communityID] }
+        }).select("_id");
+
+        // Send the response back to the client
+        res.status(200).json({
+            data: usersWithCommunityId
+        });
+    } catch (err) {
+        console.error("Error in fetching all users with the given community ID:", err);
+        res.status(500).json({
+            custom: 'Error in fetching users with the given community ID',
+        });
+    }
+};
+
+
+module.exports = {
+    getAllUsers, createUser, addCommentForUser, getAllCommentsOfUser, getMongoIDUsingMetamaskID, addCommunityOfUser,
+    getAllCommunityOfUser, addPollForUser, getAllVerifiedPollsOfUser, getAllUserUsingCommunities
+};

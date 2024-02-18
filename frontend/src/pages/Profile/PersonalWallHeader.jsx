@@ -1,10 +1,10 @@
 import React from 'react';
+import "../styles/Home.css"
 
 const PersonalWallHeader = () => {
     return (
         <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800">Your Personal Wall</h1>
-            <div className="w-16 h-1 bg-gray-800 mx-auto mt-2"></div>
+            <h1 className="text-5xl font-bold" style={{color: "#cfc6e2", fontFamily:"sans-serif"}}>Personal Space</h1>
         </div>
     );
 }

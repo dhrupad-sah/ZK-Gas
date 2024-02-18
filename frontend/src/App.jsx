@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import MainCommunity from "./pages/Communities/MainCommunity";
 import CommunityPage from "./pages/Communities/CommunityPage"; // Import the CommunityPage component
 import Profile from "./pages/Profile/Profile";
+import "./App.css"
 
 const Container = styled.div`
   padding: 0;
@@ -17,7 +18,7 @@ export default function App() {
 
   return (
     <MetaMaskContextProvider>
-      <Container>
+      <Container className="bg">
         <BrowserRouter>
           <NavbarComponent />
           <main>

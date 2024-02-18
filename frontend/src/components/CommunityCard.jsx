@@ -2,11 +2,15 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Avatar, Chip, LinkIcon
 import { useLocation } from "react-router-dom";
 import { FaHashtag } from "react-icons/fa";
 import { Button, useDisclosure, Link, Modal, ModalContent, Accordion, AccordionItem, ModalHeader, ModalBody, ModalFooter, Input, Textarea, SelectItem, Select } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import axios from '../api/axiosConfig.js';
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { ScrollShadow } from "@nextui-org/react";
+import "../pages/styles/Community.css";
+import { FaRegCopy } from "react-icons/fa";
 
 export default function CommunityCard({ community }) {
     const communitySplits = community.communityName.split(" ");
@@ -14,13 +18,31 @@ export default function CommunityCard({ community }) {
     const route = location.pathname;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { isOpen: isRulesOpen, onOpen: onRulesOpen, onOpenChange: onRulesOpenChange } = useDisclosure();
+    const { isOpen: isMembersOpen, onOpen: onMemberOpen, onOpenChange: onMemberOpenChange } = useDisclosure();
     const [description, setDescription] = useState("");
+    const [allUserFromCommunity, setAllUserFromCommunity] = useState([])
 
     const [communityRules, setCommunityRules] = useState({
         email: "",
         region: "",
         gender: ""
     });
+
+    useEffect(() => {
+        const getAllUsersUsingCommunityID = async () => {
+            try {
+                const body = {
+                    communityID: community.communityId
+                }
+                const result = await axios.post('/user/getAllUserUsingCommunities', body)
+                // console.log("the communitites wil be : ", result.data.data)
+                setAllUserFromCommunity(result.data.data)
+            } catch (err) {
+                console.log("error in fetching all user for a communithy")
+            }
+        }
+        getAllUsersUsingCommunityID();
+    }, [])
 
     const handleRulesInput = (e) => {
         setCommunityRules({
@@ -96,7 +118,6 @@ export default function CommunityCard({ community }) {
         }
 
     }
-
     console.log(community)
 
     // const [domain, setDomain] = useState();
@@ -126,9 +147,9 @@ export default function CommunityCard({ community }) {
 
     return (
         <>
-            <Card className="w-[350px] h-[250px] p-2 m-4" isPressable>
+            <Card className="w-[350px] h-[250px] p-2 m-4 bg-[#cfc6e2]">
                 <CardHeader className="flex justify-between" color="foreground">
-                    <div className="flex gap-9 items-center" >
+                    <div className="flex gap-4 items-center" >
                         <Avatar
                             alt="community-card"
                             height={40}
@@ -136,16 +157,22 @@ export default function CommunityCard({ community }) {
                             name={communitySplits.reduce((a, b) => a.charAt(0) + b.charAt(0))}
                             width={40}
                             isBordered
-                            color="primary"
+                            className="bg-[#bd7fce]"
                         />
                         <div className="flex flex-col ">
-                            <p className="text-base ">{community.communityName}</p>
+                            <p className="text-base font-bold text-xl">{community.communityName}</p>
                             {/* <p className="text-small text-default-500">nextui.org</p> */}
                         </div>
                     </div>
-                    <Chip variant="bordered" startContent={<FaHashtag />}>
+                    {/* <div>
+                        <IoMdInformationCircleOutline onPress={onRulesOpen} />
+                    </div> */}
+                    <Button color="secondary" className="font-bold" variant="bordered" size="md" onPress={onRulesOpen}>
+                        Rules
+                    </Button>
+                    {/* <Chip variant="bordered" startContent={<FaHashtag />}>
                         {community.communityId}
-                    </Chip>
+                    </Chip> */}
                 </CardHeader>
                 <Divider />
 
@@ -157,11 +184,14 @@ export default function CommunityCard({ community }) {
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex justify-between">
-                    <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
+                    {/* <Button color="secondary" variant="flat" size="md" onPress={onRulesOpen}>
                         Rules
-                    </Button>
-                    <Button color={community.joined ? "danger" : "success"} variant="flat" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        {community.joined ? "Joined" : "Join"}
+                    </Button> */}
+                    {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
+                    <Button color="success" variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                        <span className="text-black font-bold">
+                            {community.joined ? "Joined" : "Join"}
+                        </span>
                     </Button>
                 </CardFooter>
                 <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
@@ -248,6 +278,46 @@ export default function CommunityCard({ community }) {
                                 <ModalFooter>
                                     <Button onClick={handleJoinCommunity} color="primary" onPress={onClose}>
                                         Join Community
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+                <Modal isOpen={isMembersOpen} onOpenChange={onMemberOpenChange} >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Community members</ModalHeader>
+                                <ScrollShadow hideScrollBar className="w-[400px] h-[150px]">
+                                    {allUserFromCommunity.map((members, index) => (
+                                        <ModalBody key={index}>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
+                                                <Input
+                                                    label="UNIQUE ID"
+                                                    style={{ fontSize: "15px" }}
+                                                    value={members._id}
+                                                    readOnly
+                                                />
+                                                <Tooltip content="Copy to clipboard">
+                                                    <Button
+                                                        color="primary"
+                                                        isIconOnly
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                members._id
+                                                            );
+                                                        }}>
+                                                        <FaRegCopy />
+                                                    </Button>
+                                                </Tooltip>
+                                            </div>
+                                        </ModalBody>
+                                    ))}
+                                </ScrollShadow>
+                                <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                        Close
                                     </Button>
                                 </ModalFooter>
                             </>
