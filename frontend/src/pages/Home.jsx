@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Link } from "@nextui-org/react";
 import BackgroundImage1 from "./Home/3.png";
 import Anonymous from "../assets/anonymous.png";
 import AztecLogo from "../assets/aztec.png";
@@ -14,7 +14,7 @@ export default function Home() {
   const lines_1 = ["Protect Privacy, Build Communities"];
 
   return (
-    <div className="flex-col" style={{ minHeight: '170vh' }}>
+    <div className="flex-col" style={{ minHeight: '200vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', minHeight: '80vh', paddingTop: '8rem' }}>
         <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem' }}>
           <div style={{ width: '75%' }}>
@@ -28,17 +28,21 @@ export default function Home() {
             radius="full"
             variant="bordered"
             className="w-[15rem] h-[4rem] px-15 font-semibold border-[#D94FD5]"
+            as={Link}
+            href="/communities"
           >
             <span className="text-[20px] text-[#ECBFBF]">
-              Create Community
+              Show Communities
             </span>
           </Button>
           <Button
             radius="full"
             variant="bordered"
             className="w-[15rem] h-[4rem] text-[20px] font-semibold border-[#D94FD5]"
+            as={Link}
+            href="/polls"
           >
-            <span className="text-[#ECBFBF]">Create Poll</span>
+            <span className="text-[#ECBFBF]">Show Polls</span>
           </Button>
         </div>
       </div>

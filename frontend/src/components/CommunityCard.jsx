@@ -188,27 +188,33 @@ export default function CommunityCard({ community }) {
                         Rules
                     </Button> */}
                     {community.joined && <Button variant="bordered" color="secondary" onPress={onMemberOpen}>View Members</Button>}
-                    <Button color="success" variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
-                        <span className="text-black font-bold">
+                    <Button variant="bordered" size="md" onPress={onOpen} isDisabled={community.joined} style={{ border: "2px solid #8f9fe8", cursor: community.joined ? "not-allowed" : "pointer", pointerEvents: community.joined ? "all" : "" }} >
+                        <span className="font-bold" style={{color : "#8f9fe8"}}>
                             {community.joined ? "Joined" : "Join"}
                         </span>
                     </Button>
                 </CardFooter>
-                <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+                <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange} classNames={{
+                    body: "py-6",
+                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                    base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                    header: "border-b-[1px] border-[#292f46]",
+                    closeButton: "hover:bg-white/5 active:bg-white/10",
+                }}>
                     <ModalContent>
                         {(onClose) => (
                             <>
                                 <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
                                 <ModalBody>
                                     <Accordion>
-                                        <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
-                                            <p className="font-bold">{community.domainPub}</p>
+                                        <AccordionItem key="1" aria-label="Accordion 1" title={<span className="text-white">Domain</span>}>
+                                            <p className="font-bold text-white">{community.domainPub}</p>
                                         </AccordionItem>
-                                        <AccordionItem key="2" aria-label="Accordion 1" title="Region">
-                                            <p className="font-bold">{community.regionPub === "NA" ? "North America" : community.regionPub === "ME" ? "Middle East" : community.regionPub === "AP" ? "Asia Pacific" : "Europe"}</p>
+                                        <AccordionItem key="2" aria-label="Accordion 1" title={<span className="text-white">Region</span>}>
+                                            <p className="font-bold text-white">{community.regionPub === "NA" ? "North America" : community.regionPub === "ME" ? "Middle East" : community.regionPub === "AP" ? "Asia Pacific" : "Europe"}</p>
                                         </AccordionItem>
-                                        <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
-                                            <p className="font-bold">{community.genderPub === "M" ? "Male" : community.genderPub === "F" ? "Female" : "Both"}</p>
+                                        <AccordionItem key="3" aria-label="Accordion 1" title={<span className="text-white">Domain</span>}>
+                                            <p className="font-bold text-white">{community.genderPub === "M" ? "Male" : community.genderPub === "F" ? "Female" : "Both"}</p>
                                         </AccordionItem>
                                     </Accordion>
                                 </ModalBody>
@@ -284,7 +290,13 @@ export default function CommunityCard({ community }) {
                         )}
                     </ModalContent>
                 </Modal>
-                <Modal isOpen={isMembersOpen} onOpenChange={onMemberOpenChange} >
+                <Modal isOpen={isMembersOpen} onOpenChange={onMemberOpenChange} classNames={{
+                    body: "py-1",
+                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                    base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                    header: "border-b-[1px] border-[#292f46]",
+                    closeButton: "hover:bg-white/5 active:bg-white/10",
+                }}>
                     <ModalContent>
                         {(onClose) => (
                             <>
@@ -292,12 +304,13 @@ export default function CommunityCard({ community }) {
                                 <ScrollShadow hideScrollBar className="w-[400px] h-[150px]">
                                     {allUserFromCommunity.map((members, index) => (
                                         <ModalBody key={index}>
-                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem" }}>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: "1rem", justifyContent: "center" }}>
                                                 <Input
-                                                    label="UNIQUE ID"
+                                                    label="User ID"
                                                     style={{ fontSize: "15px" }}
                                                     value={members._id}
                                                     readOnly
+                                                    className="pt-2"
                                                 />
                                                 <Tooltip content="Copy to clipboard">
                                                     <Button

@@ -224,7 +224,7 @@ export default function PollCard({ pollContent }) {
     }
 
     return (
-        <div className="poll">
+        <div className="poll" style={{backgroundColor: "#cfc6e2"}}>
             <div className="question">{poll.question}</div>
             {(userVerifiedPolls.includes(poll.itemId) || poll.belongsToCommunity) && <div className="answers">
                 {poll.answers.map((answer, i) => (
@@ -236,17 +236,24 @@ export default function PollCard({ pollContent }) {
                 ))}
             </div>}
             <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: "15px" }}>
-                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onRulesOpen} color="secondary" variant="flat" size="md" className="mb-5">
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button variant="bordered" onPress={onRulesOpen} color="secondary" size="md" className="mb-5">
                     View
                 </Button>}
-                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button onPress={onOpen} color="success" variant="flat" size="md" className="mb-5">
-                    Verify
+                {!poll.belongsToCommunity && !userVerifiedPolls.includes(poll.itemId) && <Button variant="bordered" onPress={onOpen} color="success" size="md" className="mb-5">
+                    <span className="text-black font-bold">Verify</span>
                 </Button>}
             </div>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
+                classNames={{
+                    body: "py-1",
+                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                    base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                    header: "border-b-[1px] border-[#292f46]",
+                    closeButton: "hover:bg-white/5 active:bg-white/10",
+                }}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -305,21 +312,27 @@ export default function PollCard({ pollContent }) {
                     )}
                 </ModalContent>
             </Modal>
-            <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange}>
+            <Modal isOpen={isRulesOpen} onOpenChange={onRulesOpenChange} classNames={{
+                    body: "py-1",
+                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                    base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                    header: "border-b-[1px] border-[#292f46]",
+                    closeButton: "hover:bg-white/5 active:bg-white/10",
+                }}>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1 text-xl font-bold">Rules</ModalHeader>
                             <ModalBody>
                                 <Accordion>
-                                    <AccordionItem key="1" aria-label="Accordion 1" title="Domain">
-                                        <p className="font-bold">{pollPublicRules.domain}</p>
+                                    <AccordionItem key="1" aria-label="Accordion 1" title={<span className="text-white">Domain</span>}>
+                                        <p className="font-bold text-white">{pollPublicRules.domain}</p>
                                     </AccordionItem>
-                                    <AccordionItem key="2" aria-label="Accordion 1" title="Region">
-                                        <p className="font-bold">{pollPublicRules.region === "NA" ? "North America" : pollPublicRules.region === "ME" ? "Middle East" : pollPublicRules.region === "AP" ? "Asia Pacific" : "Europe"}</p>
+                                    <AccordionItem key="2" aria-label="Accordion 1" title={<span className="text-white">Region</span>}>
+                                        <p className="font-bold text-white">{pollPublicRules.region === "NA" ? "North America" : pollPublicRules.region === "ME" ? "Middle East" : pollPublicRules.region === "AP" ? "Asia Pacific" : "Europe"}</p>
                                     </AccordionItem>
-                                    <AccordionItem key="3" aria-label="Accordion 1" title="Gender">
-                                        <p className="font-bold">{pollPublicRules.gender === "M" ? "Male" : pollPublicRules.gender === "F" ? "Female" : "Both"}</p>
+                                    <AccordionItem key="3" aria-label="Accordion 1" title={<span className="text-white">Gender</span>}>
+                                        <p className="font-bold text-white">{pollPublicRules.gender === "M" ? "Male" : pollPublicRules.gender === "F" ? "Female" : "Both"}</p>
                                     </AccordionItem>
                                 </Accordion>
                             </ModalBody>
