@@ -16,8 +16,8 @@ export default function Home() {
   return (
     <div className="flex-col" style={{ minHeight: '80vh', background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '5rem', minHeight: '80vh', paddingTop: '8rem' }}>
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem', paddingLeft: "5rem" }}>
-          <div style={{ width: '75%' }}>
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem'}}>
+          <div style={{ width: '78%' }}>
             <h1 className="text-[73px] grad" style={{ fontFamily: "Poppins"}}>
               <AnimatedHeading lines={lines_1} />
             </h1>

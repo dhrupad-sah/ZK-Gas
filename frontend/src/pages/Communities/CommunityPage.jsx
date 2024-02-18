@@ -189,7 +189,7 @@ export default function CommunityPage() {
         getRules();
     }, [])
     return (
-        <div className="flex justify-between px-20">
+        <div className="flex justify-between px-20" style={{minHeight: '70vh',  background: 'linear-gradient(to bottom, #1b1521, #47193d)'}}>
             <Card style={{ backgroundColor: "transparent" }}>
                 <div className="text-2xl pb-2 font-bold" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <span style={{ color: "#cfc6e2" }}>Community Polls</span>
