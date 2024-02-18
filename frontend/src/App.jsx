@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import MainCommunity from "./pages/Communities/MainCommunity";
 import CommunityPage from "./pages/Communities/CommunityPage"; // Import the CommunityPage component
 import Profile from "./pages/Profile/Profile";
+
 import "./App.css"
 
 const Container = styled.div`
@@ -24,7 +25,7 @@ export default function App() {
           <main>
             <Routes>
               <Route path="/">
-                <Route index element={<Home />} /> {/* Use `index` for the default route */}
+                <Route index element={<Home />} /> {/* Use index for the default route */}
                 <Route path="polls" element={<MainPoll />} />
                 <Route path="communities" element={<MainCommunity />} />
                 <Route path="communities/:communityId" element={<CommunityPage />} /> {/* Dynamic route */}
