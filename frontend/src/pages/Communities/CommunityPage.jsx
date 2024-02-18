@@ -109,7 +109,7 @@ export default function CommunityPage() {
         backdropFilter: "blur(6.5px)",
         spinnerColor: "rgb(202, 89, 155)",
         scrollbarColor: "rgb(202, 89, 155)",
-        backdropFilter: 'blur(6.5px)',
+        // backdropFilter: 'blur(6.5px)',
         // modalBackgroundColor:'rgba(47, 49, 55, 1)',
         // spinnerColor:'rgb(202, 89, 155)',
         // scrollbarColor:'rgb(202, 89, 155)',
@@ -211,7 +211,7 @@ export default function CommunityPage() {
                     width: "120vh"
                 }}
             >
-                <ChatUIProvider >
+                <ChatUIProvider theme={darkChatTheme}>
                     <ChatView
                         chatId="8eb60adbf0da4bbd216a93df1be613e70d8054323ed654ba05fa09750f956618"
                         limit={10}
