@@ -15,10 +15,10 @@ export default function Home() {
 
   return (
     <div className="pt-28">
-        <div style={{minHeight: '7rem', display: 'flex', textAlign: 'center', width: '75%'}} >  
-      <h1 className="text-[73px] grad text-center">
-      <AnimatedHeading lines={lines_1} />
-      </h1>
+        <div style={{minHeight: '7rem', display: 'flex', width: '75%'}} >  
+            <h1 className="text-[73px] grad text-center">
+                <AnimatedHeading lines={lines_1} />
+            </h1>
         </div>
         {/* <div style={{minHeight: '7rem'}}>
         <h1 className="text-[73px] grad text-center">
@@ -71,7 +71,7 @@ export default function Home() {
       </div> */}
       
       <div className="flex justify-between pt-56">
-        <div className="flex-col text-6xl text-[#cac7d0] ml-10">
+        <div className="flex-col text-7xl text-[#cac7d0] ml-10">
           <h1 className="pb-2">Privacy First Blockchain Based</h1>
           <h1>Social Media Application</h1>
           <p className="text-2xl">
