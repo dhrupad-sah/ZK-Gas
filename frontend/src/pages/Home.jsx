@@ -11,11 +11,11 @@ import AnimatedHeading from '../components/AnimatedHeading';
 
 export default function Home() {
 
-  const lines_1 = ["Empower Identity, Protect Privacy Build Communities"];
+  const lines_1 = ["Protect Privacy, Build Communities"];
 
   return (
     <div className="flex-col" style={{ minHeight: '170vh' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', minHeight: '80vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', minHeight: '80vh', paddingTop: '8rem' }}>
         <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '7rem' }}>
           <div style={{ width: '75%' }}>
             <h1 className="text-[73px] grad">
