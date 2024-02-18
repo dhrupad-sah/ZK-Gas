@@ -439,6 +439,7 @@ export default function NavbarComponent() {
 
   return (
     <Navbar
+      position="static"
       style={{ background: "transparent", height: "80px" }}
       isBlurred={false}
       isMenuOpen={isMenuOpen}
